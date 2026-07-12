@@ -3,6 +3,13 @@
 Steps to move `spawnclinical.com` from the legacy GoDaddy site to the new
 Vercel deployment, editing DNS at GoDaddy.
 
+> **Status: LIVE.** As of the last check, `spawnclinical.com` already resolves
+> to Vercel and serves the deployment with a valid TLS cert — apex
+> `A → 216.198.79.1`, `www` CNAME → a Vercel project target
+> (`*.vercel-dns-NNN.com`), apex redirects to `www`, MX + SPF intact. GoDaddy
+> still holds the nameservers (`nsNN.domaincontrol.com`). The steps below are
+> retained for reference / rollback / re-setup.
+
 > **Golden rule:** whatever records Vercel's dashboard shows for your domain are
 > authoritative. Vercel can assign a project-specific apex IP that differs from
 > the generic values below — always prefer the dashboard values.
@@ -38,8 +45,8 @@ Target state:
 
 | Type    | Name  | Value                          | TTL |
 | ------- | ----- | ------------------------------ | --- |
-| `A`     | `@`   | `76.76.21.21` *(or the apex IP Vercel shows)* | 600 |
-| `CNAME` | `www` | `cname.vercel-dns.com`         | 600 |
+| `A`     | `@`   | `216.198.79.1` *(current Vercel apex IP — or whatever Vercel shows)* | 600 |
+| `CNAME` | `www` | `cname.vercel-dns.com` *(or the project-specific `*.vercel-dns-NNN.com` Vercel assigns)* | 600 |
 
 - **Edit** the existing `@` A record (GoDaddy ships a parked one) — don't add a
   second. GoDaddy can't put a CNAME on the apex, so the root uses an A record.
