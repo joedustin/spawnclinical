@@ -280,6 +280,26 @@ footer a:hover{color:var(--cyan)}
   .author-strip{flex-wrap:wrap}
   .author-link{margin-left:0}
 }
+/* ── MOBILE HAMBURGER NAV ─────────────────────────────── */
+.nav-toggle{display:none;background:none;border:1px solid var(--border);cursor:pointer;width:44px;height:44px;border-radius:10px;color:var(--text);align-items:center;justify-content:center;flex-shrink:0;transition:background 0.2s,border-color 0.2s}
+.nav-toggle:hover{background:var(--glass)}
+.nav-toggle-bars{position:relative;display:block;width:22px;height:16px}
+.nav-toggle-bars span{position:absolute;left:0;right:0;height:2px;border-radius:2px;background:currentColor;transition:transform 0.25s ease,opacity 0.2s ease,top 0.25s ease}
+.nav-toggle-bars span:nth-child(1){top:0}
+.nav-toggle-bars span:nth-child(2){top:7px}
+.nav-toggle-bars span:nth-child(3){top:14px}
+nav.nav-open .nav-toggle-bars span:nth-child(1){top:7px;transform:rotate(45deg)}
+nav.nav-open .nav-toggle-bars span:nth-child(2){opacity:0}
+nav.nav-open .nav-toggle-bars span:nth-child(3){top:7px;transform:rotate(-45deg)}
+@media(max-width:640px){
+  .nav-toggle{display:inline-flex}
+  .nav-right{display:none;position:absolute;top:100%;left:0;right:0;flex-direction:column;align-items:stretch;gap:0.25rem;padding:0.75rem 1rem 1rem;background:rgba(5,5,14,0.98);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);box-shadow:0 16px 32px rgba(0,0,0,0.45)}
+  nav.nav-open .nav-right{display:flex}
+  .nav-right > a,.nav-right > button{width:100%}
+  .nav-right .btn-navlink{justify-content:flex-start;padding:0.85rem 0.9rem;font-size:0.95rem;border-radius:10px}
+  .nav-right .btn-navlink:hover{background:var(--glass)}
+  .nav-right .btn-gallery-cta{justify-content:center;margin-top:0.5rem;padding:0.85rem 1.2rem;font-size:0.8rem}
+}
 </style>
 </head>
 <body>
@@ -343,7 +363,10 @@ footer a:hover{color:var(--cyan)}
       </svg>
     </a>
   </div>
-  <div class="nav-right">
+  <button class="nav-toggle" aria-label="Open menu" aria-expanded="false" aria-controls="primary-nav">
+    <span class="nav-toggle-bars"><span></span><span></span><span></span></span>
+  </button>
+  <div class="nav-right" id="primary-nav">
     <a class="btn-navlink" href="news.html">News</a>
     <a class="btn-navlink" href="jobs.html">Jobs</a>
     <a class="btn-navlink" href="gallery.html">Gallery</a>
@@ -699,5 +722,25 @@ document.addEventListener('keydown', function(e) {
 
 <script src="popup.js" defer></script>
 <script src="chatbot.js" defer></script>
+<script>
+// Mobile hamburger nav — reveals all nav items (incl. the Spawn Gallery CTA)
+(function(){
+  const nav = document.querySelector('nav');
+  if(!nav) return;
+  const toggle = nav.querySelector('.nav-toggle');
+  const panel  = document.getElementById('primary-nav');
+  if(!toggle || !panel) return;
+  const setOpen = (open) => {
+    nav.classList.toggle('nav-open', open);
+    toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    toggle.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
+  };
+  toggle.addEventListener('click', (e) => { e.stopPropagation(); setOpen(!nav.classList.contains('nav-open')); });
+  panel.addEventListener('click', (e) => { if(e.target.closest('a,button')) setOpen(false); });
+  document.addEventListener('click', (e) => { if(nav.classList.contains('nav-open') && !nav.contains(e.target)) setOpen(false); });
+  document.addEventListener('keydown', (e) => { if(e.key === 'Escape') setOpen(false); });
+  window.addEventListener('resize', () => { if(window.innerWidth > 640) setOpen(false); });
+})();
+</script>
 </body>
 </html>
