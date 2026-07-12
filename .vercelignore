@@ -1,0 +1,12 @@
+# Legacy PHP backend — runs on GoDaddy only. Vercel uses /api/*.js instead,
+# with vercel.json rewrites mapping the old .php URLs to the Node functions.
+# Excluding these ensures Vercel never serves raw PHP source.
+api/*.php
+share.php
+api/.htaccess
+
+# SQL schema files — run manually against Neon, never web-served.
+*.sql
+
+# Docs / scratch
+Artifacts/

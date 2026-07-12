@@ -1,0 +1,13 @@
+{
+  "name": "spawnclinical",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "SPAWN Clinical — AI eClinical satire site. Static frontend + Vercel serverless functions + Neon Postgres.",
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@neondatabase/serverless": "^0.10.4"
+  }
+}

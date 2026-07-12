@@ -1,0 +1,13 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    { "source": "/api/claude-proxy.php", "destination": "/api/claude-proxy" },
+    { "source": "/api/chat-proxy.php",   "destination": "/api/chat-proxy" },
+    { "source": "/api/save-spawn.php",   "destination": "/api/save-spawn" },
+    { "source": "/api/get-spawns.php",   "destination": "/api/get-spawns" },
+    { "source": "/api/get-spawn.php",    "destination": "/api/get-spawn" },
+    { "source": "/api/hubspot-lead.php", "destination": "/api/hubspot-lead" },
+    { "source": "/share.php",            "destination": "/api/share" },
+    { "source": "/share",                "destination": "/api/share" }
+  ]
+}
