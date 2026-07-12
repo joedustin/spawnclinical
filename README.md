@@ -14,10 +14,10 @@ Originally an April Fools' experiment (see `about.html`).
 | Leads | HubSpot Contacts API v3 |
 | Email | Resend (optional) |
 
-This was migrated from a GoDaddy PHP/MySQL stack. The original `.php` files are
-kept for reference but are **excluded from Vercel** via `.vercelignore`; the
-Node functions in `/api/*.js` replace them, and `vercel.json` rewrites map the
-old `*.php` URLs to the new functions so the frontend needed no changes.
+This was migrated from a GoDaddy PHP/MySQL stack. The legacy `.php` backend and
+MySQL `init*.sql` files have been removed; the Node functions in `/api/*.js`
+replace them. `vercel.json` rewrites still map the old `*.php` URLs to the new
+functions, so the frontend keeps calling the original paths unchanged.
 
 ## API Endpoints
 
@@ -54,4 +54,6 @@ custom contact property in HubSpot, then build a workflow (trigger:
 - MySQL → Postgres: `AUTO_INCREMENT`→`SERIAL`, `ENUM`→`CHECK`, JSON `LONGTEXT`→`JSONB`.
 - `spawn_data` is now `JSONB` (returned pre-parsed by the driver).
 - PHP `mail()` → Resend HTTP API.
+- The schema now lives in `db/schema.sql` (single-command variant:
+  `db/schema.single.sql`); the old MySQL `api/init*.sql` files are gone.
 - The legacy GoDaddy site can run in parallel until DNS cutover.

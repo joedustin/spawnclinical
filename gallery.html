@@ -405,7 +405,7 @@ async function loadSpawns(reset = false) {
     let data;
     try { data = JSON.parse(rawText); }
     catch(_) {
-      throw new Error('API returned unexpected content. Ensure api/ files are uploaded and db.php is configured.');
+      throw new Error('API returned unexpected content. Ensure the /api functions are deployed and DATABASE_URL is set.');
     }
     if (!data.success) throw new Error(data.error || 'Failed to load spawns');
 
