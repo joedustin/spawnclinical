@@ -1932,11 +1932,23 @@ async function retryAutoSave() {
   setTimeout(() => autoSaveSpawn(), 400);
 }
 
+// Capture utm_campaign from the landing URL so real campaign traffic (ads,
+// email) attributes correctly; persist it for the session so it survives
+// internal navigation, and fall back to the default SPAWN campaign.
+function getUtmCampaign() {
+  const DEFAULT = '41501340-SpawnClinical';
+  try {
+    const fromUrl = new URLSearchParams(window.location.search).get('utm_campaign');
+    if (fromUrl) { sessionStorage.setItem('utm_campaign', fromUrl); return fromUrl; }
+    return sessionStorage.getItem('utm_campaign') || DEFAULT;
+  } catch(_) { return DEFAULT; }
+}
+
 function sendHubSpotLead(firstName, lastName, email, comment) {
   fetch('api/hubspot-lead.php', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ firstName, lastName, email, comment }),
+    body: JSON.stringify({ firstName, lastName, email, comment, utmCampaign: getUtmCampaign() }),
   }).catch(() => {}); // fire and forget — never block the spawn flow
 }
 </script>

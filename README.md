@@ -45,9 +45,22 @@ functions, so the frontend keeps calling the original paths unchanged.
 
 ## HubSpot campaign association
 
-`custom_source = "SPAWN Website"` is stamped on each contact. Create that
-custom contact property in HubSpot, then build a workflow (trigger:
-*custom_source is "SPAWN Website"*) to add contacts to the campaign.
+Each contact is stamped with two custom contact properties:
+
+- **`custom_source` = `"SPAWN Website"`** — the lead's origin.
+- **`utm_campaign`** — the marketing campaign, read from the page's
+  `?utm_campaign=` query string (default `41501340-SpawnClinical`).
+
+**Create both custom properties in HubSpot first** (Settings → Properties →
+Contact properties, single-line text). Until `utm_campaign` exists the API
+would reject the write, so `hubspot-lead.js` retries without it — leads still
+save, but the campaign value is dropped until you add the property.
+
+Setting a property does **not** by itself add a contact to a HubSpot marketing
+campaign — membership is derived from campaign *assets*. To attribute these
+leads to campaign `41501340`: build a workflow (trigger *utm_campaign is
+`41501340-SpawnClinical`*, or *custom_source is `SPAWN Website`*), then **add
+that workflow as an asset of the campaign** so enrolled contacts are credited.
 
 ## Migration notes
 
