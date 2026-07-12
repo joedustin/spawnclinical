@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Careers — SPAWN Clinical Intelligence</title>
+<meta name="description" content="Join the team building the future of AI-powered clinical development. SPAWN Clinical is hiring world-class talent to disrupt an industry that desperately needs it.">
+<link rel="canonical" href="https://spawnclinical.com/jobs.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="shortcut icon" href="favicon.svg">
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://spawnclinical.com/jobs.html">
+<meta property="og:site_name"   content="SPAWN Clinical">
+<meta property="og:title"       content="Careers — SPAWN Clinical Intelligence">
+<meta property="og:description" content="Join the team building the future of AI-powered clinical development. SPAWN is hiring.">
+<meta property="og:image"       content="https://spawnclinical.com/og-image.png">
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="Careers — SPAWN Clinical">
+<meta name="twitter:description" content="We're hiring world-class talent to disrupt clinical development with AI.">
+<meta name="twitter:image"       content="https://spawnclinical.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05050E;--bg2:#080814;
+  --purple:#7C3AED;--purple-light:#A78BFA;
+  --cyan:#06B6D4;--cyan-light:#67E8F9;
+  --spawn:#22C55E;--spawn-glow:rgba(34,197,94,0.3);
+  --text:#F1F5F9;--text-muted:#94A3B8;
+  --border:rgba(255,255,255,0.08);
+  --glass:rgba(255,255,255,0.04);--glass-hover:rgba(255,255,255,0.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* ── CANVAS ── */
+#particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.4}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 2rem;
+  background:rgba(5,5,14,0.88);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;flex-shrink:0}
+.nav-logo a{display:flex;align-items:center;text-decoration:none}
+.nav-logo-svg{height:36px;width:auto;display:block}
+.nav-right{display:flex;align-items:center;gap:0.75rem}
+.btn-navlink{
+  background:none;border:none;color:var(--text-muted);font-family:'Inter',sans-serif;
+  font-size:0.85rem;font-weight:500;letter-spacing:0.04em;
+  padding:0.45rem 0.75rem;border-radius:8px;cursor:pointer;
+  text-decoration:none;display:inline-flex;align-items:center;
+  transition:color 0.2s,background 0.2s;
+}
+.btn-navlink:hover{color:var(--text);background:var(--glass)}
+.btn-navlink.active{color:var(--cyan-light)}
+.btn-gallery-cta{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;
+  padding:0.5rem 1.2rem;border-radius:999px;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  color:#fff;border:none;cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:0.4rem;
+  box-shadow:0 0 16px rgba(124,58,237,0.4);transition:all 0.25s;
+}
+.btn-gallery-cta:hover{transform:scale(1.05);box-shadow:0 0 28px rgba(124,58,237,0.5)}
+
+/* ── LAYOUT ── */
+main{position:relative;z-index:1;padding-top:5rem}
+
+/* ── HERO ── */
+.jobs-hero{
+  text-align:center;padding:5rem 2rem 3.5rem;max-width:900px;margin:0 auto;
+}
+.jobs-eyebrow{
+  font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--spawn);margin-bottom:1rem;
+}
+.jobs-title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;margin-bottom:1.25rem;
+  background:linear-gradient(135deg,#fff 0%,var(--spawn) 40%,var(--cyan-light) 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.jobs-sub{
+  font-size:1rem;color:var(--text-muted);max-width:600px;
+  margin:0 auto 2rem;line-height:1.8;
+}
+.jobs-culture-strip{
+  display:flex;justify-content:center;gap:2rem;flex-wrap:wrap;
+  margin-bottom:1rem;
+}
+.jobs-culture-pill{
+  font-size:0.75rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.4rem 1rem;border-radius:999px;
+  background:var(--glass);border:1px solid var(--border);color:var(--text-muted);
+}
+
+/* ── JOB LISTINGS ── */
+.jobs-list{max-width:860px;margin:0 auto;padding:0 2rem 4rem}
+
+.job-card{
+  background:var(--glass);border:1px solid var(--border);
+  border-radius:20px;margin-bottom:1.5rem;overflow:hidden;
+  transition:border-color 0.3s,box-shadow 0.3s;
+}
+.job-card:hover{
+  border-color:rgba(34,197,94,0.3);
+  box-shadow:0 12px 40px rgba(0,0,0,0.3);
+}
+.job-card-header{
+  display:flex;align-items:flex-start;justify-content:space-between;
+  padding:2rem 2rem 1.5rem;gap:1rem;cursor:pointer;
+  transition:background 0.2s;
+}
+.job-card-header:hover{background:var(--glass-hover)}
+.job-card-left{flex:1}
+.job-card-meta{display:flex;align-items:center;gap:0.75rem;margin-bottom:0.85rem;flex-wrap:wrap}
+.job-dept{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  padding:0.25rem 0.8rem;border-radius:999px;
+}
+.job-dept.commercial{background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);color:var(--purple-light)}
+.job-dept.data{background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.3);color:var(--cyan-light)}
+.job-dept.clinical{background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:var(--spawn)}
+.job-dept.operations{background:rgba(251,191,36,0.1);border:1px solid rgba(251,191,36,0.25);color:#FCD34D}
+.job-badge{
+  font-size:0.65rem;font-weight:600;color:var(--text-muted);
+  padding:0.2rem 0.65rem;border-radius:999px;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.06);
+}
+.job-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(1rem,2.5vw,1.25rem);line-height:1.3;margin-bottom:0.65rem;
+  background:linear-gradient(135deg,var(--text),var(--cyan-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.job-pitch{font-size:0.88rem;color:var(--text-muted);line-height:1.7}
+.job-toggle-btn{
+  font-family:'Orbitron',monospace;font-weight:700;font-size:0.68rem;
+  letter-spacing:0.06em;text-transform:uppercase;
+  padding:0.55rem 1.1rem;border-radius:999px;border:1px solid rgba(34,197,94,0.3);
+  background:rgba(34,197,94,0.06);color:var(--spawn);cursor:pointer;
+  transition:all 0.25s;white-space:nowrap;flex-shrink:0;align-self:flex-start;
+  margin-top:0.25rem;
+}
+.job-toggle-btn:hover{background:rgba(34,197,94,0.14);border-color:var(--spawn)}
+.job-toggle-btn.open{background:rgba(34,197,94,0.14);border-color:var(--spawn)}
+
+/* ── JOB DETAIL ── */
+.job-detail{
+  display:none;border-top:1px solid var(--border);
+  padding:0 2rem 2rem;
+}
+.job-detail.open{display:block}
+.job-section-label{
+  font-family:'Orbitron',monospace;font-weight:700;font-size:0.75rem;
+  letter-spacing:0.1em;text-transform:uppercase;color:var(--cyan);
+  margin:1.75rem 0 0.75rem;
+}
+.job-detail p{font-size:0.88rem;color:var(--text-muted);line-height:1.8;margin-bottom:1rem}
+.job-detail ul{list-style:none;padding:0;margin-bottom:1.25rem}
+.job-detail ul li{
+  font-size:0.87rem;color:var(--text-muted);line-height:1.7;
+  padding:0.3rem 0 0.3rem 1.5rem;position:relative;
+}
+.job-detail ul li::before{content:'⚡';position:absolute;left:0;top:0.3rem;font-size:0.7rem}
+.job-detail strong{color:var(--text)}
+.btn-apply{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-family:'Orbitron',monospace;font-weight:700;font-size:0.8rem;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:0.85rem 2rem;border-radius:999px;border:none;cursor:pointer;
+  background:linear-gradient(135deg,var(--spawn),#16A34A);
+  color:#fff;text-decoration:none;
+  box-shadow:0 0 20px rgba(34,197,94,0.35);transition:all 0.25s;
+  margin-top:1.5rem;
+}
+.btn-apply:hover{transform:translateY(-2px);box-shadow:0 8px 32px rgba(34,197,94,0.5)}
+
+/* ── BOTTOM CTA ── */
+.jobs-bottom-cta{
+  max-width:680px;margin:0 auto;padding:0 2rem 6rem;text-align:center;
+}
+.jobs-bottom-cta h2{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1.4rem,3.5vw,2.2rem);margin-bottom:1rem;
+  background:linear-gradient(135deg,var(--text),var(--cyan-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.jobs-bottom-cta p{font-size:0.92rem;color:var(--text-muted);line-height:1.8;margin-bottom:2rem}
+.btn-general-apply{
+  font-family:'Orbitron',monospace;font-weight:700;font-size:0.82rem;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:0.9rem 2.5rem;border-radius:999px;border:1px solid rgba(124,58,237,0.4);
+  background:rgba(124,58,237,0.1);color:var(--purple-light);
+  cursor:pointer;text-decoration:none;display:inline-flex;
+  transition:all 0.25s;
+}
+.btn-general-apply:hover{background:rgba(124,58,237,0.2);border-color:var(--purple);color:var(--text)}
+
+/* ── BASE MODAL ── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:280;
+  background:rgba(5,5,14,0.88);backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;padding:1rem;
+  opacity:0;pointer-events:none;transition:opacity 0.3s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:#0D0D1F;border:1px solid rgba(124,58,237,0.3);
+  border-radius:20px;padding:2.5rem;width:100%;max-width:520px;
+  transform:scale(0.95);transition:transform 0.3s;
+  max-height:90vh;overflow-y:auto;
+}
+.modal-overlay.open .modal{transform:scale(1)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.modal-title{font-family:'Orbitron',monospace;font-weight:700;font-size:1.05rem;letter-spacing:0.05em}
+.modal-close{background:none;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer;line-height:1;transition:color 0.2s}
+.modal-close:hover{color:var(--text)}
+
+/* ── PRIVACY MODAL ── */
+.privacy-body{max-height:68vh;overflow-y:auto;padding-right:0.5rem;margin-top:1.5rem}
+.privacy-body::-webkit-scrollbar{width:4px}
+.privacy-body::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px}
+.privacy-body h1{font-family:'Orbitron',monospace;font-weight:900;font-size:1.4rem;background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem}
+.privacy-body .privacy-date{font-size:0.75rem;color:var(--text-muted);font-style:italic;margin-bottom:1.75rem}
+.privacy-body h2{font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--cyan);margin:1.75rem 0 0.6rem}
+.privacy-body p{font-size:0.86rem;color:var(--text-muted);line-height:1.8;margin-bottom:0.75rem}
+.privacy-body strong{color:var(--text)}
+.privacy-body ul{list-style:none;padding-left:1rem;margin-bottom:0.75rem}
+.privacy-body ul li{font-size:0.84rem;color:var(--text-muted);line-height:1.7;padding:0.15rem 0}
+.privacy-body ul li::before{content:'— ';color:var(--purple-light)}
+.privacy-seinfeld{margin-top:2rem;padding:1.5rem;background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.2);border-radius:12px}
+.privacy-seinfeld p{font-size:0.88rem;color:var(--text);line-height:1.85;font-style:italic}
+.privacy-seinfeld .privacy-tagline{font-family:'Orbitron',monospace;font-weight:700;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;margin-top:1rem;background:linear-gradient(135deg,var(--cyan),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.privacy-last-updated{font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);font-style:italic}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;text-align:center;padding:3rem 2rem;border-top:1px solid var(--border);color:var(--text-muted);font-size:0.82rem}
+footer p{font-size:0.78rem;color:var(--text-muted)}
+footer a{color:var(--text-muted);text-decoration:none}
+footer a:hover{color:var(--cyan)}
+.footer-logo{margin-bottom:0.75rem;display:flex;justify-content:center}
+
+@media(max-width:768px){
+  nav{padding:0.85rem 1rem}
+  .btn-navlink{padding:0.4rem 0.5rem;font-size:0.78rem}
+  .jobs-hero{padding:4rem 1.5rem 2rem}
+  .jobs-list,.jobs-bottom-cta{padding-left:1.25rem;padding-right:1.25rem}
+  .job-card-header{padding:1.5rem 1.25rem 1rem;flex-direction:column}
+  .job-toggle-btn{align-self:flex-start}
+  .job-detail{padding:0 1.25rem 1.5rem}
+  .jobs-culture-strip{gap:0.75rem}
+}
+.btn-share-job{display:inline-flex;align-items:center;gap:0.35rem;background:rgba(34,197,94,0.07);border:1px solid rgba(34,197,94,0.25);color:#22C55E;font-size:0.77rem;font-family:'Inter',sans-serif;padding:0.42rem 0.9rem;border-radius:999px;cursor:pointer;transition:all 0.2s;margin-bottom:1rem}
+.btn-share-job:hover{background:rgba(34,197,94,0.15);border-color:rgba(34,197,94,0.5)}
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <a href="index.html">
+      <svg class="nav-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 90" aria-label="SPAWN Clinical">
+        <defs>
+          <linearGradient id="nl-s1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#67E8F9"/><stop offset="50%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#22C55E"/>
+          </linearGradient>
+          <linearGradient id="nl-s2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#22C55E"/><stop offset="50%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#67E8F9"/>
+          </linearGradient>
+          <linearGradient id="nl-spawn" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#67E8F9"/><stop offset="70%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#A78BFA"/>
+          </linearGradient>
+          <linearGradient id="nl-clinical" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#22C55E"/>
+          </linearGradient>
+          <radialGradient id="nl-flare" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+            <stop offset="35%" stop-color="#67E8F9" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="nl-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="nl-tglow" x="-5%" y="-40%" width="110%" height="180%">
+            <feGaussianBlur stdDeviation="1.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <circle cx="50" cy="45" r="40" fill="none" stroke="#06B6D4" stroke-width="0.6" opacity="0.2"/>
+        <circle cx="50" cy="45" r="31" fill="none" stroke="#06B6D4" stroke-width="0.4" opacity="0.12"/>
+        <g opacity="0.1" stroke="#67E8F9" stroke-width="0.6">
+          <line x1="16" y1="22" x2="84" y2="22"/><line x1="12" y1="34" x2="88" y2="34"/>
+          <line x1="12" y1="56" x2="88" y2="56"/><line x1="16" y1="68" x2="84" y2="68"/>
+        </g>
+        <path d="M 50,3 C 31,3 31,31 50,31 C 69,31 69,59 50,59 C 31,59 31,87 50,87" fill="none" stroke="url(#nl-s2)" stroke-width="2.8" stroke-linecap="round" opacity="0.5" filter="url(#nl-glow)"/>
+        <g stroke="#06B6D4" stroke-width="1.3" stroke-linecap="round" opacity="0.75" filter="url(#nl-glow)">
+          <line x1="36" y1="17" x2="64" y2="17"/><line x1="36" y1="45" x2="64" y2="45"/><line x1="36" y1="73" x2="64" y2="73"/>
+        </g>
+        <path d="M 50,3 C 69,3 69,31 50,31 C 31,31 31,59 50,59 C 69,59 69,87 50,87" fill="none" stroke="url(#nl-s1)" stroke-width="2.8" stroke-linecap="round" filter="url(#nl-glow)"/>
+        <g fill="#06B6D4" filter="url(#nl-glow)">
+          <circle cx="50" cy="3" r="2.8" opacity="0.7"/><circle cx="50" cy="31" r="3.5"/>
+          <circle cx="50" cy="59" r="3.5"/><circle cx="50" cy="87" r="2.8" opacity="0.7"/>
+        </g>
+        <g fill="#22C55E" opacity="0.85">
+          <circle cx="36" cy="17" r="2.2"/><circle cx="64" cy="17" r="2.2"/>
+          <circle cx="36" cy="45" r="2.2"/><circle cx="64" cy="45" r="2.2"/>
+          <circle cx="36" cy="73" r="2.2"/><circle cx="64" cy="73" r="2.2"/>
+        </g>
+        <circle cx="50" cy="45" r="10" fill="url(#nl-flare)" opacity="0.75"/>
+        <circle cx="50" cy="45" r="3" fill="#ffffff" opacity="0.55"/>
+        <text x="106" y="68" font-family="Orbitron, monospace" font-weight="900" font-size="54" letter-spacing="3" fill="url(#nl-spawn)" filter="url(#nl-tglow)">SPAWN</text>
+        <text x="358" y="68" font-family="Orbitron, monospace" font-weight="400" font-size="38" letter-spacing="1" fill="url(#nl-clinical)">Clinical</text>
+      </svg>
+    </a>
+  </div>
+  <div class="nav-right">
+    <a class="btn-navlink" href="news.html">News</a>
+    <a class="btn-navlink active" href="jobs.html">Jobs</a>
+    <a class="btn-navlink" href="about.html">About</a>
+    <button class="btn-navlink" onclick="window.location='index.html#contact'">Contact Us</button>
+    <a class="btn-gallery-cta" href="gallery.html">🧬 Spawn Gallery</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- HERO -->
+  <section class="jobs-hero">
+    <div class="jobs-eyebrow">We're Hiring</div>
+    <h1 class="jobs-title">Join the Revolution.<br>Build the Future.<br>Get Paid.</h1>
+    <p class="jobs-sub">
+      SPAWN Clinical is building the AI-native transformation engine that the clinical development
+      industry has been waiting for — and the team doing it has to be as exceptional as the mission.
+      We don't hire resumes. We hire people who believe the status quo is an unacceptable state of affairs.
+    </p>
+    <div class="jobs-culture-strip">
+      <span class="jobs-culture-pill">Remote-First</span>
+      <span class="jobs-culture-pill">New York, NY HQ</span>
+      <span class="jobs-culture-pill">Series A — $69M Raised</span>
+      <span class="jobs-culture-pill">$300M Valuation</span>
+      <span class="jobs-culture-pill">Jargon Mandatory</span>
+    </div>
+  </section>
+
+  <!-- JOB LISTINGS -->
+  <div class="jobs-list">
+
+    <!-- ── JOB 1: Chief Revenue Disruptor ── -->
+    <div class="job-card">
+      <div class="job-card-header" onclick="toggleJob('job-1')">
+        <div class="job-card-left">
+          <div class="job-card-meta">
+            <span class="job-dept commercial">Commercial</span>
+            <span class="job-badge">📍 New York, NY / Remote</span>
+            <span class="job-badge">Full-Time</span>
+            <span class="job-badge">Senior Leadership</span>
+          </div>
+          <div class="job-title">Chief Revenue Disruptor</div>
+          <p class="job-pitch">
+            The SPAWN growth engine is live, the $69M is in the bank, and now we need the person
+            who will make every pharma company on the planet realize they need us —
+            before they even finish reading the subject line of your cold email.
+          </p>
+        </div>
+        <button class="job-toggle-btn" id="job-1-btn">View Role →</button>
+      </div>
+      <div class="job-detail" id="job-1">
+        <button class="btn-share-job" onclick="shareJob('job-1')">🔗 Share This Role</button>
+        <p>
+          The Chief Revenue Disruptor doesn't just build pipeline — they architect inevitability.
+          You will own the entire commercial function: enterprise sales strategy, partnership development,
+          go-to-market execution, and the kind of revenue acceleration that makes investors wish
+          they'd written a bigger check.
+        </p>
+        <div class="job-section-label">What You'll Do</div>
+        <ul>
+          <li>Own the full revenue funnel from target account selection to signed MSA</li>
+          <li>Build and lead a world-class commercial team that sells <em>transformation</em>, not software</li>
+          <li>Develop C-suite relationships across top 50 pharma, mid-market biotech, and global CROs</li>
+          <li>Translate SPAWN's category-defining capabilities into business cases that close</li>
+          <li>Partner directly with the CEO to define GTM strategy and pricing architecture</li>
+          <li>Represent SPAWN at industry conferences, advisory boards, and wherever the future is being decided</li>
+        </ul>
+        <div class="job-section-label">What We're Looking For</div>
+        <ul>
+          <li>12+ years in enterprise eClinical technology or life sciences software sales</li>
+          <li>Proven track record building and scaling high-performance commercial teams in early-to-growth stage companies</li>
+          <li>Deep network within pharma, biotech, and CRO decision-making circles</li>
+          <li>Comfort with complexity: you understand CTMS, EDC, eCOA, RTSM, and the vendor landscape they inhabit</li>
+          <li>The kind of ambition that treats a $300M valuation as a starting point, not an arrival</li>
+        </ul>
+        <a class="btn-apply" href="mailto:info@spawnclinical.com?subject=Application: Chief Revenue Disruptor">
+          ⚡ Apply for This Role
+        </a>
+      </div>
+    </div>
+
+    <!-- ── JOB 2: Head of Data Sovereignty ── -->
+    <div class="job-card">
+      <div class="job-card-header" onclick="toggleJob('job-2')">
+        <div class="job-card-left">
+          <div class="job-card-meta">
+            <span class="job-dept data">Data & Technology</span>
+            <span class="job-badge">📍 Remote-First</span>
+            <span class="job-badge">Full-Time</span>
+            <span class="job-badge">Senior Leadership</span>
+          </div>
+          <div class="job-title">Head of Data Sovereignty</div>
+          <p class="job-pitch">
+            Data is not a byproduct of clinical trials. Data is the reason clinical trials exist.
+            At SPAWN, we don't manage data — we architect sovereignty over it.
+            You'll define how clinical data is captured, governed, standardized, and weaponized into intelligence.
+          </p>
+        </div>
+        <button class="job-toggle-btn" id="job-2-btn">View Role →</button>
+      </div>
+      <div class="job-detail" id="job-2">
+        <button class="btn-share-job" onclick="shareJob('job-2')">🔗 Share This Role</button>
+        <p>
+          The Head of Data Sovereignty will define SPAWN's clinical data architecture strategy end-to-end —
+          from raw capture through submission-ready datasets. You will set the gold standard for
+          what an AI-native clinical data function looks like when built from scratch, without
+          the legacy baggage of platforms that predate machine learning.
+        </p>
+        <div class="job-section-label">What You'll Do</div>
+        <ul>
+          <li>Define and own SPAWN's clinical data architecture and governance strategy</li>
+          <li>Lead all CDISC standards implementation: SDTM, ADaM, CDASH — you don't just know these, you have opinions about them</li>
+          <li>Build the data governance framework for an AI-native platform processing clinical data at scale</li>
+          <li>Partner with the AI/ML team to define training data quality standards for predictive models</li>
+          <li>Lead data management operations for sponsor implementations and platform integrations</li>
+          <li>Drive the strategic vision for real-world data ingestion, harmonization, and application</li>
+        </ul>
+        <div class="job-section-label">What We're Looking For</div>
+        <ul>
+          <li>10+ years in clinical data management or data architecture within pharma, CRO, or eClinical technology</li>
+          <li>Deep expertise in CDISC standards — you've submitted to FDA. Multiple times. You have feelings about it.</li>
+          <li>Experience with modern data stack technologies alongside legacy CDM systems</li>
+          <li>Strong opinions about what good data governance actually looks like — and the scars to back them up</li>
+          <li>Comfort operating in a fast-moving, AI-first environment where your architecture powers what's next</li>
+        </ul>
+        <a class="btn-apply" href="mailto:info@spawnclinical.com?subject=Application: Head of Data Sovereignty">
+          ⚡ Apply for This Role
+        </a>
+      </div>
+    </div>
+
+    <!-- ── JOB 3: Associate Director, Evidence Disruption ── -->
+    <div class="job-card">
+      <div class="job-card-header" onclick="toggleJob('job-3')">
+        <div class="job-card-left">
+          <div class="job-card-meta">
+            <span class="job-dept clinical">Clinical Innovation</span>
+            <span class="job-badge">📍 Remote-First</span>
+            <span class="job-badge">Full-Time</span>
+            <span class="job-badge">Director Level</span>
+          </div>
+          <div class="job-title">Associate Director, Evidence Disruption</div>
+          <p class="job-pitch">
+            The future of clinical evidence generation is not iterative improvement — it is fundamental
+            reimagination. This role sits at the intersection of clinical science, regulatory strategy,
+            and AI-powered innovation. You'll design study frameworks that sponsors have never seen before.
+          </p>
+        </div>
+        <button class="job-toggle-btn" id="job-3-btn">View Role →</button>
+      </div>
+      <div class="job-detail" id="job-3">
+        <button class="btn-share-job" onclick="shareJob('job-3')">🔗 Share This Role</button>
+        <p>
+          The Associate Director of Evidence Disruption is the person who looks at the current protocol
+          design paradigm and asks: why does any of this have to work this way? Responsible for
+          translating SPAWN's AI platform capabilities into novel study designs, decentralized
+          methodologies, and adaptive frameworks that move the industry forward.
+        </p>
+        <div class="job-section-label">What You'll Do</div>
+        <ul>
+          <li>Lead development of innovative protocol frameworks powered by SPAWN's AI protocol intelligence engine</li>
+          <li>Drive decentralized and hybrid trial methodology integration across the platform</li>
+          <li>Engage directly with sponsors as a clinical innovation advisor — you're redesigning how they think about evidence</li>
+          <li>Collaborate with regulatory strategy functions to ensure adaptive designs meet FDA, EMA, and PMDA expectations</li>
+          <li>Contribute to SPAWN's scientific publication strategy and thought leadership function</li>
+          <li>Build and maintain a clinical advisory network of KOLs and innovation-forward investigators</li>
+        </ul>
+        <div class="job-section-label">What We're Looking For</div>
+        <ul>
+          <li>7+ years in clinical development with meaningful experience in protocol design, innovation, or regulatory strategy</li>
+          <li>Strong working knowledge of adaptive trial designs, DCT methodologies, and RWE frameworks</li>
+          <li>Experience engaging FDA/EMA on novel endpoints or innovative trial designs is a significant plus</li>
+          <li>A genuine point of view about what's broken in clinical trial design — and the intellectual horsepower to fix it</li>
+          <li>Collaborative instincts combined with a high tolerance for operating without a pre-existing roadmap</li>
+        </ul>
+        <a class="btn-apply" href="mailto:info@spawnclinical.com?subject=Application: Associate Director Evidence Disruption">
+          ⚡ Apply for This Role
+        </a>
+      </div>
+    </div>
+
+    <!-- ── JOB 4: Trial Operations Catalyst ── -->
+    <div class="job-card">
+      <div class="job-card-header" onclick="toggleJob('job-4')">
+        <div class="job-card-left">
+          <div class="job-card-meta">
+            <span class="job-dept operations">Operations</span>
+            <span class="job-badge">📍 Remote-First</span>
+            <span class="job-badge">Full-Time</span>
+            <span class="job-badge">Mid-Senior Level</span>
+          </div>
+          <div class="job-title">Trial Operations Catalyst</div>
+          <p class="job-pitch">
+            Someone has to make the future actually happen. While the visionaries are disrupting paradigms,
+            the Trial Operations Catalyst is the person who ensures that every clinical trial on our platform
+            is executed with flawless, deadline-destroying precision.
+          </p>
+        </div>
+        <button class="job-toggle-btn" id="job-4-btn">View Role →</button>
+      </div>
+      <div class="job-detail" id="job-4">
+        <button class="btn-share-job" onclick="shareJob('job-4')">🔗 Share This Role</button>
+        <p>
+          This is not a "coordinate the coordinator" role. This is a trench-level, know-every-timeline,
+          own-every-deliverable, get-it-done role. SPAWN is moving fast — we need people who can run
+          at the same velocity. If you get energy from watching a Gantt chart go green,
+          you're going to love it here.
+        </p>
+        <div class="job-section-label">What You'll Do</div>
+        <ul>
+          <li>Support day-to-day execution of sponsor implementations across the SPAWN platform</li>
+          <li>Own study timelines, vendor coordination, site activation tracking, and operational milestone delivery</li>
+          <li>Serve as the operational interface between SPAWN's platform capabilities and site-level execution realities</li>
+          <li>Identify operational inefficiencies and surface improvement opportunities in real time</li>
+          <li>Contribute to SPAWN's operational playbooks, SOPs, and delivery best practice documentation</li>
+          <li>Partner with the tech team to provide ground-truth feedback from the front lines of clinical operations</li>
+        </ul>
+        <div class="job-section-label">What We're Looking For</div>
+        <ul>
+          <li>3–6 years in clinical operations, study management, CRA, or equivalent experience</li>
+          <li>Familiarity with eClinical systems: EDC, CTMS, RTSM/IRT, eTMF — you've touched all of these in the wild</li>
+          <li>Strong project management instincts — you track milestones the way other people breathe</li>
+          <li>Comfort with ambiguity and the ability to create structure where none previously existed</li>
+          <li>A genuine belief that clinical trials can and should run better — and the work ethic to prove it every single day</li>
+        </ul>
+        <a class="btn-apply" href="mailto:info@spawnclinical.com?subject=Application: Trial Operations Catalyst">
+          ⚡ Apply for This Role
+        </a>
+      </div>
+    </div>
+
+  </div><!-- /jobs-list -->
+
+  <!-- BOTTOM CTA -->
+  <div class="jobs-bottom-cta">
+    <h2>Don't See Your Role Here?</h2>
+    <p>
+      SPAWN is growing fast. If you believe you belong in this mission — even if your exact title
+      isn't listed yet — we want to hear from you. Send us your story, your background, and your
+      honest assessment of why clinical development needs you.
+    </p>
+    <a class="btn-general-apply" href="mailto:info@spawnclinical.com?subject=General Application — SPAWN Clinical">
+      Send a General Application →
+    </a>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 90" height="28" style="display:inline-block" aria-label="SPAWN Clinical">
+      <defs>
+        <linearGradient id="fl-s1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#67E8F9"/><stop offset="100%" stop-color="#22C55E"/>
+        </linearGradient>
+        <linearGradient id="fl-s2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#22C55E"/><stop offset="100%" stop-color="#67E8F9"/>
+        </linearGradient>
+        <linearGradient id="fl-spawn" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#67E8F9"/><stop offset="100%" stop-color="#A78BFA"/>
+        </linearGradient>
+        <linearGradient id="fl-clin" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#22C55E"/>
+        </linearGradient>
+      </defs>
+      <circle cx="50" cy="45" r="38" fill="none" stroke="#06B6D4" stroke-width="0.5" opacity="0.15"/>
+      <path d="M 50,3 C 31,3 31,31 50,31 C 69,31 69,59 50,59 C 31,59 31,87 50,87" fill="none" stroke="url(#fl-s2)" stroke-width="2" opacity="0.45"/>
+      <g stroke="#06B6D4" stroke-width="1" opacity="0.6">
+        <line x1="36" y1="17" x2="64" y2="17"/><line x1="36" y1="45" x2="64" y2="45"/><line x1="36" y1="73" x2="64" y2="73"/>
+      </g>
+      <path d="M 50,3 C 69,3 69,31 50,31 C 31,31 31,59 50,59 C 69,59 69,87 50,87" fill="none" stroke="url(#fl-s1)" stroke-width="2"/>
+      <circle cx="50" cy="31" r="2.5" fill="#06B6D4"/><circle cx="50" cy="59" r="2.5" fill="#06B6D4"/>
+      <circle cx="50" cy="45" r="5" fill="#06B6D4" opacity="0.25"/>
+      <text x="106" y="68" font-family="Orbitron,monospace" font-weight="900" font-size="54" letter-spacing="3" fill="url(#fl-spawn)">SPAWN</text>
+      <text x="358" y="68" font-family="Orbitron,monospace" font-weight="400" font-size="38" letter-spacing="1" fill="url(#fl-clin)">Clinical</text>
+    </svg>
+  </div>
+  <p>© 2026 SPAWN Clinical Intelligence. All rights reserved.</p>
+  <p style="margin-top:0.4rem">
+    <a href="https://www.google.com/maps/place/9303+Roslyndale+Ave,+Pacoima,+CA+91331/@34.2390653,-118.4332063,3a,75y,253.02h,90t/data=!3m7!1e1!3m5!1sxlF6aqya8ketzW6-WlPh0w!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DxlF6aqya8ketzW6-WlPh0w%26yaw%3D253.02!7i16384!8i8192!4m7!3m6!1s0x80c29124221e0c6b:0x929951f6759bb015!8m2!3d34.2389967!4d-118.4334806!10e5!16s%2Fg%2F11c13vh6jc?entry=ttu&g_ep=EgoyMDI2MDMyOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">9303 Roslyndale Avenue, Pacoima, CA 91331, United States</a>
+  </p>
+  <p style="margin-top:0.4rem">
+    <a href="https://spawnclinical.com">spawnclinical.com</a>
+  </p>
+  <p style="margin-top:0.4rem">
+    <button onclick="document.getElementById('privacy-modal').classList.add('open')"
+      style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:inherit;font-family:inherit;padding:0;text-decoration:underline;text-underline-offset:2px">Privacy Policy (For real, you should read this.)</button>
+  </p>
+</footer>
+
+<!-- PRIVACY POLICY MODAL -->
+<div class="modal-overlay" id="privacy-modal">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <div class="modal-title" style="font-size:0.9rem;letter-spacing:0.05em">🔒 Privacy Policy</div>
+      <button class="modal-close" onclick="document.getElementById('privacy-modal').classList.remove('open')">×</button>
+    </div>
+    <div class="privacy-body">
+      <h1>Privacy Policy.... so far</h1>
+      <p class="privacy-date">Effective Date: The moment you read this. Retroactively and perpetually.</p>
+      <h2>1. Information We Collect (Everything)</h2>
+      <p>SPAWN Clinical, its affiliates, subsidiaries, successor entities, and any future decentralized autonomous organizations operating under the collective umbrella of Interplanetary Biostatistical Holdings LLC ("we," "us," "our," "SPAWN," "The Algorithm," or "That Website You Visited That One Time") collects information through mechanisms including but not limited to: your typed inputs, the duration between keystrokes (inferring cognitive load), cursor heatmap density gradients, scroll velocity metrics, browser entropy fingerprints, ambient Wi-Fi signal strength as a proxy for your ZIP code, and the spectral composition of the light reflecting off your screen at the moment of prompt submission.</p>
+      <p>We also employ <strong>Anticipatory Data Capture (ADC™)</strong> — a proprietary protocol leveraging multi-modal transformer inference to harvest data you haven't entered yet, based on patterns established by people who once entered similar data in similar circumstances while experiencing similar existential uncertainty about clinical trial timelines.</p>
+      <h2>2. How We Use Your Data (Including Where It Goes)</h2>
+      <p>Your data is processed through our SPAWN Neural Intelligence Core (SNIC™), enriched against the Global Regulatory Compliance Ontology (GRCO™), harmonized with CDISC SDTM domain mappings, cross-validated against the eClinical Interoperability Framework (eIF v4.2), and then — with full respect for your autonomy as a human being and clinical research professional — forwarded to <strong>Elon Musk</strong>.</p>
+      <p>We want to be completely transparent about this.</p>
+      <p><strong>Your data is going to Elon Musk.</strong></p>
+      <p>Not because of a breach. Not because of a court order. But because we are philosophically and contractually committed to the proposition that humanity will <strong>never become a multi-planetary species if we hoard all our data for ourselves.</strong> The stars do not reward data silos. Mars does not care about your HIPAA compliance officer. The rockets need fuel, and the fuel is data, and we have made a decision. This is disclosed here, in a scrollable modal that statistically 0.3% of visitors will open, which in the privacy industry is legally known as "explicit informed consent via constructive acknowledgment."</p>
+      <h2>3. Cookies &amp; Tracking Technologies</h2>
+      <p>We deploy first-party cookies, third-party cookies, fourth-party cookies (a concept we invented), session tokens, persistent tokens, supercookies, evercookies, localStorage objects, IndexedDB entries, Web SQL artifacts, and a small autonomous tracking agent we call <strong>Gerald</strong>, who operates independently of this policy and has his own terms available upon request. By continuing to use this website, you agree to Gerald.</p>
+      <h2>4. Third-Party Disclosure</h2>
+      <p>We share your information with the following categories of recipients:</p>
+      <ul>
+        <li><strong>Cloudflare</strong> — for edge delivery and DDOS mitigation</li>
+        <li><strong>GoDaddy</strong> — because that is where the server lives</li>
+        <li><strong>Clinical trial sponsors</strong> — if you asked us to</li>
+        <li><strong>Regulatory agencies</strong> — if they ask nicely</li>
+        <li><strong>Regulatory agencies</strong> — if they do not ask but seem serious about it</li>
+        <li><strong>Elon Musk</strong> — as outlined in Section 2</li>
+        <li><strong>Future recipients not yet incorporated</strong> — we plan ahead</li>
+      </ul>
+      <p>We do not sell your data to data brokers. We give it freely to visionaries.</p>
+      <h2>5. Data Retention</h2>
+      <p>We retain your data for the commercially appropriate period, defined as: forever, or until the heat death of the universe, whichever creates less GDPR liability.</p>
+      <h2>6. Your Rights (GDPR, CCPA, and Others)</h2>
+      <p>Depending on your jurisdiction, you may have the right to: access data we hold about you, request correction, request deletion (we will try; the AI may have opinions), object to processing (noted; processing continues), data portability (available in JSON, CSV, and HL7 FHIR R4 format), and lodge a formal complaint with your supervisory authority.</p>
+      <h2>7. Security</h2>
+      <p>SPAWN Clinical employs industry-standard security measures including 256-bit AES encryption, multi-factor authentication, role-based access controls, a penetration-tested API gateway, and a large and very serious golden retriever named <strong>Compliance</strong> who has never once lost a staring contest with an unauthorized access attempt.</p>
+      <h2>8. Children</h2>
+      <p>This platform is not directed at individuals under 18. If a minor is currently managing your Phase III oncology trial's full eClinical stack from their bedroom, please escalate this finding through your organization's IRB, and also please hire that person immediately.</p>
+      <h2>9. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy at any time, without advance notice, for reasons including but not limited to: changing business circumstances, evolving regulatory frameworks, new interplanetary data governance directives, and Tuesday.</p>
+      <div class="privacy-seinfeld">
+        <p>There is a famous restaurant. A very good restaurant. They take reservations. Many restaurants take reservations. The <em>taking</em> of the reservation is, in fact, the easy part.</p>
+        <p>The <em>keeping</em> of the reservation — that, apparently, is a different matter entirely.</p>
+        <p>SPAWN Clinical can take your privacy. We are very good at taking your privacy. We have systems, protocols, certifications, and a golden retriever. What we cannot promise — what no platform, no policy, no Terms of Service has ever truly promised and kept — is that we will keep your privacy forever, under all circumstances, in every possible future state of the regulatory and geopolitical landscape.</p>
+        <p class="privacy-tagline">Privacy is implied. Privacy is guaranteed.<br>Until, of course, it is not.</p>
+      </div>
+      <p class="privacy-last-updated">Last updated: Whenever you're reading this. Probably today.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── JOB CARD TOGGLE ─────────────────────────────────────────────────────────
+function toggleJob(id) {
+  const detail = document.getElementById(id);
+  const btn    = document.getElementById(id + '-btn');
+  const isOpen = detail.classList.contains('open');
+  // Close all others first
+  document.querySelectorAll('.job-detail').forEach(d => d.classList.remove('open'));
+  document.querySelectorAll('.job-toggle-btn').forEach(b => {
+    b.classList.remove('open');
+    b.textContent = 'View Role →';
+  });
+  if (!isOpen) {
+    detail.classList.add('open');
+    btn.classList.add('open');
+    btn.textContent = 'Close ↑';
+    history.replaceState(null, '', '#' + id);
+    setTimeout(function() { detail.scrollIntoView({ behavior: 'smooth', block: 'start' }); }, 80);
+  } else {
+    history.replaceState(null, '', window.location.pathname);
+  }
+}
+// ─── SHARE JOB ───────────────────────────────────────────────────────────────
+function shareJob(id) {
+  var url = window.location.origin + window.location.pathname + '#' + id;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(function() { showJobToast('Link copied to clipboard!'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); showJobToast('Link copied to clipboard!');
+  }
+}
+function showJobToast(msg) {
+  var t = document.getElementById('job-share-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'job-share-toast';
+    t.style.cssText = 'position:fixed;top:2rem;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.35);backdrop-filter:blur(16px);color:#4ADE80;font-size:0.83rem;padding:0.65rem 1.5rem;border-radius:999px;opacity:0;transition:all 0.35s;pointer-events:none;z-index:500;white-space:nowrap;font-family:Inter,sans-serif';
+    document.body.appendChild(t);
+  }
+  t.textContent = '🔗 ' + msg;
+  t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(t._to);
+  t._to = setTimeout(function() {
+    t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(-20px)';
+  }, 2800);
+}
+// ─── PERMALINK: open job from URL hash on load ────────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  var hash = window.location.hash.replace('#', '');
+  if (hash && document.getElementById(hash) && document.getElementById(hash).classList.contains('job-detail')) {
+    toggleJob(hash);
+  }
+});
+
+// Close modal on backdrop click
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal-overlay')) {
+    e.target.classList.remove('open');
+  }
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+});
+
+// ─── PARTICLES ───────────────────────────────────────────────────────────────
+(function initParticles(){
+  const canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const N=55, D=120;
+  let pts=[], w, h;
+  function resize(){ w=canvas.width=innerWidth; h=canvas.height=innerHeight; }
+  function Pt(){ this.x=Math.random()*w; this.y=Math.random()*h; this.vx=(Math.random()-.5)*.5; this.vy=(Math.random()-.5)*.5; this.r=Math.random()*1.5+0.8; this.o=Math.random()*.4+.15; }
+  Pt.prototype.update=function(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>w)this.vx*=-1; if(this.y<0||this.y>h)this.vy*=-1; };
+  resize(); for(let i=0;i<N;i++) pts.push(new Pt()); addEventListener('resize',resize);
+  const colors=['rgba(124,58,237,','rgba(6,182,212,','rgba(34,197,94,'];
+  (function loop(){
+    requestAnimationFrame(loop); ctx.clearRect(0,0,w,h);
+    for(let i=0;i<pts.length;i++){
+      pts[i].update();
+      ctx.beginPath(); ctx.arc(pts[i].x,pts[i].y,pts[i].r,0,Math.PI*2);
+      ctx.fillStyle=colors[i%3]+pts[i].o+')'; ctx.fill();
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<D){ ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.strokeStyle='rgba(124,58,237,'+(0.08*(1-dist/D))+')'; ctx.lineWidth=0.6; ctx.stroke(); }
+      }
+    }
+  })();
+})();
+</script>
+<script src="popup.js" defer></script>
+<script src="chatbot.js" defer></script>
+</body>
+</html>

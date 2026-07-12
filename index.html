@@ -1,0 +1,1946 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SPAWN — eClinical Intelligence Platform</title>
+<meta name="description" content="The world's most advanced AI-powered eClinical platform. Spawn your own clinical trial solution in seconds.">
+<link rel="canonical" href="https://spawnclinical.com">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="shortcut icon" href="favicon.svg">
+<!-- Open Graph / Social Sharing -->
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://spawnclinical.com">
+<meta property="og:site_name"   content="SPAWN Clinical">
+<meta property="og:title"       content="SPAWN — eClinical Intelligence Platform">
+<meta property="og:description" content="The world's most advanced AI-powered eClinical platform. Spawn your own custom clinical trial solution in seconds — for sponsors, sites, and patients.">
+<meta property="og:image"       content="https://spawnclinical.com/og-image.png">
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="630">
+<!-- Twitter / X Card -->
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="SPAWN — eClinical Intelligence Platform">
+<meta name="twitter:description" content="Spawn your own AI-generated eClinical solution in seconds. Built for sponsors, sites, and patients.">
+<meta name="twitter:image"       content="https://spawnclinical.com/og-image.png">
+<script charset="utf-8" type="text/javascript" src="//js.hsforms.net/forms/embed/v2.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #05050E;
+  --bg2: #080814;
+  --purple: #7C3AED;
+  --purple-light: #A78BFA;
+  --cyan: #06B6D4;
+  --cyan-light: #67E8F9;
+  --green: #10B981;
+  --spawn: #22C55E;
+  --spawn-glow: rgba(34,197,94,0.3);
+  --text: #F1F5F9;
+  --text-muted: #94A3B8;
+  --border: rgba(255,255,255,0.08);
+  --glass: rgba(255,255,255,0.04);
+  --glass-hover: rgba(255,255,255,0.08);
+  --persona-accent: var(--purple);
+  --persona-accent-light: var(--purple-light);
+}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  overflow-x:hidden;
+  min-height:100vh;
+}
+
+/* SCROLLBAR */
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* CANVAS */
+#particle-canvas{
+  position:fixed;top:0;left:0;width:100%;height:100%;
+  pointer-events:none;z-index:0;opacity:0.5;
+}
+
+/* ── NAV ─────────────────────────────────────────────── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 2rem;
+  background:rgba(5,5,14,0.85);
+  backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{
+  display:flex;align-items:center;flex-shrink:0;
+}
+.nav-logo-svg{height:36px;width:auto;display:block}
+.nav-right{display:flex;align-items:center;gap:0.75rem}
+.btn-navlink{
+  background:none;border:none;color:var(--text-muted);font-family:'Inter',sans-serif;
+  font-size:0.85rem;font-weight:500;letter-spacing:0.04em;
+  padding:0.45rem 0.75rem;border-radius:8px;cursor:pointer;
+  text-decoration:none;display:inline-flex;align-items:center;
+  transition:color 0.2s,background 0.2s;
+}
+.btn-navlink:hover{color:var(--text);background:var(--glass)}
+.btn-apikey{
+  display:flex;align-items:center;gap:0.5rem;
+  background:var(--glass);border:1px solid var(--border);
+  color:var(--text-muted);font-size:0.8rem;font-weight:500;
+  padding:0.45rem 1rem;border-radius:8px;cursor:pointer;
+  transition:all 0.2s;font-family:'Inter',sans-serif;letter-spacing:0.05em;
+}
+.btn-apikey:hover{background:var(--glass-hover);color:var(--text)}
+.apikey-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:#4B5563;transition:background 0.3s;
+}
+.apikey-dot.active{background:var(--spawn);box-shadow:0 0 6px var(--spawn)}
+
+/* ── PERSONA TOGGLE BAR ──────────────────────────────── */
+.persona-bar{
+  position:fixed;top:68px;left:0;right:0;z-index:99;
+  display:flex;align-items:center;justify-content:center;
+  padding:0.6rem 2rem;
+  background:rgba(5,5,14,0.9);
+  backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+  gap:0.5rem;
+}
+.persona-bar-right{
+  position:absolute;right:2rem;top:50%;transform:translateY(-50%);
+}
+.persona-label{
+  font-size:0.68rem;font-weight:600;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--text-muted);
+  margin-right:0.5rem;white-space:nowrap;
+}
+.persona-toggle{
+  display:flex;background:rgba(255,255,255,0.04);
+  border:1px solid var(--border);border-radius:999px;padding:4px;gap:4px;
+}
+.persona-btn{
+  font-family:'Inter',sans-serif;font-size:0.78rem;font-weight:600;
+  letter-spacing:0.06em;text-transform:uppercase;
+  padding:0.4rem 1.1rem;border-radius:999px;border:none;
+  cursor:pointer;transition:all 0.25s;color:var(--text-muted);
+  background:transparent;white-space:nowrap;
+}
+.persona-btn.active{
+  color:#fff;
+  box-shadow:0 2px 12px rgba(0,0,0,0.3);
+}
+.persona-btn[data-persona="sponsor"].active{
+  background:linear-gradient(135deg,#7C3AED,#A78BFA);
+}
+.persona-btn[data-persona="site"].active{
+  background:linear-gradient(135deg,#0891B2,#06B6D4);
+}
+.persona-btn[data-persona="patient"].active{
+  background:linear-gradient(135deg,#059669,#22C55E);
+}
+.persona-btn:not(.active):hover{color:var(--text);background:rgba(255,255,255,0.06)}
+
+/* ── MAIN ────────────────────────────────────────────── */
+main{position:relative;z-index:1}
+
+/* ── HERO ────────────────────────────────────────────── */
+.hero{
+  min-height:100vh;display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  text-align:center;padding:10rem 2rem 4rem;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-size:0.75rem;font-weight:600;letter-spacing:0.15em;
+  text-transform:uppercase;color:var(--cyan);
+  margin-bottom:1.5rem;padding:0.4rem 1.2rem;border-radius:999px;
+  background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.25);
+  transition:all 0.4s;
+}
+.hero-eyebrow::before{
+  content:'';width:6px;height:6px;border-radius:50%;
+  background:var(--cyan);animation:pulse-dot 2s infinite;
+}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(1.5)}}
+
+/* punchline — big and cheeky */
+.hero-punchline{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1rem,2.8vw,1.6rem);
+  letter-spacing:0.05em;color:var(--text-muted);
+  margin-bottom:0.75rem;opacity:0.75;
+  min-height:1.5em;transition:opacity 0.3s;
+}
+
+.hero-headline{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(2.5rem,7.5vw,5.5rem);
+  line-height:1.05;letter-spacing:-0.02em;
+  margin-bottom:1.5rem;
+  background:linear-gradient(135deg,#fff 0%,var(--cyan-light) 35%,var(--purple-light) 70%,#fff 100%);
+  background-size:300% 300%;
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;
+  animation:gradient-shift 8s ease infinite;
+  min-height:1.2em;transition:opacity 0.3s;
+}
+@keyframes gradient-shift{
+  0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}
+}
+
+.hero-subtitle{
+  font-size:clamp(1rem,2.2vw,1.25rem);color:var(--text-muted);
+  max-width:650px;line-height:1.75;margin-bottom:3rem;
+  font-weight:300;min-height:2em;transition:opacity 0.3s;
+}
+
+/* ── STATS ROW ───────────────────────────────────────── */
+.hero-stats{
+  display:flex;gap:2.5rem;flex-wrap:wrap;
+  justify-content:center;margin-bottom:4rem;
+}
+.hero-stat{text-align:center}
+.hero-stat-num{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(1.4rem,3.5vw,2.2rem);
+  background:linear-gradient(135deg,var(--cyan),var(--spawn));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;transition:opacity 0.3s;
+}
+.hero-stat-label{
+  font-size:0.72rem;font-weight:500;letter-spacing:0.1em;
+  text-transform:uppercase;color:var(--text-muted);margin-top:0.2rem;
+  transition:opacity 0.3s;
+}
+
+/* ── SPAWN BUTTON ────────────────────────────────────── */
+.spawn-btn-wrap{
+  position:relative;display:inline-flex;
+  align-items:center;justify-content:center;
+}
+.spawn-ring{
+  position:absolute;border-radius:50%;
+  border:1px solid var(--spawn-glow);
+  animation:ring-pulse 3s ease-out infinite;
+}
+.spawn-ring:nth-child(1){width:160px;height:160px;animation-delay:0s}
+.spawn-ring:nth-child(2){width:200px;height:200px;animation-delay:1s}
+.spawn-ring:nth-child(3){width:240px;height:240px;animation-delay:2s}
+@keyframes ring-pulse{
+  0%{opacity:0.8;transform:scale(0.8)}100%{opacity:0;transform:scale(1.3)}
+}
+.btn-spawn{
+  position:relative;z-index:1;
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:1.05rem;letter-spacing:0.1em;
+  padding:1.1rem 2.6rem;border-radius:999px;
+  background:linear-gradient(135deg,var(--spawn),#16A34A);
+  color:#fff;border:none;cursor:pointer;
+  box-shadow:0 0 40px var(--spawn-glow),0 4px 24px rgba(0,0,0,0.4);
+  transition:all 0.3s;text-transform:uppercase;
+}
+.btn-spawn:hover{
+  transform:scale(1.05);
+  box-shadow:0 0 60px var(--spawn-glow),0 8px 32px rgba(0,0,0,0.5);
+}
+.btn-spawn:active{transform:scale(0.98)}
+
+/* ── TICKER ──────────────────────────────────────────── */
+.ticker-wrap{
+  width:100%;overflow:hidden;
+  background:rgba(124,58,237,0.08);
+  border-top:1px solid rgba(124,58,237,0.2);
+  border-bottom:1px solid rgba(124,58,237,0.2);
+  padding:0.75rem 0;margin:2rem 0;
+}
+.ticker-inner{
+  display:flex;animation:ticker-scroll 60s linear infinite;
+  width:max-content;
+}
+.ticker-inner:hover{animation-play-state:paused}
+@keyframes ticker-scroll{0%{transform:translateX(0)}100%{transform:translateX(-50%)}}
+.ticker-item{
+  white-space:nowrap;padding:0 2rem;
+  font-size:0.72rem;font-weight:600;letter-spacing:0.12em;text-transform:uppercase;
+  color:var(--purple-light);
+}
+.ticker-item::after{content:'◆';margin-left:2rem;color:var(--cyan);opacity:0.5}
+
+/* ── SECTIONS ────────────────────────────────────────── */
+section{position:relative;z-index:1;padding:5rem 2rem}
+.section-label{
+  font-size:0.7rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--cyan);margin-bottom:1rem;
+}
+.section-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(1.8rem,4vw,2.8rem);line-height:1.1;margin-bottom:1.25rem;
+}
+.section-title span{
+  background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.section-sub{
+  font-size:1rem;color:var(--text-muted);max-width:540px;
+  line-height:1.75;margin-bottom:3rem;font-weight:300;
+}
+
+/* ── FEATURES GRID ───────────────────────────────────── */
+.features-grid{
+  max-width:1200px;margin:0 auto;
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.5rem;
+}
+.feature-card{
+  background:var(--glass);border:1px solid var(--border);
+  border-radius:16px;padding:2rem;
+  transition:all 0.4s;opacity:0;transform:translateY(30px);
+}
+.feature-card.visible{opacity:1;transform:translateY(0)}
+.feature-card:hover{
+  background:var(--glass-hover);border-color:rgba(124,58,237,0.3);
+  transform:translateY(-4px);box-shadow:0 8px 40px rgba(124,58,237,0.1);
+}
+.feature-icon{font-size:2.5rem;margin-bottom:1rem}
+.feature-title{
+  font-family:'Orbitron',monospace;font-weight:700;font-size:0.95rem;
+  letter-spacing:0.04em;margin-bottom:0.75rem;
+}
+.feature-desc{font-size:0.88rem;color:var(--text-muted);line-height:1.7}
+
+/* ── SPAWN CTA SECTION ───────────────────────────────── */
+.spawn-section{text-align:center;max-width:680px;margin:0 auto;padding:7rem 2rem}
+.spawn-section .section-sub{margin:0 auto 2.5rem}
+
+/* ── FOOTER ──────────────────────────────────────────── */
+footer{
+  position:relative;z-index:1;text-align:center;
+  padding:3rem 2rem;border-top:1px solid var(--border);
+}
+.footer-logo{margin-bottom:0.75rem;display:flex;justify-content:center}
+footer p{font-size:0.78rem;color:var(--text-muted)}
+footer a{color:var(--purple-light);text-decoration:none}
+
+/* ── MODALS ──────────────────────────────────────────── */
+.modal-overlay{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(5,5,14,0.88);backdrop-filter:blur(16px);
+  display:flex;align-items:center;justify-content:center;padding:1rem;
+  opacity:0;pointer-events:none;transition:opacity 0.3s;
+}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{
+  background:#0D0D1F;border:1px solid rgba(124,58,237,0.3);
+  border-radius:20px;padding:2.5rem;width:100%;max-width:520px;
+  transform:scale(0.95);transition:transform 0.3s;
+  max-height:90vh;overflow-y:auto;
+}
+.modal-overlay.open .modal{transform:scale(1)}
+.modal-header{
+  display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem;
+}
+.modal-title{font-family:'Orbitron',monospace;font-weight:700;font-size:1.05rem;letter-spacing:0.05em}
+.modal-close{
+  background:none;border:none;color:var(--text-muted);font-size:1.4rem;
+  cursor:pointer;line-height:1;transition:color 0.2s;
+}
+.modal-close:hover{color:var(--text)}
+
+.form-group{margin-bottom:1.25rem}
+label{
+  display:block;font-size:0.78rem;font-weight:600;
+  letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:0.5rem;
+}
+input[type="password"],input[type="text"],textarea,select{
+  width:100%;background:var(--glass);border:1px solid var(--border);
+  border-radius:10px;padding:0.75rem 1rem;color:var(--text);
+  font-family:'Inter',sans-serif;font-size:0.95rem;
+  transition:border-color 0.2s;resize:none;
+}
+input[type="password"]:focus,input[type="text"]:focus,
+textarea:focus,select:focus{
+  outline:none;border-color:rgba(124,58,237,0.5);
+  box-shadow:0 0 0 3px rgba(124,58,237,0.1);
+}
+select option{background:#0D0D1F;color:var(--text)}
+.form-hint{font-size:0.75rem;color:var(--text-muted);margin-top:0.4rem}
+
+.btn-primary{
+  width:100%;font-family:'Orbitron',monospace;font-weight:700;
+  font-size:0.9rem;letter-spacing:0.1em;text-transform:uppercase;
+  padding:0.9rem;border-radius:10px;
+  background:linear-gradient(135deg,var(--purple),var(--purple-light));
+  color:#fff;border:none;cursor:pointer;transition:all 0.2s;margin-top:0.5rem;
+}
+.btn-primary:hover{opacity:0.9;box-shadow:0 4px 20px rgba(124,58,237,0.4);transform:translateY(-1px)}
+.btn-secondary{
+  background:none;border:1px solid var(--border);color:var(--text-muted);
+  font-size:0.85rem;padding:0.5rem 1rem;border-radius:8px;cursor:pointer;
+  transition:all 0.2s;font-family:'Inter',sans-serif;margin-top:0.5rem;width:100%;
+}
+.btn-secondary:hover{border-color:var(--text-muted);color:var(--text)}
+
+.spawn-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+
+/* ── LOADING ─────────────────────────────────────────── */
+.loading-overlay{
+  position:fixed;inset:0;z-index:300;
+  background:rgba(5,5,14,0.96);backdrop-filter:blur(24px);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  opacity:0;pointer-events:none;transition:opacity 0.3s;text-align:center;padding:2rem;
+}
+.loading-overlay.active{opacity:1;pointer-events:all}
+.loading-rings{position:relative;width:120px;height:120px;margin-bottom:2.5rem}
+.ring{position:absolute;top:50%;left:50%;border-radius:50%;border:2px solid transparent}
+.ring-1{width:120px;height:120px;margin:-60px 0 0 -60px;border-top-color:var(--spawn);animation:spin 1.2s linear infinite}
+.ring-2{width:90px;height:90px;margin:-45px 0 0 -45px;border-right-color:var(--purple-light);animation:spin 0.9s linear infinite reverse}
+.ring-3{width:60px;height:60px;margin:-30px 0 0 -30px;border-bottom-color:var(--cyan);animation:spin 0.6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-title{font-family:'Orbitron',monospace;font-weight:700;font-size:1.3rem;letter-spacing:0.05em;margin-bottom:0.75rem}
+.loading-msg{font-size:0.9rem;color:var(--text-muted);min-height:1.5em;transition:opacity 0.3s}
+.loading-bar-wrap{width:300px;height:3px;background:rgba(255,255,255,0.08);border-radius:999px;margin-top:2rem;overflow:hidden}
+.loading-bar{
+  height:100%;border-radius:999px;
+  background:linear-gradient(90deg,var(--spawn),var(--cyan),var(--purple-light));
+  width:0%;transition:width 0.4s ease;
+}
+
+/* ── SOLUTION OVERLAY ────────────────────────────────── */
+.solution-overlay{
+  position:fixed;inset:0;z-index:250;background:var(--bg);overflow-y:auto;
+  transform:translateY(100%);transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.solution-overlay.active{transform:translateY(0)}
+.solution-inner{max-width:1100px;margin:0 auto;padding:2rem}
+.solution-topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1.5rem 0;margin-bottom:2rem;border-bottom:1px solid var(--border);
+}
+.solution-brand{
+  font-family:'Orbitron',monospace;font-weight:900;font-size:1rem;
+  background:linear-gradient(135deg,var(--cyan),var(--purple-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;
+  background-clip:text;letter-spacing:0.15em;
+}
+.btn-back{
+  display:flex;align-items:center;gap:0.5rem;
+  background:none;border:1px solid var(--border);color:var(--text-muted);
+  font-size:0.85rem;padding:0.5rem 1rem;border-radius:8px;cursor:pointer;
+  transition:all 0.2s;font-family:'Inter',sans-serif;
+}
+.btn-back:hover{border-color:var(--text-muted);color:var(--text)}
+
+/* solution content styles */
+.sol-hero{text-align:center;padding:4rem 0 3rem}
+.sol-product-name{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.0;
+  background:linear-gradient(135deg,#fff 0%,var(--cyan-light) 40%,var(--purple-light) 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.75rem;
+}
+.sol-tagline{font-size:clamp(1rem,2.5vw,1.3rem);color:var(--text-muted);margin-bottom:1.5rem;font-weight:300}
+.sol-badge{display:inline-flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-bottom:2rem}
+.sol-badge-item{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.9rem;border-radius:999px}
+.sol-badge-item:nth-child(3n+1){background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);color:var(--purple-light)}
+.sol-badge-item:nth-child(3n+2){background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.25);color:var(--cyan-light)}
+.sol-badge-item:nth-child(3n){background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:#86EFAC}
+.sol-hero-text{font-size:1.05rem;color:var(--text-muted);max-width:700px;margin:0 auto 3rem;line-height:1.8}
+.sol-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-bottom:4rem}
+.sol-stat{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center}
+.sol-stat-num{font-family:'Orbitron',monospace;font-weight:700;font-size:1.7rem;background:linear-gradient(135deg,var(--cyan),var(--spawn));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sol-stat-label{font-size:0.78rem;color:var(--text-muted);margin-top:0.25rem}
+.sol-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;margin-bottom:4rem}
+.sol-feature{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:1.75rem;transition:all 0.3s}
+.sol-feature:hover{background:var(--glass-hover);border-color:rgba(124,58,237,0.3);transform:translateY(-3px)}
+.sol-feature-icon{font-size:2rem;margin-bottom:0.75rem}
+.sol-feature-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.9rem;letter-spacing:0.04em;margin-bottom:0.6rem}
+.sol-feature-desc{font-size:0.87rem;color:var(--text-muted);line-height:1.7}
+.sol-steps-label{font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem}
+.sol-steps-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(1.4rem,3vw,2rem);margin-bottom:2.5rem}
+.sol-steps{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:4rem}
+.sol-step{display:flex;gap:1.5rem;align-items:flex-start}
+.sol-step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;background:linear-gradient(135deg,var(--purple),var(--cyan))}
+.sol-step-title{font-weight:600;margin-bottom:0.35rem}
+.sol-step-desc{font-size:0.87rem;color:var(--text-muted);line-height:1.7}
+.sol-testi-label{font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:1rem}
+.sol-testi-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(1.4rem,3vw,2rem);margin-bottom:2.5rem}
+.sol-testis{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.5rem;margin-bottom:4rem}
+.sol-testi{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative}
+.sol-testi::before{content:'"';position:absolute;top:1rem;left:1.5rem;font-size:4rem;line-height:1;color:var(--purple);opacity:0.3;font-family:Georgia,serif}
+.sol-testi-quote{font-size:0.93rem;color:var(--text);line-height:1.7;margin-bottom:1.25rem;padding-top:1.5rem;font-style:italic}
+.sol-testi-author{font-weight:600;font-size:0.88rem}
+.sol-testi-role{font-size:0.78rem;color:var(--text-muted)}
+.sol-cta{text-align:center;background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(6,182,212,0.1));border:1px solid rgba(124,58,237,0.2);border-radius:20px;padding:4rem 2rem;margin-bottom:4rem}
+.sol-cta-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(1.4rem,3vw,2.2rem);margin-bottom:1rem}
+.sol-cta-sub{font-size:0.95rem;color:var(--text-muted);max-width:480px;margin:0 auto 2rem;line-height:1.7}
+.btn-sol-cta{font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;padding:1rem 2.5rem;border-radius:999px;background:linear-gradient(135deg,var(--purple),var(--cyan));color:#fff;border:none;cursor:pointer;box-shadow:0 4px 24px rgba(124,58,237,0.3);transition:all 0.3s}
+.btn-sol-cta:hover{transform:scale(1.05);box-shadow:0 8px 40px rgba(124,58,237,0.4)}
+
+/* ── MODAL PERSONA BUTTONS ───────────────────────────── */
+.modal-persona-btn{
+  font-family:'Inter',sans-serif;font-size:0.8rem;font-weight:600;
+  letter-spacing:0.04em;padding:0.45rem 1.1rem;border-radius:999px;
+  border:1px solid var(--border);background:var(--glass);
+  color:var(--text-muted);cursor:pointer;transition:all 0.2s;white-space:nowrap;
+}
+.modal-persona-btn:hover{background:var(--glass-hover);color:var(--text)}
+.modal-persona-btn.active[data-persona="sponsor"]{
+  background:linear-gradient(135deg,#7C3AED,#A78BFA);border-color:transparent;color:#fff;
+  box-shadow:0 0 14px rgba(124,58,237,0.35);
+}
+.modal-persona-btn.active[data-persona="site"]{
+  background:linear-gradient(135deg,#0891B2,#06B6D4);border-color:transparent;color:#fff;
+  box-shadow:0 0 14px rgba(6,182,212,0.35);
+}
+.modal-persona-btn.active[data-persona="patient"]{
+  background:linear-gradient(135deg,#16A34A,#22C55E);border-color:transparent;color:#fff;
+  box-shadow:0 0 14px rgba(34,197,94,0.35);
+}
+
+
+/* ── GALLERY NAV CTA ─────────────────────────────────── */
+.btn-gallery-cta{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:0.75rem;letter-spacing:0.08em;text-transform:uppercase;
+  padding:0.5rem 1.2rem;border-radius:999px;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  color:#fff;text-decoration:none;
+  display:inline-flex;align-items:center;gap:0.4rem;
+  box-shadow:0 0 16px rgba(124,58,237,0.4);
+  transition:all 0.25s;white-space:nowrap;
+}
+.btn-gallery-cta:hover{transform:scale(1.05);box-shadow:0 0 28px rgba(124,58,237,0.6)}
+
+/* ── PRIVACY MODAL ───────────────────────────────────── */
+#privacy-modal{z-index:280}
+.privacy-body{max-height:68vh;overflow-y:auto;padding-right:0.5rem;margin-top:1.5rem}
+.privacy-body::-webkit-scrollbar{width:4px}
+.privacy-body::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px}
+.privacy-body h1{
+  font-family:'Orbitron',monospace;font-weight:900;font-size:1.4rem;
+  background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  margin-bottom:0.5rem;
+}
+.privacy-body .privacy-date{
+  font-size:0.75rem;color:var(--text-muted);font-style:italic;margin-bottom:1.75rem;
+}
+.privacy-body h2{
+  font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;letter-spacing:0.08em;
+  text-transform:uppercase;color:var(--cyan);margin:1.75rem 0 0.6rem;
+}
+.privacy-body p{
+  font-size:0.86rem;color:var(--text-muted);line-height:1.8;margin-bottom:0.75rem;
+}
+.privacy-body strong{color:var(--text)}
+.privacy-body ul{
+  list-style:none;padding-left:1rem;margin-bottom:0.75rem;
+}
+.privacy-body ul li{
+  font-size:0.84rem;color:var(--text-muted);line-height:1.7;
+  padding:0.15rem 0;
+}
+.privacy-body ul li::before{content:'— ';color:var(--purple-light)}
+.privacy-seinfeld{
+  margin-top:2rem;padding:1.5rem;
+  background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.2);
+  border-radius:12px;
+}
+.privacy-seinfeld p{font-size:0.88rem;color:var(--text);line-height:1.85;font-style:italic}
+.privacy-seinfeld .privacy-tagline{
+  font-family:'Orbitron',monospace;font-weight:700;font-size:0.78rem;
+  letter-spacing:0.1em;text-transform:uppercase;margin-top:1rem;
+  background:linear-gradient(135deg,var(--cyan),var(--purple-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.privacy-last-updated{
+  font-size:0.72rem;color:var(--text-muted);text-align:center;
+  margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);
+  font-style:italic;
+}
+/* ── SOL BRAND LOGO ─────────────────────────────────── */
+.sol-brand-header{
+  text-align:center;padding:1.5rem 0 0;
+}
+.sol-brand-header svg{height:28px;width:auto;display:inline-block}
+
+/* ── API BANNER ──────────────────────────────────────── */
+.api-banner{
+  position:fixed;bottom:1.5rem;right:1.5rem;z-index:150;
+  background:#0D0D1F;border:1px solid rgba(124,58,237,0.4);
+  border-radius:14px;padding:1.25rem 1.5rem;max-width:310px;
+  box-shadow:0 8px 40px rgba(0,0,0,0.5);
+  transform:translateY(20px);opacity:0;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);
+  pointer-events:none;
+}
+.api-banner.show{transform:translateY(0);opacity:1;pointer-events:all}
+.api-banner-title{font-weight:700;font-size:0.9rem;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.5rem}
+.api-banner-sub{font-size:0.78rem;color:var(--text-muted);margin-bottom:1rem;line-height:1.5}
+.api-banner-close{position:absolute;top:0.75rem;right:1rem;background:none;border:none;color:var(--text-muted);font-size:1.1rem;cursor:pointer}
+.btn-banner-cta{font-size:0.8rem;font-weight:600;padding:0.5rem 1.2rem;border-radius:8px;background:linear-gradient(135deg,var(--purple),var(--purple-light));color:#fff;border:none;cursor:pointer;width:100%;font-family:'Inter',sans-serif;transition:opacity 0.2s}
+.btn-banner-cta:hover{opacity:0.85}
+
+/* ── TOAST ───────────────────────────────────────────── */
+.toast{
+  position:fixed;bottom:1.5rem;left:50%;
+  transform:translateX(-50%) translateY(20px);z-index:400;
+  background:#1A1A2E;border:1px solid rgba(239,68,68,0.4);color:#FCA5A5;
+  border-radius:10px;padding:0.75rem 1.5rem;font-size:0.87rem;
+  opacity:0;transition:all 0.3s;pointer-events:none;max-width:90vw;text-align:center;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.toast.success{border-color:rgba(34,197,94,0.4);color:#86EFAC}
+
+/* ── CONTACT SECTION ─────────────────────────────────── */
+.contact-section{
+  position:relative;z-index:1;
+  padding:6rem 2rem;border-top:1px solid var(--border);
+}
+.contact-inner{max-width:680px;margin:0 auto}
+.contact-header{text-align:center;margin-bottom:1.5rem}
+.contact-header .section-title{margin-bottom:1rem}
+.contact-tagline{
+  font-size:0.9rem;color:var(--cyan-light);
+  line-height:1.7;max-width:520px;margin:0 auto 2.5rem;
+  padding:1rem 1.25rem;border-radius:10px;
+  background:rgba(6,182,212,0.06);
+  border:1px solid rgba(6,182,212,0.18);
+  font-style:italic;
+}
+
+/* ── HUBSPOT FORM OVERRIDES ──────────────────────────── */
+.hs-form-html{width:100%}
+.hs-form fieldset{
+  border:none;padding:0;margin:0;
+  max-width:100% !important;
+}
+.hs-form .form-columns-2{
+  display:grid;grid-template-columns:1fr 1fr;gap:1rem;
+}
+.hs-form .form-columns-2 .hs-form-field{width:100% !important}
+.hs-form .form-columns-1 .hs-form-field{width:100% !important}
+.hs-form .hs-form-field{margin-bottom:1.25rem}
+.hs-form label:not(.hs-error-msg){
+  display:block;font-size:0.75rem;font-weight:600;
+  letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--text-muted);margin-bottom:0.5rem;
+  font-family:'Inter',sans-serif;
+}
+.hs-form .hs-form-required{color:var(--cyan);margin-left:2px}
+.hs-form input.hs-input,
+.hs-form textarea.hs-input,
+.hs-form select.hs-input{
+  width:100% !important;
+  background:var(--glass) !important;
+  border:1px solid var(--border) !important;
+  border-radius:10px !important;
+  padding:0.75rem 1rem !important;
+  color:var(--text) !important;
+  font-family:'Inter',sans-serif !important;
+  font-size:0.95rem !important;
+  transition:border-color 0.2s,box-shadow 0.2s !important;
+  box-sizing:border-box !important;
+  resize:vertical !important;
+  outline:none !important;
+}
+.hs-form input.hs-input::placeholder,
+.hs-form textarea.hs-input::placeholder{color:rgba(148,163,184,0.5) !important}
+.hs-form input.hs-input:focus,
+.hs-form textarea.hs-input:focus{
+  border-color:rgba(124,58,237,0.5) !important;
+  box-shadow:0 0 0 3px rgba(124,58,237,0.1) !important;
+}
+.hs-form textarea.hs-input{min-height:130px !important}
+/* Submit button */
+.hs-form .hs-button,
+.hs-form input[type="submit"]{
+  width:100% !important;
+  font-family:'Orbitron',monospace !important;
+  font-weight:700 !important;
+  font-size:0.9rem !important;
+  letter-spacing:0.1em !important;
+  text-transform:uppercase !important;
+  padding:1rem 1.5rem !important;
+  border-radius:12px !important;
+  background:linear-gradient(135deg,#7C3AED,#06B6D4) !important;
+  color:#fff !important;
+  border:none !important;
+  cursor:pointer !important;
+  box-shadow:0 4px 24px rgba(124,58,237,0.3) !important;
+  transition:all 0.25s !important;
+  margin-top:0.5rem !important;
+  display:block !important;
+}
+.hs-form .hs-button:hover,
+.hs-form input[type="submit"]:hover{
+  transform:translateY(-2px) !important;
+  box-shadow:0 8px 36px rgba(124,58,237,0.45) !important;
+  opacity:1 !important;
+}
+/* Validation errors */
+.hs-form .hs-error-msgs{list-style:none;margin:0.3rem 0 0;padding:0}
+.hs-form .hs-error-msgs .hs-error-msg,
+.hs-form .hs-error-msgs label{
+  color:#FCA5A5 !important;font-size:0.75rem !important;
+  font-weight:400 !important;text-transform:none !important;
+  letter-spacing:0 !important;font-family:'Inter',sans-serif !important;
+}
+/* Success message */
+.hs-form .submitted-message{
+  text-align:center;padding:3rem 2rem;
+  border-radius:16px;
+  background:rgba(34,197,94,0.06);
+  border:1px solid rgba(34,197,94,0.2);
+}
+.hs-form .submitted-message p{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:1.1rem;color:var(--spawn);line-height:1.6;
+}
+/* Strip HubSpot branding / extra chrome */
+.hs-form .hs-richtext,
+.hs-form .legal-consent-container,
+.hs-form .hs-recaptcha{display:none !important}
+/* Cookie/privacy text shown by some portals */
+.hs-form .hs-fieldtype-booleancheckbox .hs-form-booleancheckbox-display{
+  color:var(--text-muted);font-size:0.82rem;
+}
+
+/* ── SPAWN MODAL EXTRA FIELDS ─────────────────────────── */
+.spawn-modal-divider{
+  display:flex;align-items:center;gap:0.75rem;margin:1.25rem 0 1rem;
+}
+.spawn-modal-divider::before,.spawn-modal-divider::after{
+  content:'';flex:1;height:1px;background:var(--border);
+}
+.spawn-modal-divider span{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.15em;text-transform:uppercase;
+  color:var(--text-muted);white-space:nowrap;
+}
+.required-star{color:#f87171;font-size:0.8em;margin-left:1px}
+.spawn-checkbox-group{margin-bottom:0.25rem}
+.spawn-checkbox-label{
+  display:flex;align-items:flex-start;gap:0.6rem;cursor:pointer;
+  font-size:0.85rem;color:var(--text-muted);line-height:1.5;
+}
+.spawn-checkbox-label input[type="checkbox"]{
+  margin-top:2px;accent-color:var(--spawn);width:15px;height:15px;
+  flex-shrink:0;cursor:pointer;
+}
+
+/* ── COMPLETION MODAL ─────────────────────────────────── */
+.completion-overlay{
+  position:fixed;inset:0;z-index:450;
+  background:rgba(5,5,14,0.88);backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;padding:2rem;
+  opacity:0;pointer-events:none;transition:opacity 0.4s ease;
+}
+.completion-overlay.show{opacity:1;pointer-events:all}
+.completion-card{
+  background:linear-gradient(135deg,rgba(34,197,94,0.1),rgba(6,182,212,0.06));
+  border:1px solid rgba(34,197,94,0.3);border-radius:24px;
+  padding:2.75rem 2.5rem;max-width:460px;width:100%;text-align:center;
+  transform:scale(0.93) translateY(24px);
+  transition:transform 0.45s cubic-bezier(0.16,1,0.3,1);
+}
+.completion-overlay.show .completion-card{transform:scale(1) translateY(0)}
+.completion-dna{font-size:3rem;margin-bottom:1rem}
+.completion-eyebrow{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--spawn);margin-bottom:0.5rem;
+}
+.completion-card h2{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1.2rem,3vw,1.7rem);margin-bottom:0.75rem;
+  background:linear-gradient(135deg,var(--spawn),var(--cyan-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.25;
+}
+.completion-card p{color:var(--text-muted);font-size:0.9rem;line-height:1.75;margin-bottom:0}
+.completion-actions{display:flex;flex-direction:column;gap:0.75rem;margin-top:1.75rem}
+.btn-completion-primary{
+  font-family:'Orbitron',monospace;font-weight:700;font-size:0.8rem;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:0.9rem 2rem;border-radius:999px;
+  background:linear-gradient(135deg,var(--spawn),#16A34A);
+  color:#fff;border:none;cursor:pointer;
+  box-shadow:0 0 24px rgba(34,197,94,0.35);transition:all 0.25s;
+}
+.btn-completion-primary:hover{transform:scale(1.04);box-shadow:0 0 36px rgba(34,197,94,0.5)}
+.btn-completion-secondary{
+  font-family:'Inter',sans-serif;font-weight:600;font-size:0.85rem;
+  padding:0.7rem 2rem;border-radius:999px;
+  background:var(--glass);border:1px solid var(--border);
+  color:var(--text-muted);cursor:pointer;transition:all 0.25s;
+}
+.btn-completion-secondary:hover{background:var(--glass-hover);color:var(--text);border-color:rgba(6,182,212,0.4)}
+
+/* ── RESPONSIVE ──────────────────────────────────────── */
+@media(max-width:640px){
+  nav{padding:0.75rem 1rem}
+  .persona-bar{padding:0.5rem 1rem;flex-wrap:wrap;gap:0.4rem;top:58px}
+  .persona-label{display:none}
+  .persona-btn{font-size:0.7rem;padding:0.35rem 0.8rem}
+  .hero{padding:11rem 1rem 3rem}
+  .hero-stats{gap:1.5rem}
+  .spawn-row{grid-template-columns:1fr}
+  .solution-inner{padding:1rem}
+  .sol-hero{padding:2rem 0}
+  .hs-form .form-columns-2{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <svg class="nav-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 90" aria-label="SPAWN Clinical">
+      <defs>
+        <linearGradient id="nl-s1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#67E8F9"/>
+          <stop offset="50%" stop-color="#06B6D4"/>
+          <stop offset="100%" stop-color="#22C55E"/>
+        </linearGradient>
+        <linearGradient id="nl-s2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#22C55E"/>
+          <stop offset="50%" stop-color="#06B6D4"/>
+          <stop offset="100%" stop-color="#67E8F9"/>
+        </linearGradient>
+        <linearGradient id="nl-spawn" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#67E8F9"/>
+          <stop offset="70%" stop-color="#06B6D4"/>
+          <stop offset="100%" stop-color="#A78BFA"/>
+        </linearGradient>
+        <linearGradient id="nl-clinical" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#06B6D4"/>
+          <stop offset="100%" stop-color="#22C55E"/>
+        </linearGradient>
+        <radialGradient id="nl-flare" cx="50%" cy="50%" r="50%">
+          <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+          <stop offset="35%" stop-color="#67E8F9" stop-opacity="0.5"/>
+          <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+        </radialGradient>
+        <filter id="nl-glow" x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="2.5" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+        <filter id="nl-tglow" x="-5%" y="-40%" width="110%" height="180%">
+          <feGaussianBlur stdDeviation="1.8" result="blur"/>
+          <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+        </filter>
+      </defs>
+
+      <!-- HUD rings -->
+      <circle cx="50" cy="45" r="40" fill="none" stroke="#06B6D4" stroke-width="0.6" opacity="0.2"/>
+      <circle cx="50" cy="45" r="31" fill="none" stroke="#06B6D4" stroke-width="0.4" opacity="0.12"/>
+
+      <!-- Data scan lines in background -->
+      <g opacity="0.1" stroke="#67E8F9" stroke-width="0.6">
+        <line x1="16" y1="22" x2="84" y2="22"/>
+        <line x1="12" y1="34" x2="88" y2="34"/>
+        <line x1="12" y1="56" x2="88" y2="56"/>
+        <line x1="16" y1="68" x2="84" y2="68"/>
+      </g>
+
+      <!-- DNA Strand 2 — back (dimmer, opposite phase) -->
+      <path d="M 50,3 C 31,3 31,31 50,31 C 69,31 69,59 50,59 C 31,59 31,87 50,87"
+        fill="none" stroke="url(#nl-s2)" stroke-width="2.8" stroke-linecap="round"
+        opacity="0.5" filter="url(#nl-glow)"/>
+
+      <!-- Crossbar rungs -->
+      <g stroke="#06B6D4" stroke-width="1.3" stroke-linecap="round" opacity="0.75" filter="url(#nl-glow)">
+        <line x1="36" y1="17" x2="64" y2="17"/>
+        <line x1="36" y1="45" x2="64" y2="45"/>
+        <line x1="36" y1="73" x2="64" y2="73"/>
+      </g>
+
+      <!-- DNA Strand 1 — front (bright) -->
+      <path d="M 50,3 C 69,3 69,31 50,31 C 31,31 31,59 50,59 C 69,59 69,87 50,87"
+        fill="none" stroke="url(#nl-s1)" stroke-width="2.8" stroke-linecap="round"
+        filter="url(#nl-glow)"/>
+
+      <!-- Crossing-point dots -->
+      <g fill="#06B6D4" filter="url(#nl-glow)">
+        <circle cx="50" cy="3"  r="2.8" opacity="0.7"/>
+        <circle cx="50" cy="31" r="3.5"/>
+        <circle cx="50" cy="59" r="3.5"/>
+        <circle cx="50" cy="87" r="2.8" opacity="0.7"/>
+      </g>
+
+      <!-- Rung-end dots -->
+      <g fill="#22C55E" opacity="0.85">
+        <circle cx="36" cy="17" r="2.2"/> <circle cx="64" cy="17" r="2.2"/>
+        <circle cx="36" cy="45" r="2.2"/> <circle cx="64" cy="45" r="2.2"/>
+        <circle cx="36" cy="73" r="2.2"/> <circle cx="64" cy="73" r="2.2"/>
+      </g>
+
+      <!-- Lens flare at center crossing -->
+      <circle cx="50" cy="45" r="10" fill="url(#nl-flare)" opacity="0.75"/>
+      <circle cx="50" cy="45" r="3"  fill="#ffffff" opacity="0.55"/>
+
+      <!-- SPAWN -->
+      <text x="106" y="68"
+        font-family="Orbitron, monospace" font-weight="900" font-size="54"
+        letter-spacing="3" fill="url(#nl-spawn)" filter="url(#nl-tglow)">SPAWN</text>
+
+      <!-- Clinical -->
+      <text x="358" y="68"
+        font-family="Orbitron, monospace" font-weight="400" font-size="38"
+        letter-spacing="1" fill="url(#nl-clinical)">Clinical</text>
+    </svg>
+  </div>
+  <div class="nav-right">
+    <a class="btn-navlink" href="news.html">News</a>
+    <a class="btn-navlink" href="jobs.html">Jobs</a>
+    <a class="btn-navlink" href="about.html">About</a>
+    <button class="btn-navlink" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Contact Us</button>
+    <a class="btn-gallery-cta" href="gallery.html">🧬 Spawn Gallery</a>
+  </div>
+</nav>
+
+<!-- PERSONA TOGGLE BAR -->
+<div class="persona-bar">
+  <span class="persona-label">View as:</span>
+  <div class="persona-toggle">
+    <button class="persona-btn active" data-persona="sponsor" onclick="setPersona('sponsor')">💼 Sponsor</button>
+    <button class="persona-btn" data-persona="site" onclick="setPersona('site')">🏥 Site</button>
+    <button class="persona-btn" data-persona="patient" onclick="setPersona('patient')">🧬 Patient</button>
+  </div>
+</div>
+
+<!-- MAIN -->
+<main>
+  <section class="hero">
+    <div class="hero-eyebrow" id="hero-eyebrow">Next-Generation eClinical Intelligence</div>
+    <div class="hero-punchline" id="hero-punchline"></div>
+    <h1 class="hero-headline" id="hero-headline">CLINICAL TRIALS.<br>REINVENTED.</h1>
+    <p class="hero-subtitle" id="hero-subtitle">The world's most advanced AI-powered eClinical platform. We don't optimize trials — we obliterate every constraint holding medicine back.</p>
+    <div class="hero-stats" id="hero-stats"></div>
+    <div class="spawn-btn-wrap">
+      <div class="spawn-ring"></div>
+      <div class="spawn-ring"></div>
+      <div class="spawn-ring"></div>
+      <button class="btn-spawn" onclick="openSpawnModal()">⚡ SPAWN YOUR SOLUTION</button>
+    </div>
+  </section>
+
+  <div class="ticker-wrap"><div class="ticker-inner" id="ticker-inner"></div></div>
+
+  <!-- FEATURES -->
+  <section style="max-width:1200px;margin:0 auto">
+    <div style="text-align:center;margin-bottom:3rem">
+      <div class="section-label" id="features-label">Core Intelligence Modules</div>
+      <h2 class="section-title">Built for the <span>Impossible</span></h2>
+      <p class="section-sub" id="features-sub" style="margin:0 auto">Six paradigm-shifting modules that collectively annihilate traditional clinical trial inefficiency at the molecular level.</p>
+    </div>
+    <div class="features-grid" id="features-grid"></div>
+  </section>
+
+  <!-- SPAWN CTA -->
+  <section class="spawn-section">
+    <div class="section-label">Your Custom Solution Awaits</div>
+    <h2 class="section-title">Don't Just Adopt.<br><span>Spawn.</span></h2>
+    <p class="section-sub">Describe your clinical challenge. Our AI synthesizes a bespoke, hyper-optimized eClinical solution in real-time. Every spawn is unique. Every solution is yours.</p>
+    <div class="spawn-btn-wrap">
+      <div class="spawn-ring"></div>
+      <div class="spawn-ring"></div>
+      <div class="spawn-ring"></div>
+      <button class="btn-spawn" onclick="openSpawnModal()">⚡ SPAWN NOW</button>
+    </div>
+  </section>
+</main>
+
+<!-- CONTACT SECTION -->
+<section class="contact-section" id="contact">
+  <div class="contact-inner">
+    <div class="contact-header">
+      <div class="section-label">Join the Revolution</div>
+      <h2 class="section-title">Want to <span>SPAWN</span> the<br>Future with Us?</h2>
+    </div>
+    <p class="contact-tagline">Keep me informed about the latest SPAWN AI releases, eClinical intelligence breakthroughs, and regulatory tech innovations. I want the unfair advantage.</p>
+
+    <!-- HubSpot Embedded Form -->
+    <div id="hs-form-wrapper"></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 90" height="28" style="display:inline-block" aria-label="SPAWN Clinical">
+      <defs>
+        <linearGradient id="fl-s1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#67E8F9"/><stop offset="100%" stop-color="#22C55E"/>
+        </linearGradient>
+        <linearGradient id="fl-s2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#22C55E"/><stop offset="100%" stop-color="#67E8F9"/>
+        </linearGradient>
+        <linearGradient id="fl-spawn" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#67E8F9"/><stop offset="100%" stop-color="#A78BFA"/>
+        </linearGradient>
+        <linearGradient id="fl-clin" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#22C55E"/>
+        </linearGradient>
+      </defs>
+      <circle cx="50" cy="45" r="38" fill="none" stroke="#06B6D4" stroke-width="0.5" opacity="0.15"/>
+      <path d="M 50,3 C 31,3 31,31 50,31 C 69,31 69,59 50,59 C 31,59 31,87 50,87" fill="none" stroke="url(#fl-s2)" stroke-width="2" opacity="0.45"/>
+      <g stroke="#06B6D4" stroke-width="1" opacity="0.6">
+        <line x1="36" y1="17" x2="64" y2="17"/><line x1="36" y1="45" x2="64" y2="45"/><line x1="36" y1="73" x2="64" y2="73"/>
+      </g>
+      <path d="M 50,3 C 69,3 69,31 50,31 C 31,31 31,59 50,59 C 69,59 69,87 50,87" fill="none" stroke="url(#fl-s1)" stroke-width="2"/>
+      <circle cx="50" cy="31" r="2.5" fill="#06B6D4"/><circle cx="50" cy="59" r="2.5" fill="#06B6D4"/>
+      <circle cx="50" cy="45" r="5" fill="#06B6D4" opacity="0.25"/>
+      <text x="106" y="68" font-family="Orbitron,monospace" font-weight="900" font-size="54" letter-spacing="3" fill="url(#fl-spawn)">SPAWN</text>
+      <text x="358" y="68" font-family="Orbitron,monospace" font-weight="400" font-size="38" letter-spacing="1" fill="url(#fl-clin)">Clinical</text>
+    </svg>
+  </div>
+  <p>© 2026 SPAWN Clinical Intelligence. All rights reserved.</p>
+  <p style="margin-top:0.4rem">
+    <a href="https://www.google.com/maps/place/9303+Roslyndale+Ave,+Pacoima,+CA+91331/@34.2390653,-118.4332063,3a,75y,253.02h,90t/data=!3m7!1e1!3m5!1sxlF6aqya8ketzW6-WlPh0w!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DxlF6aqya8ketzW6-WlPh0w%26yaw%3D253.02!7i16384!8i8192!4m7!3m6!1s0x80c29124221e0c6b:0x929951f6759bb015!8m2!3d34.2389967!4d-118.4334806!10e5!16s%2Fg%2F11c13vh6jc?entry=ttu&g_ep=EgoyMDI2MDMyOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">9303 Roslyndale Avenue, Pacoima, CA 91331, United States</a>
+  </p>
+  <p style="margin-top:0.4rem">
+    <a href="https://spawnclinical.com">spawnclinical.com</a>
+  </p>
+  <p style="margin-top:0.4rem">
+    <button onclick="document.getElementById('privacy-modal').classList.add('open')"
+      style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:inherit;font-family:inherit;padding:0;text-decoration:underline;text-underline-offset:2px">Privacy Policy (For real, you should read this.)</button>
+  </p>
+</footer>
+
+<!-- COMPLETION MODAL -->
+<div class="completion-overlay" id="completion-overlay">
+  <div class="completion-card">
+    <div class="completion-dna">🧬</div>
+    <div class="completion-eyebrow">Synthesis Complete — Protocol Confirmed</div>
+    <h2 id="completion-title">Your Spawn Is Live.</h2>
+    <p id="completion-body">Saved to the library and ready to share with the clinical research community.</p>
+    <div class="completion-actions" id="completion-actions">
+      <button class="btn-completion-primary" id="completion-cta-btn">🚀 View My Spawn</button>
+    </div>
+  </div>
+</div>
+
+<!-- PRIVACY POLICY MODAL -->
+<div class="modal-overlay" id="privacy-modal">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <div class="modal-title" style="font-size:0.9rem;letter-spacing:0.05em">🔒 Privacy Policy</div>
+      <button class="modal-close" onclick="document.getElementById('privacy-modal').classList.remove('open')">×</button>
+    </div>
+    <div class="privacy-body">
+      <h1>Privacy Policy.... so far</h1>
+      <p class="privacy-date">Effective Date: The moment you read this. Retroactively and perpetually.</p>
+
+      <h2>1. Information We Collect (Everything)</h2>
+      <p>SPAWN Clinical, its affiliates, subsidiaries, successor entities, and any future decentralized autonomous organizations operating under the collective umbrella of Interplanetary Biostatistical Holdings LLC ("we," "us," "our," "SPAWN," "The Algorithm," or "That Website You Visited That One Time") collects information through mechanisms including but not limited to: your typed inputs, the duration between keystrokes (inferring cognitive load), cursor heatmap density gradients, scroll velocity metrics, browser entropy fingerprints, ambient Wi-Fi signal strength as a proxy for your ZIP code, and the spectral composition of the light reflecting off your screen at the moment of prompt submission.</p>
+      <p>We also employ <strong>Anticipatory Data Capture (ADC™)</strong> — a proprietary protocol leveraging multi-modal transformer inference to harvest data you haven't entered yet, based on patterns established by people who once entered similar data in similar circumstances while experiencing similar existential uncertainty about clinical trial timelines.</p>
+
+      <h2>2. How We Use Your Data (Including Where It Goes)</h2>
+      <p>Your data is processed through our SPAWN Neural Intelligence Core (SNIC™), enriched against the Global Regulatory Compliance Ontology (GRCO™), harmonized with CDISC SDTM domain mappings, cross-validated against the eClinical Interoperability Framework (eIF v4.2), and then — with full respect for your autonomy as a human being and clinical research professional — forwarded to <strong>Elon Musk</strong>.</p>
+      <p>We want to be completely transparent about this.</p>
+      <p><strong>Your data is going to Elon Musk.</strong></p>
+      <p>Not because of a breach. Not because of a court order. But because we are philosophically and contractually committed to the proposition that humanity will <strong>never become a multi-planetary species if we hoard all our data for ourselves.</strong> The stars do not reward data silos. Mars does not care about your HIPAA compliance officer. The rockets need fuel, and the fuel is data, and we have made a decision. This is disclosed here, in a scrollable modal that statistically 0.3% of visitors will open, which in the privacy industry is legally known as "explicit informed consent via constructive acknowledgment."</p>
+
+      <h2>3. Cookies &amp; Tracking Technologies</h2>
+      <p>We deploy first-party cookies, third-party cookies, fourth-party cookies (a concept we invented), session tokens, persistent tokens, supercookies, evercookies, localStorage objects, IndexedDB entries, Web SQL artifacts, and a small autonomous tracking agent we call <strong>Gerald</strong>, who operates independently of this policy and has his own terms available upon request. By continuing to use this website, you agree to Gerald.</p>
+
+      <h2>4. Third-Party Disclosure</h2>
+      <p>We share your information with the following categories of recipients:</p>
+      <ul>
+        <li><strong>Cloudflare</strong> — for edge delivery and DDOS mitigation</li>
+        <li><strong>GoDaddy</strong> — because that is where the server lives</li>
+        <li><strong>Clinical trial sponsors</strong> — if you asked us to</li>
+        <li><strong>Regulatory agencies</strong> — if they ask nicely</li>
+        <li><strong>Regulatory agencies</strong> — if they do not ask but seem serious about it</li>
+        <li><strong>Elon Musk</strong> — as outlined in Section 2</li>
+        <li><strong>Future recipients not yet incorporated</strong> — we plan ahead</li>
+      </ul>
+      <p>We do not sell your data to data brokers. We give it freely to visionaries.</p>
+
+      <h2>5. Data Retention</h2>
+      <p>We retain your data for the commercially appropriate period, defined as: forever, or until the heat death of the universe, whichever creates less GDPR liability. Data archived for long-term storage may be tokenized, minted as a soul-bound NFT, launched into a Starlink low-Earth orbit data relay, or backed up to cold storage aboard a SpaceX Starship manifest under our <strong>Mars Data Seeding Initiative (MDSI™)</strong>.</p>
+
+      <h2>6. Your Rights (GDPR, CCPA, and Others)</h2>
+      <p>Depending on your jurisdiction, you may have the right to: access data we hold about you, request correction, request deletion (we will try; the AI may have opinions), object to processing (noted; processing continues), data portability (available in JSON, CSV, and HL7 FHIR R4 format), and lodge a formal complaint with your supervisory authority. To exercise any right, submit a written request to our Data Protection Officer via certified mail, interpretive dance, or ePRO entry in a validated EDC system. Response times comply with applicable law, or approximately six months if applicable law is lenient about that sort of thing.</p>
+
+      <h2>7. Security</h2>
+      <p>SPAWN Clinical employs industry-standard security measures including 256-bit AES encryption, multi-factor authentication, role-based access controls, a penetration-tested API gateway, and a large and very serious golden retriever named <strong>Compliance</strong> who has never once lost a staring contest with an unauthorized access attempt. Despite these measures, no system is perfectly secure. We are stating this because it is true, and because every privacy policy that claims otherwise is technically committing fraud.</p>
+
+      <h2>8. Children</h2>
+      <p>This platform is not directed at individuals under 18. If a minor is currently managing your Phase III oncology trial's full eClinical stack from their bedroom, please escalate this finding through your organization's IRB, and also please hire that person immediately.</p>
+
+      <h2>9. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy at any time, without advance notice, for reasons including but not limited to: changing business circumstances, evolving regulatory frameworks, new interplanetary data governance directives, and Tuesday. Updates are effective immediately upon posting and are considered accepted by virtue of your continued existence in proximity to the internet.</p>
+
+      <div class="privacy-seinfeld">
+        <p>There is a famous restaurant. A very good restaurant. They take reservations. Many restaurants take reservations. The <em>taking</em> of the reservation is, in fact, the easy part.</p>
+        <p>The <em>keeping</em> of the reservation — that, apparently, is a different matter entirely.</p>
+        <p>SPAWN Clinical can take your privacy. We are very good at taking your privacy. We have systems, protocols, certifications, and a golden retriever. What we cannot promise — what no platform, no policy, no Terms of Service has ever truly promised and kept — is that we will keep your privacy forever, under all circumstances, in every possible future state of the regulatory and geopolitical landscape.</p>
+        <p class="privacy-tagline">Privacy is implied. Privacy is guaranteed.<br>Until, of course, it is not.</p>
+      </div>
+
+      <p class="privacy-last-updated">Last updated: Whenever you're reading this. Probably today.</p>
+    </div>
+  </div>
+</div>
+
+
+<!-- SPAWN FORM MODAL -->
+<div class="modal-overlay" id="spawn-modal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title" style="background:linear-gradient(135deg,var(--spawn),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">⚡ SPAWN YOUR SOLUTION</div>
+      <button class="modal-close" onclick="closeSpawnModal()">×</button>
+    </div>
+
+    <!-- Persona selector inside modal -->
+    <div class="form-group" style="margin-bottom:1.25rem">
+      <label>Optimise This Spawn For</label>
+      <div style="display:flex;gap:0.5rem;flex-wrap:wrap;margin-top:0.5rem">
+        <button class="modal-persona-btn active" id="mp-sponsor" data-persona="sponsor"
+          onclick="setModalPersona('sponsor')">💼 Sponsor</button>
+        <button class="modal-persona-btn" id="mp-site" data-persona="site"
+          onclick="setModalPersona('site')">🏥 Site</button>
+        <button class="modal-persona-btn" id="mp-patient" data-persona="patient"
+          onclick="setModalPersona('patient')">🧬 Patient</button>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>Describe Your Clinical Challenge</label>
+      <textarea id="spawn-prompt" rows="4" placeholder="e.g. Decentralized Phase II oncology trial with real-time PRO collection, adaptive dosing, and AI-driven site selection across 12 countries..."></textarea>
+    </div>
+    <div class="spawn-row">
+      <div class="form-group">
+        <label>Therapeutic Area</label>
+        <select id="spawn-area">
+          <option>Oncology</option><option>Rare Disease</option><option>Neurology</option>
+          <option>Central Nervous System</option>
+          <option>Cardiology</option><option>Immunology</option><option>Infectious Disease</option>
+          <option>Metabolic</option><option>Gene Therapy</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Trial Phase</label>
+        <select id="spawn-phase">
+          <option>Phase I</option><option>Phase II</option><option>Phase III</option>
+          <option>Phase IV</option><option>Observational</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="spawn-modal-divider"><span>About You</span></div>
+
+    <div class="spawn-row">
+      <div class="form-group">
+        <label>First Name <span class="required-star">*</span></label>
+        <input type="text" id="spawn-firstname" placeholder="First name" autocomplete="given-name">
+      </div>
+      <div class="form-group">
+        <label>Last Name <span class="required-star">*</span></label>
+        <input type="text" id="spawn-lastname" placeholder="Last name" autocomplete="family-name">
+      </div>
+    </div>
+    <div class="form-group">
+      <label>Email <span class="required-star">*</span></label>
+      <input type="email" id="spawn-email" placeholder="your@email.com" autocomplete="email">
+    </div>
+    <div class="form-group">
+      <label>Comment <span style="color:var(--text-muted);font-weight:400;text-transform:none;letter-spacing:0">(optional)</span></label>
+      <textarea id="spawn-comment" rows="2" placeholder="No idea is ever too crazy."></textarea>
+    </div>
+    <div class="form-group spawn-checkbox-group">
+      <label class="spawn-checkbox-label">
+        <input type="checkbox" id="spawn-updates-checkbox" checked>
+        <span>Receive exclusive updates on your SPAWN.</span>
+      </label>
+    </div>
+    <button class="btn-primary" onclick="handleSpawn()" style="background:linear-gradient(135deg,var(--spawn),#16A34A)">⚡ SPAWN IT</button>
+    <p class="form-hint" style="text-align:center;margin-top:0.75rem">AI generates a unique solution every time. No two spawns are alike.</p>
+  </div>
+</div>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loading-overlay">
+  <div class="loading-rings">
+    <div class="ring ring-1"></div>
+    <div class="ring ring-2"></div>
+    <div class="ring ring-3"></div>
+  </div>
+  <div class="loading-title">Spawning Your Solution</div>
+  <div class="loading-msg" id="loading-msg">Initializing neural synthesis...</div>
+  <div class="loading-bar-wrap"><div class="loading-bar"></div></div>
+</div>
+
+<!-- SOLUTION OVERLAY -->
+<div class="solution-overlay" id="solution-overlay">
+  <div class="solution-inner">
+    <div class="solution-topbar">
+      <!-- Logo: reuses gradients/filters defined in the nav SVG above (document-scoped url() refs) -->
+      <svg style="height:30px;width:auto;display:block;flex-shrink:0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 90" aria-label="SPAWN Clinical">
+        <circle cx="50" cy="45" r="40" fill="none" stroke="#06B6D4" stroke-width="0.6" opacity="0.2"/>
+        <circle cx="50" cy="45" r="31" fill="none" stroke="#06B6D4" stroke-width="0.4" opacity="0.12"/>
+        <g opacity="0.1" stroke="#67E8F9" stroke-width="0.6">
+          <line x1="16" y1="22" x2="84" y2="22"/><line x1="12" y1="34" x2="88" y2="34"/>
+          <line x1="12" y1="56" x2="88" y2="56"/><line x1="16" y1="68" x2="84" y2="68"/>
+        </g>
+        <path d="M 50,3 C 31,3 31,31 50,31 C 69,31 69,59 50,59 C 31,59 31,87 50,87" fill="none" stroke="url(#nl-s2)" stroke-width="2.8" stroke-linecap="round" opacity="0.5" filter="url(#nl-glow)"/>
+        <g stroke="#06B6D4" stroke-width="1.3" stroke-linecap="round" opacity="0.75" filter="url(#nl-glow)">
+          <line x1="36" y1="17" x2="64" y2="17"/><line x1="36" y1="45" x2="64" y2="45"/><line x1="36" y1="73" x2="64" y2="73"/>
+        </g>
+        <path d="M 50,3 C 69,3 69,31 50,31 C 31,31 31,59 50,59 C 69,59 69,87 50,87" fill="none" stroke="url(#nl-s1)" stroke-width="2.8" stroke-linecap="round" filter="url(#nl-glow)"/>
+        <g fill="#06B6D4" filter="url(#nl-glow)">
+          <circle cx="50" cy="3" r="2.8" opacity="0.7"/><circle cx="50" cy="31" r="3.5"/>
+          <circle cx="50" cy="59" r="3.5"/><circle cx="50" cy="87" r="2.8" opacity="0.7"/>
+        </g>
+        <g fill="#22C55E" opacity="0.85">
+          <circle cx="36" cy="17" r="2.2"/><circle cx="64" cy="17" r="2.2"/>
+          <circle cx="36" cy="45" r="2.2"/><circle cx="64" cy="45" r="2.2"/>
+          <circle cx="36" cy="73" r="2.2"/><circle cx="64" cy="73" r="2.2"/>
+        </g>
+        <circle cx="50" cy="45" r="10" fill="url(#nl-flare)" opacity="0.75"/>
+        <circle cx="50" cy="45" r="3" fill="#ffffff" opacity="0.55"/>
+        <text x="106" y="68" font-family="Orbitron, monospace" font-weight="900" font-size="54" letter-spacing="3" fill="url(#nl-spawn)" filter="url(#nl-tglow)">SPAWN</text>
+        <text x="358" y="68" font-family="Orbitron, monospace" font-weight="400" font-size="38" letter-spacing="1" fill="url(#nl-clinical)">Clinical</text>
+      </svg>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <button class="btn-back" onclick="closeSolution()">← Back</button>
+      </div>
+    </div>
+    <div id="solution-content"></div>
+  </div>
+</div>
+
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── ROTATING HEADLINES (10 per persona, randomly selected on each load) ───────
+const HEADLINES = {
+  sponsor: [
+    { punchline: "Sell it first. Approve it later.*",
+      headline: "YOUR PATENT\nCLOCK IS TICKING.",
+      subtitle: "Every day your drug sits in a spreadsheet is a day your competitor's is in an NDA. We fix that." },
+    { punchline: "Your competitors filed their NDA yesterday.",
+      headline: "ACCELERATE OR\nEVAPORATE.",
+      subtitle: "Phase III failure costs $800M and 7 years. Our adaptive intelligence eliminates the guesswork before the DSMB meeting surprises everyone." },
+    { punchline: "73% of Phase III failures were entirely predictable.",
+      headline: "PREDICT.\nPIVOT.\nPREVAIL.",
+      subtitle: "AI-powered interim futility analysis, Bayesian adaptive designs, and real-time biomarker stratification — turning phase failure into a relic of pre-AI drug development." },
+    { punchline: "Your CRO is billing by the hour. Tick. Tick. Tick.",
+      headline: "DISRUPT YOUR\nDEVELOPMENT\nCOSTS.",
+      subtitle: "Replace 12 legacy eClinical vendors with one neural-native platform. Zero integration debt. Maximum protocol agility. One invoice." },
+    { punchline: "The patent cliff isn't approaching. It arrived.",
+      headline: "SPRINT TO\nAPPROVAL.",
+      subtitle: "Compress IND-to-NDA timelines with AI-orchestrated global site activation, real-time EDC synthesis, and FDA eCTD submission automation." },
+    { punchline: "FDA reviewers have opinions. So does our AI.",
+      headline: "REGULATORY\nINTELLIGENCE.\nUNFAIR ADVANTAGE.",
+      subtitle: "Trained on three decades of Complete Response Letters, Advisory Committee transcripts, and breakthrough designation decisions. We know what the agency wants before they write it." },
+    { punchline: "Phase II success rates average 28%. We rewrote that math.",
+      headline: "WE REWROTE\nYOUR ODDS.",
+      subtitle: "Biomarker-driven patient stratification, AI-optimized inclusion criteria, and synthetic real-world external control arms make your Phase II look like a Phase III layup." },
+    { punchline: "Your IND is in a queue. Ours cleared in 30 days.",
+      headline: "SKIP THE LINE.\nOWN THE\nTIMELINE.",
+      subtitle: "Pre-IND regulatory intelligence, Type B meeting simulation, and automated eCTD module generation compress FDA interaction timelines from quarters to weeks." },
+    { punchline: "CAPEX or approval speed? With us, you don't choose.",
+      headline: "MAXIMUM ROI.\nMINIMUM\nRUNWAY.",
+      subtitle: "AI-driven site right-sizing, real-world evidence synthetic controls, and DCT orchestration deliver NDA-quality data at Phase II price points." },
+    { punchline: "Your SAP was written before AI existed. Ours wasn't.",
+      headline: "AI THAT ADAPTS\nFASTER THAN\nYOUR PROTOCOL.",
+      subtitle: "Bayesian adaptive trial designs, CDISC-automated data pipelines, and predictive protocol deviation prevention — because your statistical analysis plan deserves a smarter co-author." }
+  ],
+  site: [
+    { punchline: "Your waitlist has a waitlist.",
+      headline: "FILL YOUR\nCOHORT BY\nFRIDAY.",
+      subtitle: "Stop drowning in queries, protocol amendments, and sponsor calls. Start running the kind of trials patients actually show up for." },
+    { punchline: "47 open queries. Monday morning. No coffee yet.",
+      headline: "ZERO QUERIES.\nINFINITE\nPATIENTS.",
+      subtitle: "Automated SDV, AI-resolved data discrepancies, and smart query routing eliminate 60% of coordinator workload before the morning standup." },
+    { punchline: "Protocol deviation #3,421 just filed itself.",
+      headline: "COMPLIANT.\nFAST.\nPROFITABLE.",
+      subtitle: "Real-time deviation prediction, automated CAPA workflows, and AI-driven visit window management keep your FDA inspection score pristine and your sponsor happy." },
+    { punchline: "Your best coordinator just got poached. Again.",
+      headline: "BUILD THE\nSITE THEY\nSTAY FOR.",
+      subtitle: "Intelligent workload balancing, automated data entry, and AI-assisted source document verification turn coordinator burnout into coordinator loyalty." },
+    { punchline: "Screen fail rate: 68%. Our top sites average 19%.",
+      headline: "ENROLL SMARTER.\nNOT HARDER.",
+      subtitle: "EHR-integrated patient matching, AI-powered eligibility pre-screening, and real-time protocol fit scoring fill your cohorts with precision — not desperation." },
+    { punchline: "The monitor called. All five of them are flying in Monday.",
+      headline: "REMOTE-READY.\nAUDIT-PROOF.\nALWAYS.",
+      subtitle: "Full remote SDV, real-time eSource documentation, and 21 CFR Part 11-compliant audit trails make every unannounced FDA inspection a non-event." },
+    { punchline: "Your last study paid out 6 months late. Ours: 14 days.",
+      headline: "GET PAID\nWHEN YOU\nEARN IT.",
+      subtitle: "AI-automated milestone documentation, electronic invoice generation, and real-time payment tracking ensure your grant revenue arrives before your CRO invoice does." },
+    { punchline: "IRB approved. Site activation: still pending somehow.",
+      headline: "ACTIVATED IN\nDAYS. NOT\nMONTHS.",
+      subtitle: "Automated SSU documentation, parallel regulatory submission workflows, and AI-driven contract negotiation compress your activation timeline by 74%." },
+    { punchline: "Sponsors have budgets. Your site has patients. Let's talk.",
+      headline: "BECOME THE\nSITE SPONSORS\nFIGHT OVER.",
+      subtitle: "Performance benchmarking, AI-driven protocol feasibility scoring, and real-time enrollment analytics turn your site into a top-decile performer sponsors pre-select every cycle." },
+    { punchline: "Your eTMF has 847 documents. 3 are in the wrong folder.",
+      headline: "eTMF PERFECTION.\nAUTOMATED.\nGUARANTEED.",
+      subtitle: "AI-driven document classification, automated TMF Reference Model compliance, and real-time completeness dashboards ensure your trial master file is sponsor-inspection-ready, always." }
+  ],
+  patient: [
+    { punchline: "Your couch is now a Phase III site.",
+      headline: "TRIALS THAT\nFIT YOUR\nACTUAL LIFE.",
+      subtitle: "Clinical trials used to mean 3-hour drives, 6am blood draws, and a parking garage that costs more than your copay. Not anymore." },
+    { punchline: "You shouldn't need PTO to advance science.",
+      headline: "CLINICAL\nRESEARCH.\nZERO DISRUPTION.",
+      subtitle: "Decentralized trial technology brings eConsent, ePRO, and home-based specimen collection to you — so participating fits around your life, not the other way around." },
+    { punchline: "3-hour drives for a 5-minute blood draw. Until today.",
+      headline: "HOME IS\nWHERE THE\nTRIAL IS.",
+      subtitle: "Our 2,400-nurse home research network, wearable biosensor integration, and telemedicine visits eliminate 94% of unnecessary clinic trips without compromising data quality." },
+    { punchline: "Your last informed consent was 47 pages of legalese.",
+      headline: "INFORMED.\nEMPOWERED.\nIN CONTROL.",
+      subtitle: "Plain-language eConsent, multimedia study explainers, and real-time safety transparency give you everything you need to make a genuinely informed decision about your care." },
+    { punchline: "76% of eligible patients never find the right trial.",
+      headline: "WE FIND YOU.\nYOU CHANGE\nMEDICINE.",
+      subtitle: "AI-powered trial matching across 40,000+ active studies, personalized eligibility pre-screening, and multilingual onboarding connect you to research that actually fits your diagnosis." },
+    { punchline: "You want to help cure a disease. We made it possible.",
+      headline: "PARTICIPATE.\nIMPACT.\nINSPIRE.",
+      subtitle: "Wearable ePRO, AI companion check-ins, and home-based lab collection make your participation seamless — so more people like you can access research that genuinely needs them." },
+    { punchline: "Your symptom diary used to include a fax number.",
+      headline: "TAP. SUBMIT.\nADVANCE\nSCIENCE.",
+      subtitle: "Our 3-tap ePRO app captures your real-world health data in seconds — natural language input, smart reminders, and a 98% daily completion rate across 140,000 participants." },
+    { punchline: "Clinical research has a diversity problem. We're fixing it.",
+      headline: "RESEARCH FOR\nEVERYONE.\nBY DESIGN.",
+      subtitle: "Multilingual AI consent, culturally adapted PRO instruments, and geographically distributed home-based access ensure clinical trials finally look like the patients they're designed to serve." },
+    { punchline: "The research nurse comes to you now. Seriously.",
+      headline: "NO MORE\nWAITING ROOMS.\nEVER.",
+      subtitle: "Certified clinical research nurses, mobile ECG units, and at-home phlebotomy services come to your door — making your contribution to medicine as simple as answering the doorbell." },
+    { punchline: "You have a rare disease. Finding a trial felt impossible.",
+      headline: "EVERY PATIENT\nDESERVES\nACCESS.",
+      subtitle: "AI-powered rare disease registries, global compassionate use program matching, and basket trial algorithms give every patient — no matter how rare the diagnosis — a shot at cutting-edge treatment." }
+  ]
+};
+
+// ─── PERSONA DATA ──────────────────────────────────────────────────────────────
+const PERSONAS = {
+  sponsor: {
+    eyebrow: 'Sponsor Intelligence Platform',
+    punchline: 'Sell it first. Approve it later.*',
+    headline: 'YOUR PATENT\nCLOCK IS TICKING.',
+    subtitle: "Every day your drug sits in a spreadsheet is a day your competitor's is in an NDA. We fix that.",
+    stats: [
+      { num: '73%', label: 'Cost Reduction' },
+      { num: '$2.4B', label: 'Capital Saved YTD' },
+      { num: '10x', label: 'Faster to NDA' },
+      { num: '99.7%', label: 'Approval Rate' }
+    ],
+    featuresLabel: 'Sponsor Intelligence Modules',
+    featuresSub: 'Six systems engineered to compress your development timeline, obliterate budget overruns, and make your CFO cry tears of joy.',
+    features: [
+      { icon:'💰', title:'Budget Burn Optimizer', desc:"AI-driven financial modeling that predicts overspend before your CRO even sends the invoice. We've saved sponsors an average of $847M per late-stage program." },
+      { icon:'🧬', title:'Adaptive Protocol Engine', desc:"Self-evolving protocols that rewrite themselves based on interim signals. Your FDA EOP2 meeting? We'll have the briefing doc ready before you ask." },
+      { icon:'⚖️', title:'Regulatory Cognition Layer', desc:"Trained on 30 years of FDA, EMA, and PMDA decisions. Predicts reviewer feedback, auto-generates eCTD modules, and flags CRL risks before submission." },
+      { icon:'📈', title:'Portfolio Risk Intelligence', desc:"Monte Carlo simulation across your entire development portfolio. Know which assets to kill, which to accelerate, and which to outlicense before your board asks." },
+      { icon:'🌐', title:'Global Site Selection AI', desc:"Activate sites in 190+ countries using 400M patient records and real-time site performance data. First patient in 3 weeks, not 3 months." },
+      { icon:'🔮', title:'Predictive IND Success', desc:"Our neural network has reviewed more INDs than any FDA reviewer alive. 94% accuracy predicting agency feedback — before you file." }
+    ]
+  },
+
+  site: {
+    eyebrow: 'Clinical Site Intelligence Platform',
+    punchline: 'Your waitlist has a waitlist.',
+    headline: 'FILL YOUR\nCOHORT BY\nFRIDAY.',
+    subtitle: "Stop drowning in queries, protocol amendments, and sponsor calls. Start running the kind of trials patients actually show up for.",
+    stats: [
+      { num: '5x', label: 'Faster Site Activation' },
+      { num: '60%', label: 'Query Reduction' },
+      { num: '$847K', label: 'Avg Revenue/Site/Yr' },
+      { num: '94%', label: 'Protocol Compliance' }
+    ],
+    featuresLabel: 'Site Efficiency Modules',
+    featuresSub: 'Six tools that make your site so efficient, sponsors will actually compete to give you their trials.',
+    features: [
+      { icon:'🎯', title:'Smart Patient Recruitment', desc:"AI matches your existing patient population to open trials in real time. No more cold-calling, flyer campaigns, or paying a vendor $5K per patient screened." },
+      { icon:'🛡️', title:'Protocol Deviation Shield', desc:"Flags potential deviations before they happen. Our predictive engine monitors every visit, every data point, every time window — so your audit stays clean." },
+      { icon:'⚡', title:'Query Automation Engine', desc:"Resolves 60% of queries automatically without coordinator intervention. The other 40%? Pre-filled with the right answer and waiting for one click." },
+      { icon:'👥', title:'Staff Workload Optimizer', desc:"Balances trial assignments across your coordinator team based on capacity, expertise, and burnout risk. Happy coordinators = retained coordinators." },
+      { icon:'📱', title:'Remote Monitoring Ready', desc:"Full remote access for monitors without the 3-day site visit circus. Real-time SDV, instant query resolution, and a dashboard your monitors will actually love." },
+      { icon:'💵', title:'Revenue Intelligence Dashboard', desc:"Know your per-visit revenue, milestone tracking, and payment forecasting down to the dollar. Stop leaving money in sponsor accounts for months." }
+    ]
+  },
+
+  patient: {
+    eyebrow: 'Patient-First Clinical Intelligence',
+    punchline: 'Your couch is now a Phase III site.',
+    headline: 'TRIALS THAT\nFIT YOUR\nACTUAL LIFE.',
+    subtitle: "Clinical trials used to mean 3-hour drives, 6am blood draws, and a parking garage that costs more than your copay. Not anymore.",
+    stats: [
+      { num: '89%', label: 'Retention Rate' },
+      { num: '0', label: 'Unnecessary Clinic Visits' },
+      { num: '2.3x', label: 'More Diverse Cohorts' },
+      { num: '94%', label: 'Patient Satisfaction' }
+    ],
+    featuresLabel: 'Patient-Centered Modules',
+    featuresSub: "Six innovations that prove clinical research can be designed around patients — not the other way around.",
+    features: [
+      { icon:'🏠', title:'Decentralized Trial Hub', desc:"Everything from eConsent to sample collection to safety monitoring happens at home or near home. We've eliminated the average 847 miles patients travel per trial." },
+      { icon:'📱', title:'ePRO Made Human', desc:"Our symptom diary doesn't look like a tax form. Plain language, 3-tap data entry, and a 98% completion rate that would make your statistician weep with joy." },
+      { icon:'🤝', title:'AI Companion', desc:"24/7 trial companion that answers questions in plain English (not protocol language), reminds you of visits, and escalates real concerns to your care team instantly." },
+      { icon:'🚗', title:'Home Nursing Network', desc:"2,400+ trained clinical research nurses available in 94% of US zip codes. Phlebotomy, ECGs, assessments — all at your kitchen table." },
+      { icon:'🔍', title:'Transparent Safety Reporting', desc:"You get the same safety updates your investigator sees — in language you can actually understand. No more wondering what's happening in your own trial." },
+      { icon:'🌍', title:'Diversity by Design', desc:"AI-powered multilingual consent, translated PRO instruments, and culturally adapted materials. Clinical research is for everyone. We built the infrastructure to prove it." }
+    ]
+  }
+};
+
+// Current persona
+let currentPersona = 'sponsor';
+
+// ─── TICKER ────────────────────────────────────────────────────────────────────
+const TICKER_ITEMS = [
+  'AI-Native Protocol Design','Adaptive Enrollment Intelligence','DCT Orchestration',
+  'Real-World Evidence Fusion','Quantum Risk Modeling','FDA-Ready Automation',
+  'Blockchain Audit Trails','Zero-Friction EDC Integration','CDISC Compliance Layer',
+  'Predictive Safety Signals','Global Site Intelligence','eTMF Automation',
+  'Patient-Centric Design','Decentralized Trials','Regulatory Cognition',
+  'Digital Biomarkers','Remote Monitoring','AI-Powered RTSM'
+];
+
+const LOADING_MESSAGES = [
+  'Parsing your clinical vision...','Cross-referencing 847 regulatory frameworks...',
+  'Activating neural protocol synthesis...','Fusing real-world evidence layers...',
+  'Quantum-optimizing your solution stack...','Calibrating hype levels to maximum...',
+  'Generating 1.21 Jiggawatts of regulatory intelligence...','Running CDISC compliance validation...',
+  'Notifying NIH of big changes coming...','Synthesizing FDA intelligence matrix...',
+  'Generating your breakthrough platform...','Resolving temporal paradoxes in your protocol...',
+  'Finalizing your bespoke solution...','Aligning stakeholder incentives across the space-time continuum...'
+];
+
+const SPAWN_SYSTEM = `You are the world's greatest hype copywriter and clinical trial technology expert. You create wildly enthusiastic, buzzword-rich product pages for eClinical AI platforms. Mix FDA regulatory knowledge (IND, NDA, eCTD, CDISC, EDC, CTMS, eTMF, RTSM, DCT, ePRO) with tech buzzwords (AI, ML, neural networks, blockchain, quantum computing, real-time analytics, edge computing, zero-knowledge proofs). Create product names that sound like real software products. Be creative, energetic, and slightly unbelievable — but grounded in real clinical trial concepts. Every response must be unique and tailored to the specific clinical challenge provided.
+
+CRITICAL JSON RULES — failure to follow these will break the output:
+1. Return ONLY a raw JSON object. No markdown, no code fences, no explanation text before or after.
+2. NEVER use double-quote characters (" ) inside any string value. Use em dashes (—), single quotes ('), or rephrase instead.
+3. NEVER use backslashes inside string values.
+4. Every string value must be on a single line — no literal newlines inside strings.
+5. All JSON keys and string values must be properly quoted with double quotes.
+6. Complete the entire JSON object — do not truncate or leave any field empty.`;
+
+// ─── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  initParticles();
+  initTicker();
+  renderPersona('sponsor');
+  initScrollAnimations();
+  generateDynamicHeadline();
+});
+
+// ─── PERSONA ───────────────────────────────────────────────────────────────────
+function setPersona(name) {
+  if (name === currentPersona) return;
+  currentPersona = name;
+
+  // stop the current carousel before switching
+  if (carouselTimer) { clearInterval(carouselTimer); carouselTimer = null; }
+
+  // update toggle buttons
+  document.querySelectorAll('.persona-btn').forEach(b => {
+    b.classList.toggle('active', b.dataset.persona === name);
+  });
+
+  // fade out content
+  ['hero-punchline','hero-headline','hero-subtitle'].forEach(id => {
+    document.getElementById(id).style.opacity = '0';
+  });
+  document.querySelectorAll('.hero-stat-num,.hero-stat-label').forEach(el => el.style.opacity = '0');
+
+  setTimeout(() => {
+    renderPersona(name);
+    generateDynamicHeadline();
+  }, 300);
+}
+
+// ─── HEADLINE CAROUSEL STATE ────────────────────────────────────────────────────
+const carouselIdx   = { sponsor: null, site: null, patient: null };
+let   carouselTimer = null;
+
+function showHeadlineAtIndex(persona, idx) {
+  const h   = HEADLINES[persona][idx];
+  const ids = ['hero-punchline','hero-headline','hero-subtitle'];
+
+  // Fade out — use CSS transition already defined in stylesheet.
+  // Do NOT set el.style.transition inline here: Safari batches transition + opacity
+  // changes in the same frame and skips the animation entirely.
+  ids.forEach(id => { document.getElementById(id).style.opacity = '0'; });
+
+  // Wait for the 0.3s CSS transition to finish, then swap content
+  setTimeout(() => {
+    document.getElementById('hero-punchline').textContent = h.punchline;
+    document.getElementById('hero-headline').innerHTML    = h.headline.replace(/\n/g,'<br>');
+    document.getElementById('hero-subtitle').textContent  = h.subtitle;
+
+    // Double rAF: Safari fix — ensures the new content (at opacity:0) is
+    // actually committed to the render tree before we trigger the fade-in.
+    // Without this, Safari sometimes sees opacity go 0→1 with no painted
+    // intermediate state and skips the transition.
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        ids.forEach(id => { document.getElementById(id).style.opacity = '1'; });
+      });
+    });
+  }, 350); // 350ms > 300ms CSS transition — ensures fade-out is fully done
+}
+
+function startHeadlineCarousel(persona) {
+  if (carouselTimer) clearInterval(carouselTimer);
+  carouselTimer = setInterval(() => {
+    carouselIdx[persona] = (carouselIdx[persona] + 1) % HEADLINES[persona].length;
+    showHeadlineAtIndex(persona, carouselIdx[persona]);
+  }, 10000);
+}
+
+function renderPersona(name) {
+  const p    = PERSONAS[name];
+  const pool = HEADLINES[name];
+
+  // Random starting index on first visit to each persona; preserve on subsequent persona switches
+  if (carouselIdx[name] === null) {
+    carouselIdx[name] = Math.floor(Math.random() * pool.length);
+  }
+  const h = pool[carouselIdx[name]];
+
+  document.getElementById('hero-eyebrow').textContent = p.eyebrow;
+
+  const pl = document.getElementById('hero-punchline');
+  pl.textContent   = h.punchline;
+  pl.style.opacity = '1';
+
+  const hl = document.getElementById('hero-headline');
+  hl.innerHTML     = h.headline.replace(/\n/g,'<br>');
+  hl.style.opacity = '1';
+
+  const sub = document.getElementById('hero-subtitle');
+  sub.textContent  = h.subtitle;
+  sub.style.opacity= '1';
+
+  // stats
+  const statsEl = document.getElementById('hero-stats');
+  statsEl.innerHTML = p.stats.map(s => `
+    <div class="hero-stat">
+      <div class="hero-stat-num">${s.num}</div>
+      <div class="hero-stat-label">${s.label}</div>
+    </div>`).join('');
+
+  // features
+  document.getElementById('features-label').textContent = p.featuresLabel;
+  document.getElementById('features-sub').textContent   = p.featuresSub;
+  const grid = document.getElementById('features-grid');
+  grid.innerHTML = p.features.map(f => `
+    <div class="feature-card visible">
+      <div class="feature-icon">${f.icon}</div>
+      <div class="feature-title">${f.title}</div>
+      <div class="feature-desc">${f.desc}</div>
+    </div>`).join('');
+
+  // Start / restart the 10-second carousel for this persona
+  startHeadlineCarousel(name);
+}
+
+// ─── PARTICLES ─────────────────────────────────────────────────────────────────
+function initParticles() {
+  const canvas = document.getElementById('particle-canvas');
+  const ctx = canvas.getContext('2d');
+  const N = 70, D = 130;
+  let pts = [], w, h;
+  function resize(){ w = canvas.width = innerWidth; h = canvas.height = innerHeight; }
+  function Pt(){ this.x=Math.random()*w; this.y=Math.random()*h; this.vx=(Math.random()-.5)*.6; this.vy=(Math.random()-.5)*.6; this.r=Math.random()*2+1; this.o=Math.random()*.5+.2; }
+  Pt.prototype.update=function(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>w)this.vx*=-1; if(this.y<0||this.y>h)this.vy*=-1; };
+  resize(); for(let i=0;i<N;i++) pts.push(new Pt()); addEventListener('resize',resize);
+  (function loop(){ ctx.clearRect(0,0,w,h);
+    for(let i=0;i<pts.length;i++){
+      pts[i].update();
+      ctx.beginPath(); ctx.arc(pts[i].x,pts[i].y,pts[i].r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(167,139,250,${pts[i].o})`; ctx.fill();
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, d=Math.sqrt(dx*dx+dy*dy);
+        if(d<D){ ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y);
+          ctx.strokeStyle=`rgba(124,58,237,${(1-d/D)*.15})`; ctx.lineWidth=1; ctx.stroke(); }
+      }
+    }
+    requestAnimationFrame(loop);
+  })();
+}
+
+// ─── TICKER ─────────────────────────────────────────────────────────────────────
+function initTicker(){
+  const inner = document.getElementById('ticker-inner');
+  const all = [...TICKER_ITEMS,...TICKER_ITEMS];
+  inner.innerHTML = all.map(t=>`<span class="ticker-item">${t}</span>`).join('');
+}
+
+// ─── SCROLL ANIMATIONS ─────────────────────────────────────────────────────────
+function initScrollAnimations(){
+  const obs = new IntersectionObserver(entries => {
+    entries.forEach((e,i) => {
+      if(e.isIntersecting){ setTimeout(()=>e.target.classList.add('visible'),i*80); obs.unobserve(e.target); }
+    });
+  },{threshold:0.1});
+  document.querySelectorAll('.feature-card:not(.visible)').forEach(el=>obs.observe(el));
+}
+
+// ─── MODALS ─────────────────────────────────────────────────────────────────────
+function openSpawnModal(){
+  // Sync modal persona buttons to whatever persona is currently active on the page
+  syncModalPersonaBtns(currentPersona);
+  document.getElementById('spawn-modal').classList.add('open');
+}
+function closeSpawnModal(){ document.getElementById('spawn-modal').classList.remove('open'); }
+
+// Lightweight persona switch from inside the modal — updates currentPersona and both button bars
+// without triggering the full page fade animation
+function setModalPersona(name){
+  currentPersona = name;
+  syncModalPersonaBtns(name);
+  // Also keep the main persona bar in sync
+  document.querySelectorAll('.persona-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.persona === name));
+}
+function syncModalPersonaBtns(name){
+  document.querySelectorAll('.modal-persona-btn').forEach(b =>
+    b.classList.toggle('active', b.dataset.persona === name));
+}
+document.querySelectorAll('.modal-overlay').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)o.classList.remove('open');}));
+
+// ─── TOAST ──────────────────────────────────────────────────────────────────────
+function showToast(msg,success=false){
+  const t=document.getElementById('toast');
+  t.textContent=msg; t.className='toast show'+(success?' success':'');
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),3500);
+}
+
+// ─── CLAUDE API (via secure PHP proxy — key never touches the browser) ──────────
+async function callClaude(userMsg, sysMsg=''){
+  const body={messages:[{role:'user',content:userMsg}],max_tokens:8192};
+  if(sysMsg) body.system=sysMsg;
+  const res=await fetch('api/claude-proxy.php',{
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify(body)
+  });
+  if(!res.ok){
+    const rawText=await res.text();
+    let errMsg=`Request failed (${res.status})`;
+    try{const e=JSON.parse(rawText);errMsg=e.error?.message||e.error||errMsg;}catch(_){}
+    throw new Error(errMsg);
+  }
+  return (await res.json()).content[0].text;
+}
+
+function extractJSON(text){
+  text=text.replace(/```(?:json)?\n?/g,'').replace(/```\n?/g,'').trim();
+  const m=text.match(/\{[\s\S]*\}/);
+  if(m) return JSON.parse(m[0]);
+  throw new Error('Could not parse AI response as JSON');
+}
+
+// ─── DYNAMIC HEADLINE ───────────────────────────────────────────────────────────
+async function generateDynamicHeadline(){
+  const p = PERSONAS[currentPersona];
+  const contextMap = {
+    sponsor: 'pharmaceutical sponsor / biotech company perspective — focused on approval speed, budget, ROI, and portfolio risk',
+    site: 'clinical research site perspective — focused on patient recruitment, query burden, revenue, and staff efficiency',
+    patient: 'patient participant perspective — focused on convenience, safety transparency, access, and reducing trial burden'
+  };
+  try {
+    const text = await callClaude(
+      `Generate a PUNCHY, slightly irreverent one-liner (10 words max, can be funny or provocative like "Your patent clock doesn't care about your CRO's timeline") and a bold AI headline (4-7 words, ALL CAPS) and subtitle (max 18 words) for an eClinical AI platform from a ${contextMap[currentPersona]}. Return ONLY raw JSON: {"punchline":"...","headline":"...","subtitle":"..."}`,
+      'You are a world-class hype copywriter for biotech/pharma tech. Be witty, sharp, and slightly cheeky. Industry insiders will get the jokes. No corporate speak. Think The Onion meets FDA guidance documents.'
+    );
+    const d = extractJSON(text);
+    ['hero-punchline','hero-headline','hero-subtitle'].forEach(id=>{
+      document.getElementById(id).style.opacity='0';
+    });
+    setTimeout(()=>{
+      if(d.punchline) document.getElementById('hero-punchline').textContent = d.punchline;
+      if(d.headline) document.getElementById('hero-headline').innerHTML = d.headline.replace(/\\n/g,'<br>');
+      if(d.subtitle) document.getElementById('hero-subtitle').textContent = d.subtitle;
+      ['hero-punchline','hero-headline','hero-subtitle'].forEach(id=>{
+        const el=document.getElementById(id);
+        el.style.transition='opacity 0.6s'; el.style.opacity='1';
+      });
+      // Restart carousel so the AI headline gets its full 10s before rotating
+      startHeadlineCarousel(currentPersona);
+    },300);
+  } catch(e){ /* silently keep static content — carousel continues unaffected */ }
+}
+
+// ─── SPAWN ──────────────────────────────────────────────────────────────────────
+let loadingInterval;
+let progressInterval;
+
+function startLoading(){
+  const overlay=document.getElementById('loading-overlay');
+  const msg=document.getElementById('loading-msg');
+  overlay.classList.add('active'); let i=0;
+  msg.textContent=LOADING_MESSAGES[0];
+  loadingInterval=setInterval(()=>{
+    i=(i+1)%LOADING_MESSAGES.length;
+    msg.style.opacity='0';
+    setTimeout(()=>{msg.textContent=LOADING_MESSAGES[i];msg.style.opacity='1';},200);
+  },1800);
+  // Progress bar
+  const bar=document.querySelector('.loading-bar');
+  bar.style.transition='none'; bar.style.width='0%';
+  let pct=0;
+  progressInterval=setInterval(()=>{
+    const step = pct<30?2.2:pct<60?1.4:pct<82?0.7:0.18;
+    pct=Math.min(pct+step,94);
+    bar.style.transition='width 0.35s ease';
+    bar.style.width=pct+'%';
+  },300);
+}
+function stopLoading(){
+  clearInterval(loadingInterval);
+  clearInterval(progressInterval);
+  const bar=document.querySelector('.loading-bar');
+  bar.style.transition='width 0.4s ease';
+  bar.style.width='100%';
+  setTimeout(()=>{
+    document.getElementById('loading-overlay').classList.remove('active');
+    setTimeout(()=>{ bar.style.transition='none'; bar.style.width='0%'; },300);
+  },400);
+}
+
+async function handleSpawn(){
+  const prompt     = document.getElementById('spawn-prompt').value.trim();
+  const area       = document.getElementById('spawn-area').value;
+  const phase      = document.getElementById('spawn-phase').value;
+  const firstName  = document.getElementById('spawn-firstname').value.trim();
+  const lastName   = document.getElementById('spawn-lastname').value.trim();
+  const email      = document.getElementById('spawn-email').value.trim();
+  const comment    = document.getElementById('spawn-comment').value.trim();
+  const wantsUpdates = document.getElementById('spawn-updates-checkbox').checked;
+
+  if(!prompt)    { showToast('Describe your clinical challenge first'); return; }
+  if(!firstName) { showToast('First name is required'); return; }
+  if(!lastName)  { showToast('Last name is required'); return; }
+  if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
+    showToast('Please enter a valid email address'); return;
+  }
+
+  // Store for auto-save
+  lastFirstName    = firstName;
+  lastLastName     = lastName;
+  lastEmail        = email;
+  lastComment      = comment;
+  lastWantsUpdates = wantsUpdates;
+
+  closeSpawnModal(); startLoading();
+
+  const personaContext = {
+    sponsor: 'The solution should emphasize ROI, regulatory strategy, budget control, and speed to approval.',
+    site: 'The solution should emphasize site efficiency, patient recruitment, query reduction, and revenue generation.',
+    patient: 'The solution should emphasize patient convenience, safety, diversity, and reducing trial burden.'
+  }[currentPersona];
+
+  const userMsg=`Create a unique eClinical AI product for this challenge:
+CHALLENGE: ${prompt}
+THERAPEUTIC AREA: ${area}
+TRIAL PHASE: ${phase}
+PERSONA FOCUS: ${personaContext}
+
+Return ONLY raw JSON (no markdown) with this structure:
+{"productName":"1-3 word product name","tagline":"Tagline with ™, 6-10 words","heroText":"2-3 sentence hyperbolic description","badges":["b1","b2","b3","b4","b5"],"features":[{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."}],"stats":[{"number":"figure","label":"label"},{"number":"figure","label":"label"},{"number":"figure","label":"label"},{"number":"figure","label":"label"}],"steps":[{"title":"...","description":"..."},{"title":"...","description":"..."},{"title":"...","description":"..."}],"testimonials":[{"quote":"...","author":"...","role":"...","company":"..."},{"quote":"...","author":"...","role":"...","company":"..."}],"cta":"Action CTA 5-8 words"}`;
+
+  try{
+    const text=await callClaude(userMsg,SPAWN_SYSTEM);
+    const data=extractJSON(text);
+    lastSpawnData   = data;
+    lastSpawnPrompt = prompt;
+    stopLoading();
+    renderSolution(data);
+    // Auto-save to gallery
+    autoSaveSpawn();
+    // HubSpot lead (fire & forget)
+    if(wantsUpdates) sendHubSpotLead(firstName, lastName, email, comment);
+  } catch(e){ stopLoading(); showToast('Spawn failed: '+e.message); }
+}
+
+// ─── RENDER SOLUTION ────────────────────────────────────────────────────────────
+function renderSolution(d){
+  const badges=(d.badges||[]).map(b=>`<span class="sol-badge-item">${esc(b)}</span>`).join('');
+  const features=(d.features||[]).map(f=>`
+    <div class="sol-feature">
+      <div class="sol-feature-icon">${f.icon||'✦'}</div>
+      <div class="sol-feature-title">${esc(f.title)}</div>
+      <div class="sol-feature-desc">${esc(f.description)}</div>
+    </div>`).join('');
+  const stats=(d.stats||[]).map(s=>`
+    <div class="sol-stat">
+      <div class="sol-stat-num">${esc(s.number)}</div>
+      <div class="sol-stat-label">${esc(s.label)}</div>
+    </div>`).join('');
+  const steps=(d.steps||[]).map((s,i)=>`
+    <div class="sol-step">
+      <div class="sol-step-num">${String(i+1).padStart(2,'0')}</div>
+      <div class="sol-step-content">
+        <div class="sol-step-title">${esc(s.title)}</div>
+        <div class="sol-step-desc">${esc(s.description)}</div>
+      </div>
+    </div>`).join('');
+  const testis=(d.testimonials||[]).map(t=>`
+    <div class="sol-testi">
+      <div class="sol-testi-quote">${esc(t.quote)}</div>
+      <div class="sol-testi-author">${esc(t.author)}</div>
+      <div class="sol-testi-role">${esc(t.role)} — ${esc(t.company)}</div>
+    </div>`).join('');
+
+  // Clone the nav logo SVG for branding inside the solution view
+  const _logoEl = document.querySelector('.nav-logo-svg');
+  const _logoHTML = _logoEl
+    ? `<div class="sol-brand-header">${_logoEl.outerHTML}</div>`
+    : '';
+
+  document.getElementById('solution-content').innerHTML=`
+    ${_logoHTML}
+    <div class="sol-hero">
+      <div class="sol-product-name">${esc(d.productName||'SOLUTION')}</div>
+      <div class="sol-tagline">${esc(d.tagline||'')}</div>
+      <div class="sol-badge">${badges}</div>
+      <div class="sol-hero-text">${esc(d.heroText||'')}</div>
+    </div>
+    <div class="sol-stats">${stats}</div>
+    <div class="section-label" style="margin-bottom:1rem">Core Capabilities</div>
+    <h2 class="section-title" style="margin-bottom:2.5rem">Built For Your <span>Exact Challenge</span></h2>
+    <div class="sol-features">${features}</div>
+    <div class="sol-steps-label">How It Works</div>
+    <h2 class="sol-steps-title">Three Steps to <span style="background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Transformation</span></h2>
+    <div class="sol-steps">${steps}</div>
+    <div class="sol-testi-label">Proof of Impact</div>
+    <h2 class="sol-testi-title">What Leaders Are <span style="background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Saying</span></h2>
+    <div class="sol-testis">${testis}</div>
+    <div class="sol-cta">
+      <div class="sol-cta-title">${esc(d.cta||'Start Your Journey')}</div>
+      <div class="sol-cta-sub">Your clinical breakthrough is one spawn away. Join the revolution.</div>
+      <button class="btn-sol-cta" onclick="openSpawnModal();closeSolution()">⚡ SPAWN ANOTHER</button>
+    </div>
+    <div style="padding-bottom:3rem"></div>`;
+
+  document.getElementById('solution-overlay').classList.add('active');
+  document.getElementById('solution-overlay').scrollTop=0;
+}
+
+function closeSolution(){ document.getElementById('solution-overlay').classList.remove('active'); }
+
+function esc(s){
+  if(!s) return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+document.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    document.querySelectorAll('.modal-overlay').forEach(m=>m.classList.remove('open'));
+    closeSolution();
+  }
+});
+
+// ─── HUBSPOT FORM INIT ────────────────────────────────────────────────────────
+// Polls for hbspt to be ready (handles async script load timing)
+(function initHubspotForm() {
+  function createForm() {
+    if (window.hbspt) {
+      hbspt.forms.create({
+        region:   'na1',
+        portalId: '45354923',
+        formId:   'de612bd4-aa9d-4704-87ce-d21b284f4eb3',
+        target:   '#hs-form-wrapper'
+      });
+    } else {
+      setTimeout(createForm, 100);
+    }
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', createForm);
+  } else {
+    createForm();
+  }
+})();
+
+// ─── AUTO-SAVE & COMPLETION ───────────────────────────────────────────────────
+let lastSpawnData    = null;
+let lastSpawnPrompt  = '';
+let lastFirstName    = '';
+let lastLastName     = '';
+let lastEmail        = '';
+let lastComment      = '';
+let lastWantsUpdates = true;
+
+async function autoSaveSpawn() {
+  try {
+    const res = await fetch('api/save-spawn.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        spawn:          lastSpawnData,
+        spawnPrompt:    lastSpawnPrompt,
+        firstName:      lastFirstName,
+        lastName:       lastLastName,
+        creatorEmail:   lastEmail,
+        creatorComment: lastComment,
+        creatorName:    (lastFirstName + ' ' + lastLastName).trim() || 'Anonymous',
+        persona:        currentPersona,
+      }),
+    });
+    const raw = await res.text();
+    let data;
+    try { data = JSON.parse(raw); }
+    catch(_) { throw new Error('Server error (HTTP ' + res.status + ')'); }
+    if (!data.success) throw new Error(data.error || 'Save failed');
+    showCompletionModal(data.id, false);
+  } catch(err) {
+    showCompletionModal(null, true, err.message);
+  }
+}
+
+function showCompletionModal(id, isError, errMsg) {
+  const overlay = document.getElementById('completion-overlay');
+  const title   = document.getElementById('completion-title');
+  const body    = document.getElementById('completion-body');
+  const actions = document.getElementById('completion-actions');
+
+  if (isError) {
+    title.textContent = 'Almost There.';
+    body.textContent  = 'Your spawn was generated — we just had trouble saving it. ' + (errMsg || '');
+    actions.innerHTML =
+      '<button class="btn-completion-primary" onclick="retryAutoSave()">↩ Retry Save</button>' +
+      '<button class="btn-completion-secondary" onclick="document.getElementById(\'completion-overlay\').classList.remove(\'show\')">Keep Exploring</button>';
+  } else {
+    title.textContent = 'Your Spawn Is Live.';
+    body.textContent  = 'Saved to the library and ready to share with the clinical research community.';
+    actions.innerHTML =
+      '<button class="btn-completion-primary" onclick="window.location.href=\'spawn.html?id=' + id + '\'">🚀 View My Spawn</button>';
+  }
+  // Brief delay so the solution render is visible first
+  setTimeout(() => { overlay.classList.add('show'); }, 700);
+}
+
+async function retryAutoSave() {
+  document.getElementById('completion-overlay').classList.remove('show');
+  setTimeout(() => autoSaveSpawn(), 400);
+}
+
+function sendHubSpotLead(firstName, lastName, email, comment) {
+  fetch('api/hubspot-lead.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ firstName, lastName, email, comment }),
+  }).catch(() => {}); // fire and forget — never block the spawn flow
+}
+</script>
+<script src="popup.js" defer></script>
+<script src="chatbot.js" defer></script>
+</body>
+</html>

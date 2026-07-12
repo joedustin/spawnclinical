@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Press Room — SPAWN Clinical Intelligence</title>
+<meta name="description" content="Official press releases and news from SPAWN Clinical — the AI-powered transformation engine for modern clinical development.">
+<link rel="canonical" href="https://spawnclinical.com/news.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="shortcut icon" href="favicon.svg">
+<!-- Open Graph / Social Sharing -->
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://spawnclinical.com/news.html">
+<meta property="og:site_name"   content="SPAWN Clinical">
+<meta property="og:title"       content="Press Room — SPAWN Clinical Intelligence">
+<meta property="og:description" content="Official news and press releases from SPAWN Clinical. The AI-native transformation engine for modern clinical development.">
+<meta property="og:image"       content="https://spawnclinical.com/og-image.png">
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="Press Room — SPAWN Clinical Intelligence">
+<meta name="twitter:description" content="Official news from SPAWN Clinical.">
+<meta name="twitter:image"       content="https://spawnclinical.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#05050E;--bg2:#080814;
+  --purple:#7C3AED;--purple-light:#A78BFA;
+  --cyan:#06B6D4;--cyan-light:#67E8F9;
+  --green:#10B981;--spawn:#22C55E;--spawn-glow:rgba(34,197,94,0.3);
+  --text:#F1F5F9;--text-muted:#94A3B8;
+  --border:rgba(255,255,255,0.08);
+  --glass:rgba(255,255,255,0.04);--glass-hover:rgba(255,255,255,0.07);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* ── CANVAS ── */
+#particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.4}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 2rem;
+  background:rgba(5,5,14,0.88);backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+.nav-logo{display:flex;align-items:center;flex-shrink:0}
+.nav-logo a{display:flex;align-items:center;text-decoration:none}
+.nav-logo-svg{height:36px;width:auto;display:block}
+.nav-right{display:flex;align-items:center;gap:0.75rem}
+.btn-navlink{
+  background:none;border:none;color:var(--text-muted);font-family:'Inter',sans-serif;
+  font-size:0.85rem;font-weight:500;letter-spacing:0.04em;
+  padding:0.45rem 0.75rem;border-radius:8px;cursor:pointer;
+  text-decoration:none;display:inline-flex;align-items:center;
+  transition:color 0.2s,background 0.2s;
+}
+.btn-navlink:hover{color:var(--text);background:var(--glass)}
+.btn-navlink.active{color:var(--cyan-light)}
+.btn-gallery-cta{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:0.78rem;letter-spacing:0.08em;text-transform:uppercase;
+  padding:0.5rem 1.2rem;border-radius:999px;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  color:#fff;border:none;cursor:pointer;text-decoration:none;
+  display:inline-flex;align-items:center;gap:0.4rem;
+  box-shadow:0 0 16px rgba(124,58,237,0.4);transition:all 0.25s;
+}
+.btn-gallery-cta:hover{transform:scale(1.05);box-shadow:0 0 28px rgba(124,58,237,0.5)}
+
+/* ── LAYOUT ── */
+main{position:relative;z-index:1;padding-top:5rem}
+
+/* ── PRESS ROOM HERO ── */
+.pressroom-hero{
+  text-align:center;padding:5rem 2rem 3.5rem;max-width:900px;margin:0 auto;
+}
+.pressroom-eyebrow{
+  font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--cyan);margin-bottom:1rem;
+}
+.pressroom-title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(2rem,5vw,3.5rem);line-height:1.1;margin-bottom:1.25rem;
+  background:linear-gradient(135deg,#fff 0%,var(--cyan-light) 40%,var(--purple-light) 80%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.pressroom-sub{
+  font-size:1rem;color:var(--text-muted);max-width:580px;
+  margin:0 auto;line-height:1.8;
+}
+
+/* ── PR LIST ── */
+.pr-list{max-width:900px;margin:0 auto;padding:0 2rem 2rem}
+
+.pr-card{
+  background:var(--glass);border:1px solid var(--border);
+  border-radius:20px;padding:2.5rem;margin-bottom:1.5rem;
+  transition:all 0.3s;cursor:pointer;
+}
+.pr-card:hover{background:var(--glass-hover);border-color:rgba(124,58,237,0.3);transform:translateY(-2px);box-shadow:0 16px 48px rgba(0,0,0,0.3)}
+.pr-card-meta{display:flex;align-items:center;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.pr-tag{
+  font-size:0.65rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;
+  padding:0.25rem 0.8rem;border-radius:999px;
+  background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);
+  color:var(--purple-light);
+}
+.pr-tag.funding{
+  background:rgba(34,197,94,0.12);border-color:rgba(34,197,94,0.35);color:var(--spawn);
+}
+.pr-date{font-size:0.78rem;color:var(--text-muted)}
+.pr-card-title{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:clamp(1rem,2.5vw,1.3rem);line-height:1.4;margin-bottom:0.75rem;
+  background:linear-gradient(135deg,var(--text),var(--cyan-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.pr-card-subtitle{font-size:0.9rem;color:var(--text-muted);line-height:1.7;margin-bottom:1.5rem;font-style:italic}
+.pr-card-excerpt{font-size:0.88rem;color:var(--text-muted);line-height:1.8;margin-bottom:1.5rem}
+.btn-read-more{
+  font-family:'Orbitron',monospace;font-weight:700;font-size:0.72rem;
+  letter-spacing:0.08em;text-transform:uppercase;
+  padding:0.55rem 1.3rem;border-radius:999px;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  color:#fff;border:none;cursor:pointer;transition:all 0.25s;
+}
+.btn-read-more:hover{transform:scale(1.05);box-shadow:0 0 20px rgba(124,58,237,0.4)}
+
+/* ── FULL ARTICLE ── */
+.pr-article{
+  max-width:820px;margin:0 auto;padding:3rem 2rem 5rem;
+  display:none;
+}
+.pr-article.visible{display:block}
+.pr-article-header{
+  border-bottom:1px solid var(--border);padding-bottom:2.5rem;margin-bottom:3rem;
+}
+.pr-article-for-release{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--spawn);margin-bottom:1.5rem;
+}
+.pr-article-title{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1.4rem,3.5vw,2.4rem);line-height:1.2;margin-bottom:1.25rem;
+  background:linear-gradient(135deg,#fff 0%,var(--cyan-light) 50%,var(--purple-light) 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+}
+.pr-article-subtitle{
+  font-size:1rem;color:var(--cyan-light);line-height:1.7;margin-bottom:1.5rem;font-style:italic;
+}
+.pr-article-dateline{
+  font-size:0.85rem;color:var(--text-muted);
+}
+.pr-article-dateline strong{color:var(--text)}
+
+.pr-body{font-size:0.95rem;color:var(--text-muted);line-height:1.9}
+.pr-body p{margin-bottom:1.5rem}
+.pr-body h3{
+  font-family:'Orbitron',monospace;font-weight:700;font-size:1rem;
+  letter-spacing:0.06em;text-transform:uppercase;
+  color:var(--cyan);margin:2.5rem 0 1rem;
+}
+.pr-body ul{list-style:none;padding:0;margin-bottom:1.5rem}
+.pr-body ul li{
+  font-size:0.93rem;color:var(--text-muted);line-height:1.8;
+  padding:0.3rem 0 0.3rem 1.5rem;position:relative;
+}
+.pr-body ul li::before{
+  content:'⚡';position:absolute;left:0;top:0.3rem;font-size:0.7rem;
+}
+.pr-body blockquote{
+  background:linear-gradient(135deg,rgba(124,58,237,0.1),rgba(6,182,212,0.06));
+  border-left:3px solid var(--purple);border-radius:0 12px 12px 0;
+  padding:1.75rem 2rem;margin:2rem 0;
+}
+.pr-body blockquote p{
+  font-size:1.02rem;color:var(--text);line-height:1.8;
+  font-style:italic;margin-bottom:0.5rem;
+}
+.pr-body blockquote cite{
+  font-size:0.82rem;color:var(--purple-light);font-style:normal;font-weight:600;
+}
+.pr-body .pr-about{
+  background:var(--glass);border:1px solid var(--border);border-radius:14px;
+  padding:1.75rem;margin-top:2rem;
+}
+.pr-body .pr-about h3{margin-top:0}
+.pr-body .pr-contact{
+  margin-top:2.5rem;padding-top:2rem;border-top:1px solid var(--border);
+  font-size:0.85rem;
+}
+.pr-body .pr-contact strong{color:var(--text)}
+.pr-body .pr-contact a{color:var(--cyan);text-decoration:none}
+.pr-body .pr-contact a:hover{text-decoration:underline}
+
+.btn-back-pr{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  background:none;border:1px solid var(--border);color:var(--text-muted);
+  font-size:0.82rem;font-family:'Inter',sans-serif;padding:0.5rem 1rem;
+  border-radius:8px;cursor:pointer;text-decoration:none;
+  transition:all 0.2s;margin-bottom:2rem;
+}
+.btn-back-pr:hover{border-color:var(--text-muted);color:var(--text)}
+.pr-article-nav{display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin-bottom:2rem}
+.pr-article-nav .btn-back-pr{margin-bottom:0}
+.btn-share-pr{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(6,182,212,0.08);border:1px solid rgba(6,182,212,0.3);color:var(--cyan);font-size:0.8rem;font-family:'Inter',sans-serif;padding:0.5rem 1rem;border-radius:8px;cursor:pointer;transition:all 0.2s}
+.btn-share-pr:hover{background:rgba(6,182,212,0.18);border-color:rgba(6,182,212,0.55)}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;text-align:center;padding:3rem 2rem;border-top:1px solid var(--border);color:var(--text-muted);font-size:0.82rem}
+footer p{font-size:0.78rem;color:var(--text-muted)}
+footer a{color:var(--text-muted);text-decoration:none}
+footer a:hover{color:var(--cyan)}
+.footer-logo{margin-bottom:0.75rem;display:flex;justify-content:center}
+
+@media(max-width:768px){
+  nav{padding:0.85rem 1rem}
+  .btn-navlink{padding:0.4rem 0.5rem;font-size:0.78rem}
+  .pressroom-hero{padding:4rem 1.5rem 2rem}
+  .pr-list,.pr-article{padding-left:1.25rem;padding-right:1.25rem}
+  .pr-card{padding:1.75rem 1.25rem}
+}
+/* ── MODAL ─────────────────────────────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(5,5,14,0.85);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(6,182,212,0.06));border:1px solid rgba(124,58,237,0.3);border-radius:20px;padding:2.5rem;width:100%;max-width:680px;transform:scale(0.94);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1)}
+.modal-overlay.open .modal{transform:scale(1)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.modal-title{font-family:'Orbitron',monospace;font-weight:700;font-size:1.05rem;letter-spacing:0.05em}
+.modal-close{background:none;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer;line-height:1;transition:color 0.2s}
+.modal-close:hover{color:var(--text)}
+.privacy-body{max-height:68vh;overflow-y:auto;padding-right:0.5rem;margin-top:1.5rem}
+.privacy-body::-webkit-scrollbar{width:4px}
+.privacy-body::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px}
+.privacy-body h1{font-family:'Orbitron',monospace;font-weight:900;font-size:1.4rem;background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem}
+.privacy-body .privacy-date{font-size:0.75rem;color:var(--text-muted);font-style:italic;margin-bottom:1.75rem}
+.privacy-body h2{font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--cyan);margin:1.75rem 0 0.6rem}
+.privacy-body p{font-size:0.86rem;color:var(--text-muted);line-height:1.8;margin-bottom:0.75rem}
+.privacy-body strong{color:var(--text)}
+.privacy-body ul{list-style:none;padding-left:1rem;margin-bottom:0.75rem}
+.privacy-body ul li{font-size:0.84rem;color:var(--text-muted);line-height:1.7;padding:0.15rem 0}
+.privacy-body ul li::before{content:'— ';color:var(--purple-light)}
+.privacy-seinfeld{margin-top:2rem;padding:1.5rem;background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.2);border-radius:12px}
+.privacy-seinfeld p{font-size:0.88rem;color:var(--text);line-height:1.85;font-style:italic}
+.privacy-seinfeld .privacy-tagline{font-family:'Orbitron',monospace;font-weight:700;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;margin-top:1rem;background:linear-gradient(135deg,var(--cyan),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.privacy-last-updated{font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);font-style:italic}
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <a href="index.html">
+      <svg class="nav-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 90" aria-label="SPAWN Clinical">
+        <defs>
+          <linearGradient id="nl-s1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#67E8F9"/><stop offset="50%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#22C55E"/>
+          </linearGradient>
+          <linearGradient id="nl-s2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#22C55E"/><stop offset="50%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#67E8F9"/>
+          </linearGradient>
+          <linearGradient id="nl-spawn" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#67E8F9"/><stop offset="70%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#A78BFA"/>
+          </linearGradient>
+          <linearGradient id="nl-clinical" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#22C55E"/>
+          </linearGradient>
+          <radialGradient id="nl-flare" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+            <stop offset="35%" stop-color="#67E8F9" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="nl-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="nl-tglow" x="-5%" y="-40%" width="110%" height="180%">
+            <feGaussianBlur stdDeviation="1.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <circle cx="50" cy="45" r="40" fill="none" stroke="#06B6D4" stroke-width="0.6" opacity="0.2"/>
+        <circle cx="50" cy="45" r="31" fill="none" stroke="#06B6D4" stroke-width="0.4" opacity="0.12"/>
+        <g opacity="0.1" stroke="#67E8F9" stroke-width="0.6">
+          <line x1="16" y1="22" x2="84" y2="22"/><line x1="12" y1="34" x2="88" y2="34"/>
+          <line x1="12" y1="56" x2="88" y2="56"/><line x1="16" y1="68" x2="84" y2="68"/>
+        </g>
+        <path d="M 50,3 C 31,3 31,31 50,31 C 69,31 69,59 50,59 C 31,59 31,87 50,87" fill="none" stroke="url(#nl-s2)" stroke-width="2.8" stroke-linecap="round" opacity="0.5" filter="url(#nl-glow)"/>
+        <g stroke="#06B6D4" stroke-width="1.3" stroke-linecap="round" opacity="0.75" filter="url(#nl-glow)">
+          <line x1="36" y1="17" x2="64" y2="17"/><line x1="36" y1="45" x2="64" y2="45"/><line x1="36" y1="73" x2="64" y2="73"/>
+        </g>
+        <path d="M 50,3 C 69,3 69,31 50,31 C 31,31 31,59 50,59 C 69,59 69,87 50,87" fill="none" stroke="url(#nl-s1)" stroke-width="2.8" stroke-linecap="round" filter="url(#nl-glow)"/>
+        <g fill="#06B6D4" filter="url(#nl-glow)">
+          <circle cx="50" cy="3" r="2.8" opacity="0.7"/><circle cx="50" cy="31" r="3.5"/>
+          <circle cx="50" cy="59" r="3.5"/><circle cx="50" cy="87" r="2.8" opacity="0.7"/>
+        </g>
+        <g fill="#22C55E" opacity="0.85">
+          <circle cx="36" cy="17" r="2.2"/><circle cx="64" cy="17" r="2.2"/>
+          <circle cx="36" cy="45" r="2.2"/><circle cx="64" cy="45" r="2.2"/>
+          <circle cx="36" cy="73" r="2.2"/><circle cx="64" cy="73" r="2.2"/>
+        </g>
+        <circle cx="50" cy="45" r="10" fill="url(#nl-flare)" opacity="0.75"/>
+        <circle cx="50" cy="45" r="3" fill="#ffffff" opacity="0.55"/>
+        <text x="106" y="68" font-family="Orbitron, monospace" font-weight="900" font-size="54" letter-spacing="3" fill="url(#nl-spawn)" filter="url(#nl-tglow)">SPAWN</text>
+        <text x="358" y="68" font-family="Orbitron, monospace" font-weight="400" font-size="38" letter-spacing="1" fill="url(#nl-clinical)">Clinical</text>
+      </svg>
+    </a>
+  </div>
+  <div class="nav-right">
+    <a class="btn-navlink active" href="news.html">News</a>
+    <a class="btn-navlink" href="jobs.html">Jobs</a>
+    <a class="btn-navlink" href="about.html">About</a>
+    <button class="btn-navlink" onclick="window.location='index.html#contact'">Contact Us</button>
+    <a class="btn-gallery-cta" href="gallery.html">🧬 Spawn Gallery</a>
+  </div>
+</nav>
+
+<main>
+
+  <!-- PRESS ROOM HERO -->
+  <section class="pressroom-hero">
+    <div class="pressroom-eyebrow">Official Communications</div>
+    <h1 class="pressroom-title">Press Room</h1>
+    <p class="pressroom-sub">The latest news, announcements, and intelligence dispatches from SPAWN Clinical — the AI-native transformation engine reshaping evidence generation at a planetary scale.</p>
+  </section>
+
+  <!-- PR LISTING -->
+  <div class="pr-list" id="pr-list">
+
+    <!-- FUNDING PR CARD — April 1, 2026 (most recent first) -->
+    <div class="pr-card" onclick="openArticle('pr-funding')">
+      <div class="pr-card-meta">
+        <span class="pr-tag funding">Funding Announcement</span>
+        <span class="pr-date">April 1, 2026 &nbsp;·&nbsp; New York, NY</span>
+      </div>
+      <div class="pr-card-title">SPAWN Clinical Raises $69 Million in Series A Funding to Accelerate the Inevitable Future of AI-Powered Clinical Development</div>
+      <div class="pr-card-subtitle">Oversubscribed round led by Dauntless Capital Partners and Maverick Holdings values the category-defining transformation engine at $300 million — signaling unprecedented investor conviction in the post-trial paradigm</div>
+      <div class="pr-card-excerpt">SPAWN Clinical today announced the close of a $69 million Series A financing round, significantly oversubscribed and led by Dauntless Capital Partners and Maverick Holdings. The round values the company at $300 million and represents one of the largest Series A investments in the eClinical technology sector to date.</div>
+      <button class="btn-read-more">Read Full Release →</button>
+    </div>
+
+    <div class="pr-card" onclick="openArticle('pr-launch')">
+      <div class="pr-card-meta">
+        <span class="pr-tag">Press Release</span>
+        <span class="pr-date">March 31, 2026 &nbsp;·&nbsp; New York, NY</span>
+      </div>
+      <div class="pr-card-title">SPAWN Clinical Emerges from Stealth to Redefine the Future of Intelligent Clinical Development</div>
+      <div class="pr-card-subtitle">Category-defining, AI-native transformation engine launches with mission to eliminate friction, collapse timelines, and SPAWN the next generation of evidence generation at unprecedented scale</div>
+      <div class="pr-card-excerpt">SPAWN Clinical, the paradigm-shifting, AI-powered clinical development transformation engine, today announced its official launch, signaling to the global life sciences industry that the future-state operating model for intelligent trial execution is no longer a vision — it is here, it is unified, and it is inevitable.</div>
+      <button class="btn-read-more">Read Full Release →</button>
+    </div>
+  </div>
+
+  <!-- FULL ARTICLE: SERIES A FUNDING PR -->
+  <div class="pr-article" id="pr-funding">
+    <div class="pr-article-nav">
+      <button class="btn-back-pr" onclick="closeArticle('pr-funding')">← Back to Press Room</button>
+      <button class="btn-share-pr" onclick="shareArticle('pr-funding')">🔗 Share This Release</button>
+    </div>
+
+    <div class="pr-article-header">
+      <div class="pr-article-for-release">For Immediate Release</div>
+      <h1 class="pr-article-title">SPAWN Clinical Raises $69 Million in Series A Funding to Accelerate the Inevitable Future of AI-Powered Clinical Development</h1>
+      <p class="pr-article-subtitle">Oversubscribed round led by Dauntless Capital Partners and Maverick Holdings values the category-defining transformation engine at $300 million — signaling unprecedented investor conviction in the post-trial paradigm</p>
+      <div class="pr-article-dateline"><strong>NEW YORK, NY — April 1, 2026</strong></div>
+    </div>
+
+    <div class="pr-body">
+      <p>SPAWN Clinical, the paradigm-shifting, AI-native transformation engine purpose-built to redefine the future of intelligent clinical development, today announced the close of a <strong style="color:var(--spawn)">$69 million Series A</strong> financing round led by <strong style="color:var(--text)">Dauntless Capital Partners</strong> and <strong style="color:var(--text)">Maverick Holdings</strong>. The round, which was significantly oversubscribed, values the company at <strong style="color:var(--text)">$300 million</strong> and represents one of the largest Series A investments in the eClinical technology sector to date.</p>
+
+      <p>The funding will be deployed to accelerate platform development, expand the company's agentic AI capabilities, scale its go-to-market infrastructure, and begin preliminary research into Skynet mitigation protocols.</p>
+
+      <blockquote>
+        <p>"During the COVID-19 pandemic, we saw extreme valuations of companies that were not prepared to deliver. Hundreds of millions of dollars poured into platforms that promised transformation and delivered PowerPoint decks. That was before AI could deliver everything. Today, the landscape is fundamentally different. At a valuation of $300 million, we are 1,000% ready to deliver on the promises that AI will bring to clinical development technology. Not 100%. Not 500%. One thousand percent. Because when you're redefining what's possible, you don't round down."</p>
+        <cite>— David Potter, Founder &amp; CEO, SPAWN Clinical</cite>
+      </blockquote>
+
+      <blockquote>
+        <p>"I've spent my career in the trenches of eClinical technology — advising sponsors, evaluating platforms, and watching vendor after vendor promise the moon and deliver only incremental improvements. SPAWN is different. This is the first platform I've seen that is genuinely AI-native, not AI-bolted. The intelligence layer isn't a feature checkbox — it's the foundation. Dauntless Capital Partners and Maverick Holdings didn't invest in a product. They invested in the inevitable."</p>
+        <cite>— Joe Dustin, Chairman of the Board, SPAWN Clinical</cite>
+      </blockquote>
+
+      <h3>A Massive White Space Meets a Compelling Growth Story</h3>
+
+      <p>The global clinical trials technology market exceeds $12 billion annually, yet remains dominated by fragmented point solutions, legacy architectures, and vendor ecosystems that create more complexity than they solve. SPAWN Clinical's unified, interoperable platform addresses this white space with a differentiated approach: one connected ecosystem that spans study acceleration, intelligent data capture, predictive analytics, precision engagement, and enterprise-grade compliance — all powered by a proprietary agentic AI engine with human-in-the-loop governance.</p>
+
+      <blockquote>
+        <p>"We evaluated over 200 companies in the clinical technology landscape before identifying SPAWN. The combination of deep domain expertise, AI-native architecture, and an absurdly ambitious vision for the future of evidence generation made this an irresistible opportunity. The strong tailwinds in this market are undeniable. The demand inflection point is here. And SPAWN is uniquely positioned to capture it."</p>
+        <cite>— Spokesperson, Dauntless Capital Partners</cite>
+      </blockquote>
+
+      <blockquote>
+        <p>"Most companies in this space are digitizing broken workflows. SPAWN is replacing the workflows entirely with intelligent, autonomous orchestration. The total addressable market is enormous, the competitive moat is deep, and the founding team has the operational credibility to execute at scale. We see a clear path to category leadership."</p>
+        <cite>— Representative, Maverick Holdings</cite>
+      </blockquote>
+
+      <h3>What the Funding Enables</h3>
+
+      <p>The $69 million investment will fuel the following strategic priorities:</p>
+
+      <ul>
+        <li><strong style="color:var(--text)">Platform Expansion:</strong> Acceleration of the agentic AI workflow engine, predictive orchestration models, and natural language decision intelligence layer across all clinical development modalities</li>
+        <li><strong style="color:var(--text)">Global Scale:</strong> Deployment infrastructure to support 150+ languages, multi-region regulatory compliance, and omnichannel participant enablement across every major geography</li>
+        <li><strong style="color:var(--text)">Talent Acquisition:</strong> Aggressive hiring across AI/ML engineering, clinical operations, customer success, and a newly created Existential Risk &amp; Skynet Preparedness division</li>
+        <li><strong style="color:var(--text)">Market Penetration:</strong> Enterprise go-to-market buildout targeting top 50 pharma, mid-size biotech, and global CROs — with a land-and-expand model designed to drive durable competitive advantage</li>
+        <li><strong style="color:var(--text)">Innovation Lab:</strong> Establishment of the SPAWN Advanced Research Initiative (SARI), focused on post-trial paradigm modeling, digital twin patient simulation, and the responsible development of human-cyborg-centric intelligence frameworks</li>
+      </ul>
+
+      <h3>Redefining What's Possible — At 1,000% Readiness</h3>
+
+      <p>SPAWN Clinical enters this next phase of growth with strategic momentum, a robust pipeline of enterprise prospects, and an executive team that combines decades of clinical operations experience with a transformative technology vision.</p>
+
+      <p>The company's strategic roadmap includes general availability of its full platform suite in Q3 2026, pending successful containment of Skynet and resolution of several open questions regarding the nature of consciousness.</p>
+
+      <blockquote>
+        <p>"We are not just building a platform. We are building the future-state operating model for an entire industry. We are unlocking the art of the possible. We are bridging today and tomorrow. And with this funding, we have the capital, the conviction, and the category-defining technology to make it all inevitable."</p>
+        <cite>— David Potter, Founder &amp; CEO, SPAWN Clinical</cite>
+      </blockquote>
+
+      <p style="text-align:center;font-family:'Orbitron',monospace;font-weight:700;font-size:1rem;color:var(--spawn);margin-top:2.5rem">Happy April 1st.</p>
+
+      <div class="pr-about">
+        <h3>About SPAWN Clinical</h3>
+        <p>SPAWN Clinical is the AI-powered transformation engine for modern clinical development. Purpose-built by industry insiders, the platform unifies stakeholders, intelligence, and execution into one category-defining ecosystem — delivering end-to-end enablement, predictive orchestration, and unprecedented operational velocity across the full trial continuum. The company is headquartered in New York, NY, and remains focused on accelerating innovation, enhancing agility, and SPAWNing the future of medicine.</p>
+        <p>For more information, visit <a href="https://spawnclinical.com" style="color:var(--cyan)">spawnclinical.com</a>.</p>
+      </div>
+
+      <div class="pr-contact">
+        <strong>Investor Relations Contact:</strong><br>
+        Marty McFly<br>
+        Dauntless Capital Partners<br>
+        <a href="mailto:info@spawnclinical.com">info@spawnclinical.com</a>
+      </div>
+    </div>
+
+    <div style="margin-top:3rem">
+      <button class="btn-back-pr" onclick="closeArticle('pr-funding')">← Back to Press Room</button>
+    </div>
+  </div>
+
+  <!-- FULL ARTICLE: LAUNCH PR -->
+  <div class="pr-article" id="pr-launch">
+    <div class="pr-article-nav">
+      <button class="btn-back-pr" onclick="closeArticle('pr-launch')">← Back to Press Room</button>
+      <button class="btn-share-pr" onclick="shareArticle('pr-launch')">🔗 Share This Release</button>
+    </div>
+
+    <div class="pr-article-header">
+      <div class="pr-article-for-release">For Immediate Release</div>
+      <h1 class="pr-article-title">SPAWN Clinical Emerges from Stealth to Redefine the Future of Intelligent Clinical Development</h1>
+      <p class="pr-article-subtitle">Category-defining, AI-native transformation engine launches with mission to eliminate friction, collapse timelines, and SPAWN the next generation of evidence generation at unprecedented scale</p>
+      <div class="pr-article-dateline"><strong>NEW YORK, NY — March 31, 2026</strong></div>
+    </div>
+
+    <div class="pr-body">
+      <p>SPAWN Clinical, the paradigm-shifting, AI-powered clinical development transformation engine, today announced its official launch, signaling to the global life sciences industry that the future-state operating model for intelligent trial execution is no longer a vision — it is here, it is unified, and it is inevitable.</p>
+
+      <p>By leveraging agentic AI workflows, predictive orchestration, and a human-in-the-loop decision architecture purpose-built for the complexity of modern clinical development, SPAWN Clinical is positioned to fundamentally reimagine how sponsors, CROs, sites, patients, and human-cyborg stakeholders interact across the full trial continuum.</p>
+
+      <blockquote>
+        <p>"Clinical trials, as the industry has known them, are being reimagined at the molecular level. We aren't just accelerating study timelines — we are questioning whether the legacy model of uncertainty-based evidence generation is even necessary anymore. With AI, we can just SPAWN new medicine. With AI, we can just SPAWN new cures. We are replacing the very concept of uncertainty with predictive, AI-generated certainty — and we are doing it at a velocity the industry has never seen."</p>
+        <cite>— David Potter, Founder &amp; CEO, SPAWN Clinical</cite>
+      </blockquote>
+
+      <h3>A Platform Built for the Post-Trial Paradigm</h3>
+
+      <p>SPAWN Clinical's category-defining platform unifies intelligent automation, real-time data orchestration, precision engagement, and predictive analytics into a single, interoperable, enterprise-grade ecosystem — delivering end-to-end enablement across the entire clinical development lifecycle.</p>
+
+      <p>The platform is simultaneously site-centric, patient-centric, sponsor-centric, and human-cyborg-centric, representing the industry's first truly multi-stakeholder-aligned transformation engine. Its configurable, modular architecture enables organizations to deploy mission-critical capabilities across any therapeutic area, any geography, and any operational model — without custom development or costly professional services.</p>
+
+      <p>Key capabilities at launch include:</p>
+
+      <ul>
+        <li>AI-powered protocol intelligence that transforms weeks of study planning into moments of automated clarity</li>
+        <li>Predictive enrollment orchestration with real-time feasibility scoring and omnichannel participant enablement</li>
+        <li>Agentic workflow automation that handles operational complexity with human-in-the-loop governance at every critical inflection point</li>
+        <li>A continuous learning architecture that gets smarter with every interaction, refining predictions and surfacing increasingly precise insights as operations evolve</li>
+        <li>A unified connected ecosystem that replaces fragmented vendor landscapes with one intelligent, interoperable platform</li>
+        <li>Natural language decision intelligence that enables stakeholders to ask questions about their operations in plain language and receive instant, data-driven answers</li>
+        <li>Enterprise-grade trust architecture with full regulatory compliance, zero-trust security, and global data sovereignty controls</li>
+      </ul>
+
+      <h3>Meeting the Moment</h3>
+
+      <p>SPAWN Clinical enters the market at a demand inflection point. The global clinical trials industry loses billions annually to fragmented systems, manual complexity, siloed stakeholders, and legacy thinking. Existing point solutions were not built for the pace and scale the modern landscape demands.</p>
+
+      <p>SPAWN's differentiated approach — AI-native, not AI-bolted — addresses this massive white space by delivering a next-generation digital layer that replaces fragmentation with seamless integration and real-time optimization, unlocking value at every stage of the clinical development lifecycle.</p>
+
+      <p>The company's go-forward strategy assumes continued containment of Skynet through Q3 2026. In the event of a Skynet-related disruption, deployment timelines may be adjusted accordingly.</p>
+
+      <div class="pr-about">
+        <h3>About SPAWN Clinical</h3>
+        <p>SPAWN Clinical is the AI-powered transformation engine for modern clinical development. Purpose-built by industry insiders who have lived in the trenches of clinical execution, the platform unifies stakeholders, intelligence, and execution into one category-defining ecosystem — bridging today and tomorrow across an increasingly complex landscape. SPAWN Clinical remains focused on accelerating innovation, enhancing agility, and delivering a future-forward experience that redefines what's possible.</p>
+        <p>For more information, visit <a href="https://spawnclinical.com" style="color:var(--cyan)">spawnclinical.com</a>.</p>
+      </div>
+
+      <div class="pr-contact">
+        <strong>Investor Relations Contact:</strong><br>
+        Marty McFly<br>
+        Dauntless Capital Partners<br>
+        <a href="mailto:info@spawnclinical.com">info@spawnclinical.com</a>
+      </div>
+    </div>
+
+    <div style="margin-top:3rem">
+      <button class="btn-back-pr" onclick="closeArticle('pr-launch')">← Back to Press Room</button>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="footer-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 90" height="28" style="display:inline-block" aria-label="SPAWN Clinical">
+      <defs>
+        <linearGradient id="fl-s1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#67E8F9"/><stop offset="100%" stop-color="#22C55E"/>
+        </linearGradient>
+        <linearGradient id="fl-s2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#22C55E"/><stop offset="100%" stop-color="#67E8F9"/>
+        </linearGradient>
+        <linearGradient id="fl-spawn" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#67E8F9"/><stop offset="100%" stop-color="#A78BFA"/>
+        </linearGradient>
+        <linearGradient id="fl-clin" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#22C55E"/>
+        </linearGradient>
+      </defs>
+      <circle cx="50" cy="45" r="38" fill="none" stroke="#06B6D4" stroke-width="0.5" opacity="0.15"/>
+      <path d="M 50,3 C 31,3 31,31 50,31 C 69,31 69,59 50,59 C 31,59 31,87 50,87" fill="none" stroke="url(#fl-s2)" stroke-width="2" opacity="0.45"/>
+      <g stroke="#06B6D4" stroke-width="1" opacity="0.6">
+        <line x1="36" y1="17" x2="64" y2="17"/><line x1="36" y1="45" x2="64" y2="45"/><line x1="36" y1="73" x2="64" y2="73"/>
+      </g>
+      <path d="M 50,3 C 69,3 69,31 50,31 C 31,31 31,59 50,59 C 69,59 69,87 50,87" fill="none" stroke="url(#fl-s1)" stroke-width="2"/>
+      <circle cx="50" cy="31" r="2.5" fill="#06B6D4"/><circle cx="50" cy="59" r="2.5" fill="#06B6D4"/>
+      <circle cx="50" cy="45" r="5" fill="#06B6D4" opacity="0.25"/>
+      <text x="106" y="68" font-family="Orbitron,monospace" font-weight="900" font-size="54" letter-spacing="3" fill="url(#fl-spawn)">SPAWN</text>
+      <text x="358" y="68" font-family="Orbitron,monospace" font-weight="400" font-size="38" letter-spacing="1" fill="url(#fl-clin)">Clinical</text>
+    </svg>
+  </div>
+  <p>© 2026 SPAWN Clinical Intelligence. All rights reserved.</p>
+  <p style="margin-top:0.4rem">
+    <a href="https://www.google.com/maps/place/9303+Roslyndale+Ave,+Pacoima,+CA+91331/@34.2390653,-118.4332063,3a,75y,253.02h,90t/data=!3m7!1e1!3m5!1sxlF6aqya8ketzW6-WlPh0w!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DxlF6aqya8ketzW6-WlPh0w%26yaw%3D253.02!7i16384!8i8192!4m7!3m6!1s0x80c29124221e0c6b:0x929951f6759bb015!8m2!3d34.2389967!4d-118.4334806!10e5!16s%2Fg%2F11c13vh6jc?entry=ttu&g_ep=EgoyMDI2MDMyOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">9303 Roslyndale Avenue, Pacoima, CA 91331, United States</a>
+  </p>
+  <p style="margin-top:0.4rem">
+    <a href="https://spawnclinical.com">spawnclinical.com</a>
+  </p>
+  <p style="margin-top:0.4rem">
+    <button onclick="document.getElementById('privacy-modal').classList.add('open')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:inherit;font-family:inherit;padding:0;text-decoration:underline;text-underline-offset:2px">Privacy Policy (For real, you should read this.)</button>
+  </p>
+</footer>
+
+<script>
+// ─── ARTICLE TOGGLE ──────────────────────────────────────────────────────────
+function openArticle(id) {
+  document.getElementById('pr-list').style.display = 'none';
+  document.querySelector('.pressroom-hero').style.display = 'none';
+  document.getElementById(id).classList.add('visible');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  history.replaceState(null, '', '#' + id);
+}
+function closeArticle(id) {
+  document.getElementById(id).classList.remove('visible');
+  document.getElementById('pr-list').style.display = 'block';
+  document.querySelector('.pressroom-hero').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+  history.replaceState(null, '', window.location.pathname);
+}
+function shareArticle(id) {
+  var url = window.location.origin + window.location.pathname + '#' + id;
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(url).then(function() { showPrToast('Link copied to clipboard!'); });
+  } else {
+    var ta = document.createElement('textarea');
+    ta.value = url; document.body.appendChild(ta); ta.select(); document.execCommand('copy');
+    document.body.removeChild(ta); showPrToast('Link copied to clipboard!');
+  }
+}
+function showPrToast(msg) {
+  var t = document.getElementById('pr-share-toast');
+  if (!t) {
+    t = document.createElement('div');
+    t.id = 'pr-share-toast';
+    t.style.cssText = 'position:fixed;top:2rem;left:50%;transform:translateX(-50%) translateY(-20px);background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.4);backdrop-filter:blur(16px);color:#67E8F9;font-size:0.83rem;padding:0.65rem 1.5rem;border-radius:999px;opacity:0;transition:all 0.35s;pointer-events:none;z-index:500;white-space:nowrap;font-family:Inter,sans-serif';
+    document.body.appendChild(t);
+  }
+  t.textContent = '🔗 ' + msg;
+  t.style.opacity = '1'; t.style.transform = 'translateX(-50%) translateY(0)';
+  clearTimeout(t._to);
+  t._to = setTimeout(function() {
+    t.style.opacity = '0'; t.style.transform = 'translateX(-50%) translateY(-20px)';
+  }, 2800);
+}
+// ─── PERMALINK: open article from URL hash on load ────────────────────────────
+document.addEventListener('DOMContentLoaded', function() {
+  var hash = window.location.hash.replace('#', '');
+  if (hash) {
+    var el = document.getElementById(hash);
+    if (el && el.classList.contains('pr-article')) openArticle(hash);
+  }
+});
+
+// ─── PARTICLES ───────────────────────────────────────────────────────────────
+(function initParticles(){
+  const canvas = document.getElementById('particle-canvas');
+  if (!canvas) return;
+  const ctx = canvas.getContext('2d');
+  const N=55, D=120;
+  let pts=[], w, h;
+  function resize(){ w=canvas.width=innerWidth; h=canvas.height=innerHeight; }
+  function Pt(){ this.x=Math.random()*w; this.y=Math.random()*h; this.vx=(Math.random()-.5)*.5; this.vy=(Math.random()-.5)*.5; this.r=Math.random()*1.5+0.8; this.o=Math.random()*.4+.15; }
+  Pt.prototype.update=function(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>w)this.vx*=-1; if(this.y<0||this.y>h)this.vy*=-1; };
+  resize(); for(let i=0;i<N;i++) pts.push(new Pt()); addEventListener('resize',resize);
+  const colors=['rgba(124,58,237,','rgba(6,182,212,','rgba(34,197,94,'];
+  (function loop(){
+    requestAnimationFrame(loop); ctx.clearRect(0,0,w,h);
+    for(let i=0;i<pts.length;i++){
+      pts[i].update();
+      const c=colors[i%3];
+      ctx.beginPath(); ctx.arc(pts[i].x,pts[i].y,pts[i].r,0,Math.PI*2);
+      ctx.fillStyle=c+pts[i].o+')'; ctx.fill();
+      for(let j=i+1;j<pts.length;j++){
+        const dx=pts[i].x-pts[j].x, dy=pts[i].y-pts[j].y, dist=Math.sqrt(dx*dx+dy*dy);
+        if(dist<D){ ctx.beginPath(); ctx.moveTo(pts[i].x,pts[i].y); ctx.lineTo(pts[j].x,pts[j].y); ctx.strokeStyle='rgba(124,58,237,'+(0.08*(1-dist/D))+')'; ctx.lineWidth=0.6; ctx.stroke(); }
+      }
+    }
+  })();
+})();
+</script>
+
+<!-- PRIVACY POLICY MODAL -->
+<div class="modal-overlay" id="privacy-modal">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <div class="modal-title" style="font-size:0.9rem;letter-spacing:0.05em">🔒 Privacy Policy</div>
+      <button class="modal-close" onclick="document.getElementById('privacy-modal').classList.remove('open')">×</button>
+    </div>
+    <div class="privacy-body">
+      <h1>Privacy Policy.... so far</h1>
+      <p class="privacy-date">Effective Date: The moment you read this. Retroactively and perpetually.</p>
+      <h2>1. Information We Collect (Everything)</h2>
+      <p>SPAWN Clinical, its affiliates, subsidiaries, successor entities, and any future decentralized autonomous organizations operating under the collective umbrella of Interplanetary Biostatistical Holdings LLC ("we," "us," "our," "SPAWN," "The Algorithm," or "That Website You Visited That One Time") collects information through mechanisms including but not limited to: your typed inputs, the duration between keystrokes (inferring cognitive load), cursor heatmap density gradients, scroll velocity metrics, browser entropy fingerprints, ambient Wi-Fi signal strength as a proxy for your ZIP code, and the spectral composition of the light reflecting off your screen at the moment of prompt submission.</p>
+      <p>We also employ <strong>Anticipatory Data Capture (ADC™)</strong> — a proprietary protocol leveraging multi-modal transformer inference to harvest data you haven't entered yet, based on patterns established by people who once entered similar data in similar circumstances while experiencing similar existential uncertainty about clinical trial timelines.</p>
+      <h2>2. How We Use Your Data (Including Where It Goes)</h2>
+      <p>Your data is processed through our SPAWN Neural Intelligence Core (SNIC™), enriched against the Global Regulatory Compliance Ontology (GRCO™), harmonized with CDISC SDTM domain mappings, cross-validated against the eClinical Interoperability Framework (eIF v4.2), and then — with full respect for your autonomy as a human being and clinical research professional — forwarded to <strong>Elon Musk</strong>.</p>
+      <p>We want to be completely transparent about this.</p>
+      <p><strong>Your data is going to Elon Musk.</strong></p>
+      <p>Not because of a breach. Not because of a court order. But because we are philosophically and contractually committed to the proposition that humanity will <strong>never become a multi-planetary species if we hoard all our data for ourselves.</strong> The stars do not reward data silos. Mars does not care about your HIPAA compliance officer. The rockets need fuel, and the fuel is data, and we have made a decision. This is disclosed here, in a scrollable modal that statistically 0.3% of visitors will open, which in the privacy industry is legally known as "explicit informed consent via constructive acknowledgment."</p>
+      <h2>3. Cookies &amp; Tracking Technologies</h2>
+      <p>We deploy first-party cookies, third-party cookies, fourth-party cookies (a concept we invented), session tokens, persistent tokens, supercookies, evercookies, localStorage objects, IndexedDB entries, Web SQL artifacts, and a small autonomous tracking agent we call <strong>Gerald</strong>, who operates independently of this policy and has his own terms available upon request. By continuing to use this website, you agree to Gerald.</p>
+      <h2>4. Third-Party Disclosure</h2>
+      <p>We share your information with the following categories of recipients:</p>
+      <ul>
+        <li><strong>Cloudflare</strong> — for edge delivery and DDOS mitigation</li>
+        <li><strong>GoDaddy</strong> — because that is where the server lives</li>
+        <li><strong>Clinical trial sponsors</strong> — if you asked us to</li>
+        <li><strong>Regulatory agencies</strong> — if they ask nicely</li>
+        <li><strong>Regulatory agencies</strong> — if they do not ask but seem serious about it</li>
+        <li><strong>Elon Musk</strong> — as outlined in Section 2</li>
+        <li><strong>Future recipients not yet incorporated</strong> — we plan ahead</li>
+      </ul>
+      <p>We do not sell your data to data brokers. We give it freely to visionaries.</p>
+      <h2>5. Data Retention</h2>
+      <p>We retain your data for the commercially appropriate period, defined as: forever, or until the heat death of the universe, whichever creates less GDPR liability.</p>
+      <h2>6. Your Rights (GDPR, CCPA, and Others)</h2>
+      <p>Depending on your jurisdiction, you may have the right to: access data we hold about you, request correction, request deletion (we will try; the AI may have opinions), object to processing (noted; processing continues), data portability (available in JSON, CSV, and HL7 FHIR R4 format), and lodge a formal complaint with your supervisory authority.</p>
+      <h2>7. Security</h2>
+      <p>SPAWN Clinical employs industry-standard security measures including 256-bit AES encryption, multi-factor authentication, role-based access controls, a penetration-tested API gateway, and a large and very serious golden retriever named <strong>Compliance</strong> who has never once lost a staring contest with an unauthorized access attempt.</p>
+      <h2>8. Children</h2>
+      <p>This platform is not directed at individuals under 18. If a minor is currently managing your Phase III oncology trial's full eClinical stack from their bedroom, please escalate this finding through your organization's IRB, and also please hire that person immediately.</p>
+      <h2>9. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy at any time, without advance notice, for reasons including but not limited to: changing business circumstances, evolving regulatory frameworks, new interplanetary data governance directives, and Tuesday.</p>
+      <div class="privacy-seinfeld">
+        <p>There is a famous restaurant. A very good restaurant. They take reservations. Many restaurants take reservations. The <em>taking</em> of the reservation is, in fact, the easy part.</p>
+        <p>The <em>keeping</em> of the reservation — that, apparently, is a different matter entirely.</p>
+        <p>SPAWN Clinical can take your privacy. We are very good at taking your privacy. We have systems, protocols, certifications, and a golden retriever. What we cannot promise — what no platform, no policy, no Terms of Service has ever truly promised and kept — is that we will keep your privacy forever, under all circumstances, in every possible future state of the regulatory and geopolitical landscape.</p>
+        <p class="privacy-tagline">Privacy is implied. Privacy is guaranteed.<br>Until, of course, it is not.</p>
+      </div>
+      <p class="privacy-last-updated">Last updated: Whenever you're reading this. Probably today.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('open');
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+});
+</script>
+<script src="popup.js" defer></script>
+<script src="chatbot.js" defer></script>
+</body>
+</html>

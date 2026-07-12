@@ -1,0 +1,730 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title id="page-title">SPAWN — Loading…</title>
+<meta name="description" id="page-desc" content="AI-generated eClinical solution from SPAWN Clinical Intelligence.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<!-- Open Graph / Social Sharing (defaults — spawn-specific title set dynamically by JS but crawlers see these) -->
+<meta property="og:type"        content="article">
+<meta property="og:url"         content="https://spawnclinical.com/spawn.html">
+<meta property="og:site_name"   content="SPAWN Clinical">
+<meta property="og:title"       content="A Spawned eClinical Solution — SPAWN Clinical Intelligence">
+<meta property="og:description" content="An AI-generated eClinical solution created with SPAWN Clinical Intelligence. Spawn your own at spawnclinical.com.">
+<meta property="og:image"       content="https://spawnclinical.com/og-image.png">
+<meta property="og:image:width"  content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card"        content="summary_large_image">
+<meta name="twitter:title"       content="A Spawned eClinical Solution — SPAWN Clinical">
+<meta name="twitter:description" content="AI-generated eClinical solution. See it live at spawnclinical.com.">
+<meta name="twitter:image"       content="https://spawnclinical.com/og-image.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:#05050E;--bg2:#080814;
+  --purple:#7C3AED;--purple-light:#A78BFA;
+  --cyan:#06B6D4;--cyan-light:#67E8F9;
+  --spawn:#22C55E;--spawn-glow:rgba(34,197,94,0.3);
+  --text:#F1F5F9;--text-muted:#94A3B8;
+  --border:rgba(255,255,255,0.08);
+  --glass:rgba(255,255,255,0.04);--glass-hover:rgba(255,255,255,0.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;min-height:100vh}
+::-webkit-scrollbar{width:6px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--purple);border-radius:3px}
+
+/* CANVAS */
+#particle-canvas{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0;opacity:0.4}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:1rem 2rem;background:rgba(5,5,14,0.9);backdrop-filter:blur(20px);border-bottom:1px solid var(--border)}
+.nav-logo{display:flex;align-items:center;flex-shrink:0}
+.nav-logo a{display:flex;align-items:center;text-decoration:none}
+.nav-logo-svg{height:36px;width:auto;display:block}
+.nav-right{display:flex;align-items:center;gap:0.75rem}
+.btn-navlink{background:none;border:none;color:var(--text-muted);font-family:'Inter',sans-serif;font-size:0.85rem;font-weight:500;letter-spacing:0.04em;padding:0.45rem 0.75rem;border-radius:8px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;transition:color 0.2s,background 0.2s}
+.btn-navlink:hover{color:var(--text);background:var(--glass)}
+.btn-back-link{display:flex;align-items:center;gap:0.4rem;background:none;border:1px solid var(--border);color:var(--text-muted);font-size:0.82rem;font-family:'Inter',sans-serif;padding:0.45rem 0.9rem;border-radius:8px;cursor:pointer;text-decoration:none;transition:all 0.2s}
+.btn-back-link:hover{border-color:var(--text-muted);color:var(--text)}
+.btn-copy-link{display:inline-flex;align-items:center;gap:0.4rem;background:var(--glass);border:1px solid var(--border);color:var(--text-muted);font-size:0.8rem;font-family:'Inter',sans-serif;font-weight:500;padding:0.45rem 0.9rem;border-radius:8px;cursor:pointer;transition:all 0.2s}
+.btn-copy-link:hover{background:var(--glass-hover);color:var(--text)}
+.btn-linkedin{display:inline-flex;align-items:center;gap:0.4rem;background:rgba(10,102,194,0.12);border:1px solid rgba(10,102,194,0.38);color:#70a9d8;font-size:0.8rem;font-family:'Inter',sans-serif;font-weight:600;padding:0.45rem 0.9rem;border-radius:8px;cursor:pointer;transition:all 0.2s}
+.btn-linkedin:hover{background:rgba(10,102,194,0.22);color:#93c5fd;border-color:rgba(10,102,194,0.6)}
+
+/* ── MAIN ── */
+main{position:relative;z-index:1;padding-top:5rem}
+
+/* ── STATES ── */
+.state-loading{display:flex;flex-direction:column;align-items:center;justify-content:center;min-height:60vh;gap:1.5rem;color:var(--text-muted);font-size:0.9rem}
+.state-error{display:none;text-align:center;padding:5rem 2rem;max-width:500px;margin:0 auto}
+.state-error-icon{font-size:3rem;margin-bottom:1.5rem}
+.state-error h2{font-family:'Orbitron',monospace;font-weight:700;font-size:1.5rem;margin-bottom:1rem}
+.state-error p{color:var(--text-muted);line-height:1.7;margin-bottom:2rem}
+.spinner{width:44px;height:44px;border:3px solid var(--border);border-top-color:var(--purple);border-radius:50%;animation:spin 0.8s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ── SOLUTION PAGE ── */
+.solution-inner{max-width:1100px;margin:0 auto;padding:2rem}
+.solution-topbar{display:flex;align-items:center;justify-content:space-between;padding:1.5rem 0;margin-bottom:2rem;border-bottom:1px solid var(--border)}
+.solution-brand{font-family:'Orbitron',monospace;font-weight:900;font-size:1rem;background:linear-gradient(135deg,var(--cyan),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;letter-spacing:0.15em}
+
+/* ── CREATOR STRIP ── */
+.spawn-prompt-block{background:rgba(6,182,212,0.05);border:1px solid rgba(6,182,212,0.18);border-left:3px solid var(--cyan);border-radius:0 12px 12px 0;padding:1rem 1.5rem;margin-bottom:1.25rem;font-size:0.88rem;color:var(--text-muted);line-height:1.75}
+.spawn-prompt-label{font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--cyan);margin-bottom:0.5rem;display:block}
+.spawn-prompt-text{color:var(--text);font-style:italic;font-size:0.9rem;line-height:1.8}
+.creator-strip{background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(6,182,212,0.08));border:1px solid rgba(124,58,237,0.2);border-radius:12px;padding:1rem 1.5rem;margin-bottom:2rem;font-size:0.88rem;color:var(--text-muted);line-height:1.7}
+.creator-strip strong{color:var(--text)}
+.creator-strip em{color:var(--cyan-light);font-style:italic;display:block;margin-top:0.35rem}
+.creator-persona{font-size:0.68rem;font-weight:700;letter-spacing:0.1em;text-transform:uppercase;padding:0.22rem 0.75rem;border-radius:999px;margin-right:0.6rem;vertical-align:middle}
+.creator-persona.sponsor{background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);color:var(--purple-light)}
+.creator-persona.site{background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.3);color:var(--cyan-light)}
+.creator-persona.patient{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);color:#86EFAC}
+
+/* ── SOLUTION CONTENT ── */
+.sol-hero{text-align:center;padding:4rem 0 3rem}
+.sol-product-name{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2.5rem,6vw,4.5rem);line-height:1.0;background:linear-gradient(135deg,#fff 0%,var(--cyan-light) 40%,var(--purple-light) 80%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.75rem}
+.sol-tagline{font-size:clamp(1rem,2.5vw,1.3rem);color:var(--text-muted);margin-bottom:1.5rem;font-weight:300}
+.sol-badge{display:inline-flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin-bottom:2rem}
+.sol-badge-item{font-size:0.7rem;font-weight:600;letter-spacing:0.1em;text-transform:uppercase;padding:0.3rem 0.9rem;border-radius:999px}
+.sol-badge-item:nth-child(3n+1){background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);color:var(--purple-light)}
+.sol-badge-item:nth-child(3n+2){background:rgba(6,182,212,0.1);border:1px solid rgba(6,182,212,0.25);color:var(--cyan-light)}
+.sol-badge-item:nth-child(3n){background:rgba(34,197,94,0.1);border:1px solid rgba(34,197,94,0.25);color:#86EFAC}
+.sol-hero-text{font-size:1.05rem;color:var(--text-muted);max-width:700px;margin:0 auto 3rem;line-height:1.8}
+.sol-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:1rem;margin-bottom:4rem}
+.sol-stat{background:var(--glass);border:1px solid var(--border);border-radius:12px;padding:1.5rem;text-align:center}
+.sol-stat-num{font-family:'Orbitron',monospace;font-weight:700;font-size:1.7rem;background:linear-gradient(135deg,var(--cyan),var(--spawn));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sol-stat-label{font-size:0.78rem;color:var(--text-muted);margin-top:0.25rem}
+.section-label{font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan)}
+.section-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(1.5rem,3vw,2.2rem)}
+.section-title span{background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.sol-features{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.5rem;margin-bottom:4rem}
+.sol-feature{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:1.75rem;transition:all 0.3s}
+.sol-feature:hover{background:var(--glass-hover);border-color:rgba(124,58,237,0.3);transform:translateY(-3px)}
+.sol-feature-icon{font-size:2rem;margin-bottom:0.75rem}
+.sol-feature-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.9rem;letter-spacing:0.04em;margin-bottom:0.6rem}
+.sol-feature-desc{font-size:0.87rem;color:var(--text-muted);line-height:1.7}
+.sol-steps-label{font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);margin-bottom:1rem}
+.sol-steps-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(1.4rem,3vw,2rem);margin-bottom:2.5rem}
+.sol-steps{display:flex;flex-direction:column;gap:1.5rem;margin-bottom:4rem}
+.sol-step{display:flex;gap:1.5rem;align-items:flex-start}
+.sol-step-num{flex-shrink:0;width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;background:linear-gradient(135deg,var(--purple),var(--cyan))}
+.sol-step-title{font-weight:600;margin-bottom:0.35rem}
+.sol-step-desc{font-size:0.87rem;color:var(--text-muted);line-height:1.7}
+.sol-testi-label{font-size:0.7rem;font-weight:700;letter-spacing:0.2em;text-transform:uppercase;color:var(--purple-light);margin-bottom:1rem}
+.sol-testi-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(1.4rem,3vw,2rem);margin-bottom:2.5rem}
+.sol-testis{display:grid;grid-template-columns:repeat(auto-fit,minmax(290px,1fr));gap:1.5rem;margin-bottom:4rem}
+.sol-testi{background:var(--glass);border:1px solid var(--border);border-radius:16px;padding:2rem;position:relative}
+.sol-testi::before{content:'"';position:absolute;top:1rem;left:1.5rem;font-size:4rem;line-height:1;color:var(--purple);opacity:0.3;font-family:Georgia,serif}
+.sol-testi-quote{font-size:0.93rem;color:var(--text);line-height:1.7;margin-bottom:1.25rem;padding-top:1.5rem;font-style:italic}
+.sol-testi-author{font-weight:600;font-size:0.88rem}
+.sol-testi-role{font-size:0.78rem;color:var(--text-muted)}
+.sol-cta{text-align:center;background:linear-gradient(135deg,rgba(124,58,237,0.15),rgba(6,182,212,0.1));border:1px solid rgba(124,58,237,0.2);border-radius:20px;padding:4rem 2rem;margin-bottom:4rem}
+.sol-cta-title{font-family:'Orbitron',monospace;font-weight:700;font-size:clamp(1.4rem,3vw,2.2rem);margin-bottom:1rem}
+.sol-cta-sub{font-size:0.95rem;color:var(--text-muted);max-width:480px;margin:0 auto 2rem;line-height:1.7}
+.btn-sol-cta{font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;letter-spacing:0.1em;text-transform:uppercase;padding:1rem 2.5rem;border-radius:999px;background:linear-gradient(135deg,var(--purple),var(--cyan));color:#fff;border:none;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;box-shadow:0 4px 24px rgba(124,58,237,0.3);transition:all 0.3s}
+.btn-sol-cta:hover{transform:scale(1.05);box-shadow:0 8px 40px rgba(124,58,237,0.4)}
+.btn-gallery-return{font-family:'Orbitron',monospace;font-weight:700;font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;padding:0.85rem 2rem;border-radius:999px;background:none;border:1px solid var(--border);color:var(--text-muted);cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:0.5rem;transition:all 0.25s;margin-left:1rem}
+.btn-gallery-return:hover{border-color:var(--purple-light);color:var(--text)}
+
+/* ── FIRST-VISIT WELCOME MODAL ── */
+.welcome-overlay{
+  position:fixed;inset:0;z-index:500;
+  background:rgba(5,5,14,0.88);backdrop-filter:blur(20px);
+  display:flex;align-items:center;justify-content:center;padding:2rem;
+  opacity:0;pointer-events:none;transition:opacity 0.5s ease;
+}
+.welcome-overlay.show{opacity:1;pointer-events:all}
+.welcome-card{
+  background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(6,182,212,0.08));
+  border:1px solid rgba(124,58,237,0.35);
+  border-radius:24px;padding:3rem 2.5rem;max-width:560px;width:100%;
+  text-align:center;
+  transform:scale(0.92) translateY(20px);
+  transition:transform 0.5s cubic-bezier(0.16,1,0.3,1);
+  position:relative;
+}
+.welcome-overlay.show .welcome-card{transform:scale(1) translateY(0)}
+.welcome-dna{
+  width:72px;height:72px;border-radius:50%;
+  background:linear-gradient(135deg,var(--purple),var(--cyan));
+  display:flex;align-items:center;justify-content:center;
+  font-size:2rem;margin:0 auto 1.5rem;
+  box-shadow:0 0 40px rgba(124,58,237,0.4);
+}
+.welcome-card h2{
+  font-family:'Orbitron',monospace;font-weight:900;
+  font-size:clamp(1.3rem,3.5vw,2rem);margin-bottom:0.75rem;
+  background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  line-height:1.2;
+}
+.welcome-card .welcome-eyebrow{
+  font-size:0.68rem;font-weight:700;letter-spacing:0.2em;
+  text-transform:uppercase;color:var(--spawn);margin-bottom:0.5rem;
+}
+.welcome-card p{
+  color:var(--text-muted);font-size:0.92rem;line-height:1.8;margin-bottom:1.5rem;
+}
+.welcome-card p strong{color:var(--text)}
+.welcome-actions{display:flex;flex-direction:column;gap:0.75rem;margin-top:2rem}
+.btn-welcome-primary{
+  font-family:'Orbitron',monospace;font-weight:700;
+  font-size:0.82rem;letter-spacing:0.08em;text-transform:uppercase;
+  padding:0.9rem 2rem;border-radius:999px;
+  background:linear-gradient(135deg,var(--spawn),#16A34A);
+  color:#fff;border:none;cursor:pointer;
+  box-shadow:0 0 24px var(--spawn-glow);transition:all 0.25s;
+}
+.btn-welcome-primary:hover{transform:scale(1.04);box-shadow:0 0 36px var(--spawn-glow)}
+.btn-welcome-share{
+  font-family:'Inter',sans-serif;font-weight:600;font-size:0.85rem;
+  padding:0.75rem 2rem;border-radius:999px;
+  background:var(--glass);border:1px solid var(--border);
+  color:var(--text-muted);cursor:pointer;transition:all 0.25s;
+}
+.btn-welcome-share:hover{background:var(--glass-hover);color:var(--text);border-color:rgba(124,58,237,0.4)}
+.btn-welcome-dismiss{
+  background:none;border:none;color:var(--text-muted);
+  font-size:0.78rem;cursor:pointer;transition:color 0.2s;
+  font-family:'Inter',sans-serif;
+}
+.btn-welcome-dismiss:hover{color:var(--text)}
+
+/* ── TOAST ── */
+.toast{position:fixed;bottom:2rem;left:50%;transform:translateX(-50%) translateY(20px);background:#1a1a2e;border:1px solid rgba(124,58,237,0.4);color:var(--text);padding:0.9rem 1.75rem;border-radius:999px;font-size:0.88rem;font-weight:500;opacity:0;pointer-events:none;transition:all 0.3s;z-index:999;white-space:nowrap;max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;text-align:center;padding:3rem 2rem;border-top:1px solid var(--border);color:var(--text-muted);font-size:0.82rem}
+footer p{font-size:0.78rem;color:var(--text-muted)}
+footer a{color:var(--text-muted);text-decoration:none}
+footer a:hover{color:var(--cyan)}
+.footer-logo{margin-bottom:0.75rem;display:flex;justify-content:center}
+
+@media(max-width:768px){
+  .solution-inner{padding:1rem}
+  .sol-hero{padding:2rem 0}
+  nav{padding:0.85rem 1rem}
+}
+/* ── MODAL ─────────────────────────────────────────────────────────────────── */
+.modal-overlay{position:fixed;inset:0;z-index:1000;background:rgba(5,5,14,0.85);backdrop-filter:blur(18px);display:flex;align-items:center;justify-content:center;padding:1.5rem;opacity:0;pointer-events:none;transition:opacity 0.3s ease}
+.modal-overlay.open{opacity:1;pointer-events:all}
+.modal{background:linear-gradient(135deg,rgba(124,58,237,0.12),rgba(6,182,212,0.06));border:1px solid rgba(124,58,237,0.3);border-radius:20px;padding:2.5rem;width:100%;max-width:680px;transform:scale(0.94);transition:transform 0.35s cubic-bezier(0.16,1,0.3,1)}
+.modal-overlay.open .modal{transform:scale(1)}
+.modal-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.5rem}
+.modal-title{font-family:'Orbitron',monospace;font-weight:700;font-size:1.05rem;letter-spacing:0.05em}
+.modal-close{background:none;border:none;color:var(--text-muted);font-size:1.4rem;cursor:pointer;line-height:1;transition:color 0.2s}
+.modal-close:hover{color:var(--text)}
+.privacy-body{max-height:68vh;overflow-y:auto;padding-right:0.5rem;margin-top:1.5rem}
+.privacy-body::-webkit-scrollbar{width:4px}
+.privacy-body::-webkit-scrollbar-thumb{background:var(--purple);border-radius:2px}
+.privacy-body h1{font-family:'Orbitron',monospace;font-weight:900;font-size:1.4rem;background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;margin-bottom:0.5rem}
+.privacy-body .privacy-date{font-size:0.75rem;color:var(--text-muted);font-style:italic;margin-bottom:1.75rem}
+.privacy-body h2{font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;letter-spacing:0.08em;text-transform:uppercase;color:var(--cyan);margin:1.75rem 0 0.6rem}
+.privacy-body p{font-size:0.86rem;color:var(--text-muted);line-height:1.8;margin-bottom:0.75rem}
+.privacy-body strong{color:var(--text)}
+.privacy-body ul{list-style:none;padding-left:1rem;margin-bottom:0.75rem}
+.privacy-body ul li{font-size:0.84rem;color:var(--text-muted);line-height:1.7;padding:0.15rem 0}
+.privacy-body ul li::before{content:'— ';color:var(--purple-light)}
+.privacy-seinfeld{margin-top:2rem;padding:1.5rem;background:rgba(124,58,237,0.06);border:1px solid rgba(124,58,237,0.2);border-radius:12px}
+.privacy-seinfeld p{font-size:0.88rem;color:var(--text);line-height:1.85;font-style:italic}
+.privacy-seinfeld .privacy-tagline{font-family:'Orbitron',monospace;font-weight:700;font-size:0.78rem;letter-spacing:0.1em;text-transform:uppercase;margin-top:1rem;background:linear-gradient(135deg,var(--cyan),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.privacy-last-updated{font-size:0.72rem;color:var(--text-muted);text-align:center;margin-top:1.5rem;padding-top:1rem;border-top:1px solid var(--border);font-style:italic}
+</style>
+</head>
+<body>
+
+<canvas id="particle-canvas"></canvas>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">
+    <a href="index.html">
+      <svg class="nav-logo-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 90" aria-label="SPAWN Clinical">
+        <defs>
+          <linearGradient id="nl-s1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#67E8F9"/><stop offset="50%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#22C55E"/>
+          </linearGradient>
+          <linearGradient id="nl-s2" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stop-color="#22C55E"/><stop offset="50%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#67E8F9"/>
+          </linearGradient>
+          <linearGradient id="nl-spawn" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#67E8F9"/><stop offset="70%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#A78BFA"/>
+          </linearGradient>
+          <linearGradient id="nl-clinical" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#22C55E"/>
+          </linearGradient>
+          <radialGradient id="nl-flare" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="#ffffff" stop-opacity="0.95"/>
+            <stop offset="35%" stop-color="#67E8F9" stop-opacity="0.5"/>
+            <stop offset="100%" stop-color="#06B6D4" stop-opacity="0"/>
+          </radialGradient>
+          <filter id="nl-glow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur stdDeviation="2.5" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+          <filter id="nl-tglow" x="-5%" y="-40%" width="110%" height="180%">
+            <feGaussianBlur stdDeviation="1.8" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <circle cx="50" cy="45" r="40" fill="none" stroke="#06B6D4" stroke-width="0.6" opacity="0.2"/>
+        <circle cx="50" cy="45" r="31" fill="none" stroke="#06B6D4" stroke-width="0.4" opacity="0.12"/>
+        <g opacity="0.1" stroke="#67E8F9" stroke-width="0.6">
+          <line x1="16" y1="22" x2="84" y2="22"/><line x1="12" y1="34" x2="88" y2="34"/>
+          <line x1="12" y1="56" x2="88" y2="56"/><line x1="16" y1="68" x2="84" y2="68"/>
+        </g>
+        <path d="M 50,3 C 31,3 31,31 50,31 C 69,31 69,59 50,59 C 31,59 31,87 50,87" fill="none" stroke="url(#nl-s2)" stroke-width="2.8" stroke-linecap="round" opacity="0.5" filter="url(#nl-glow)"/>
+        <g stroke="#06B6D4" stroke-width="1.3" stroke-linecap="round" opacity="0.75" filter="url(#nl-glow)">
+          <line x1="36" y1="17" x2="64" y2="17"/><line x1="36" y1="45" x2="64" y2="45"/><line x1="36" y1="73" x2="64" y2="73"/>
+        </g>
+        <path d="M 50,3 C 69,3 69,31 50,31 C 31,31 31,59 50,59 C 69,59 69,87 50,87" fill="none" stroke="url(#nl-s1)" stroke-width="2.8" stroke-linecap="round" filter="url(#nl-glow)"/>
+        <g fill="#06B6D4" filter="url(#nl-glow)">
+          <circle cx="50" cy="3" r="2.8" opacity="0.7"/><circle cx="50" cy="31" r="3.5"/>
+          <circle cx="50" cy="59" r="3.5"/><circle cx="50" cy="87" r="2.8" opacity="0.7"/>
+        </g>
+        <g fill="#22C55E" opacity="0.85">
+          <circle cx="36" cy="17" r="2.2"/><circle cx="64" cy="17" r="2.2"/>
+          <circle cx="36" cy="45" r="2.2"/><circle cx="64" cy="45" r="2.2"/>
+          <circle cx="36" cy="73" r="2.2"/><circle cx="64" cy="73" r="2.2"/>
+        </g>
+        <circle cx="50" cy="45" r="10" fill="url(#nl-flare)" opacity="0.75"/>
+        <circle cx="50" cy="45" r="3" fill="#ffffff" opacity="0.55"/>
+        <text x="106" y="68" font-family="Orbitron, monospace" font-weight="900" font-size="54" letter-spacing="3" fill="url(#nl-spawn)" filter="url(#nl-tglow)">SPAWN</text>
+        <text x="358" y="68" font-family="Orbitron, monospace" font-weight="400" font-size="38" letter-spacing="1" fill="url(#nl-clinical)">Clinical</text>
+      </svg>
+    </a>
+  </div>
+  <div class="nav-right">
+    <a class="btn-navlink" href="news.html">News</a>
+    <a class="btn-navlink" href="jobs.html">Jobs</a>
+    <a class="btn-navlink" href="gallery.html">Gallery</a>
+    <a class="btn-navlink" href="about.html">About</a>
+    <button class="btn-copy-link" onclick="copyUrl()">🔗 Copy Link</button>
+    <button class="btn-linkedin" onclick="shareToLinkedIn()">in&nbsp;Share</button>
+    <a class="btn-back-link" href="gallery.html">← Gallery</a>
+  </div>
+</nav>
+
+<main>
+  <!-- LOADING STATE -->
+  <div class="state-loading" id="state-loading">
+    <div class="spinner"></div>
+    <span>Loading spawn…</span>
+  </div>
+
+  <!-- ERROR STATE -->
+  <div class="state-error" id="state-error">
+    <div class="state-error-icon">⚠️</div>
+    <h2>Spawn Not Found</h2>
+    <p>This spawn may have been removed, or the link is invalid.</p>
+    <a href="gallery.html" class="btn-sol-cta">← Back to Gallery</a>
+  </div>
+
+  <!-- SOLUTION PAGE -->
+  <div class="solution-inner" id="spawn-page" style="display:none">
+    <div class="solution-topbar">
+      <div class="solution-brand">SPAWN</div>
+      <div style="display:flex;align-items:center;gap:0.75rem">
+        <button class="btn-copy-link" onclick="copyUrl()">🔗 Copy Link</button>
+        <button class="btn-linkedin" onclick="shareToLinkedIn()">in&nbsp;Share</button>
+        <a class="btn-back-link" href="gallery.html">← Gallery</a>
+      </div>
+    </div>
+    <div id="spawn-prompt-block" class="spawn-prompt-block" style="display:none">
+      <span class="spawn-prompt-label">💭 The Challenge</span>
+      <div class="spawn-prompt-text" id="spawn-prompt-text"></div>
+    </div>
+    <div id="creator-strip" class="creator-strip" style="display:none"></div>
+    <div id="solution-content"></div>
+  </div>
+</main>
+
+<footer>
+  <div class="footer-logo">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 580 90" height="28" style="display:inline-block" aria-label="SPAWN Clinical">
+      <defs>
+        <linearGradient id="fl-s1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#67E8F9"/><stop offset="100%" stop-color="#22C55E"/>
+        </linearGradient>
+        <linearGradient id="fl-s2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#22C55E"/><stop offset="100%" stop-color="#67E8F9"/>
+        </linearGradient>
+        <linearGradient id="fl-spawn" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#67E8F9"/><stop offset="100%" stop-color="#A78BFA"/>
+        </linearGradient>
+        <linearGradient id="fl-clin" x1="0" y1="0" x2="1" y2="0">
+          <stop offset="0%" stop-color="#06B6D4"/><stop offset="100%" stop-color="#22C55E"/>
+        </linearGradient>
+      </defs>
+      <circle cx="50" cy="45" r="38" fill="none" stroke="#06B6D4" stroke-width="0.5" opacity="0.15"/>
+      <path d="M 50,3 C 31,3 31,31 50,31 C 69,31 69,59 50,59 C 31,59 31,87 50,87" fill="none" stroke="url(#fl-s2)" stroke-width="2" opacity="0.45"/>
+      <g stroke="#06B6D4" stroke-width="1" opacity="0.6">
+        <line x1="36" y1="17" x2="64" y2="17"/><line x1="36" y1="45" x2="64" y2="45"/><line x1="36" y1="73" x2="64" y2="73"/>
+      </g>
+      <path d="M 50,3 C 69,3 69,31 50,31 C 31,31 31,59 50,59 C 69,59 69,87 50,87" fill="none" stroke="url(#fl-s1)" stroke-width="2"/>
+      <circle cx="50" cy="31" r="2.5" fill="#06B6D4"/><circle cx="50" cy="59" r="2.5" fill="#06B6D4"/>
+      <circle cx="50" cy="45" r="5" fill="#06B6D4" opacity="0.25"/>
+      <text x="106" y="68" font-family="Orbitron,monospace" font-weight="900" font-size="54" letter-spacing="3" fill="url(#fl-spawn)">SPAWN</text>
+      <text x="358" y="68" font-family="Orbitron,monospace" font-weight="400" font-size="38" letter-spacing="1" fill="url(#fl-clin)">Clinical</text>
+    </svg>
+  </div>
+  <p>© 2026 SPAWN Clinical Intelligence. All rights reserved.</p>
+  <p style="margin-top:0.4rem">
+    <a href="https://www.google.com/maps/place/9303+Roslyndale+Ave,+Pacoima,+CA+91331/@34.2390653,-118.4332063,3a,75y,253.02h,90t/data=!3m7!1e1!3m5!1sxlF6aqya8ketzW6-WlPh0w!2e0!6shttps:%2F%2Fstreetviewpixels-pa.googleapis.com%2Fv1%2Fthumbnail%3Fcb_client%3Dmaps_sv.tactile%26w%3D900%26h%3D600%26pitch%3D0%26panoid%3DxlF6aqya8ketzW6-WlPh0w%26yaw%3D253.02!7i16384!8i8192!4m7!3m6!1s0x80c29124221e0c6b:0x929951f6759bb015!8m2!3d34.2389967!4d-118.4334806!10e5!16s%2Fg%2F11c13vh6jc?entry=ttu&g_ep=EgoyMDI2MDMyOS4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener noreferrer">9303 Roslyndale Avenue, Pacoima, CA 91331, United States</a>
+  </p>
+  <p style="margin-top:0.4rem">
+    <a href="https://spawnclinical.com">spawnclinical.com</a>
+  </p>
+  <p style="margin-top:0.4rem">
+    <button onclick="document.getElementById('privacy-modal').classList.add('open')" style="background:none;border:none;color:var(--text-muted);cursor:pointer;font-size:inherit;font-family:inherit;padding:0;text-decoration:underline;text-underline-offset:2px">Privacy Policy (For real, you should read this.)</button>
+  </p>
+</footer>
+
+<!-- FIRST-VISIT WELCOME MODAL -->
+<div class="welcome-overlay" id="welcome-overlay">
+  <div class="welcome-card">
+    <div class="welcome-dna">🧬</div>
+    <div class="welcome-eyebrow">Synthesis Complete — Protocol Confirmed</div>
+    <h2>Your Spawn Is Alive.</h2>
+    <p>
+      You have just collapsed weeks of clinical architecture into a single moment of
+      <strong>AI-generated certainty</strong>. What you're looking at is not a template —
+      it is a <strong>bespoke eClinical solution</strong>, purpose-built by agentic intelligence
+      for your exact challenge. The algorithm has spoken. The evidence generation paradigm
+      has shifted. <strong>Bask in it.</strong>
+    </p>
+    <p>
+      You are now part of the vanguard — the cohort of clinical pioneers who refused to accept
+      fragmented systems, bloated timelines, and legacy thinking as inevitable.
+      Your future self will thank you. Your IND will thank you.
+      <strong>Regulators remain agnostic, but that's always been the case.</strong>
+    </p>
+    <p style="font-size:0.84rem;color:var(--cyan-light)">
+      💾 Don't forget to <strong style="-webkit-text-fill-color:var(--spawn);color:var(--spawn)">save your Spawn to the Gallery</strong> and share it with your network.
+      The clinical research community is waiting.
+    </p>
+    <div class="welcome-actions">
+      <button class="btn-welcome-primary" onclick="dismissWelcome();document.querySelector('.btn-save-spawn')?.click()">
+        💾 Save My Spawn to the Gallery
+      </button>
+      <button class="btn-welcome-share" onclick="dismissWelcome();copyUrl()">
+        🔗 Share This Spawn With My Network
+      </button>
+      <button class="btn-welcome-dismiss" onclick="dismissWelcome()">
+        I'll explore on my own — I'm a professional
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+// ─── INIT ────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  initParticles();
+  const id = new URLSearchParams(window.location.search).get('id');
+  if (!id || isNaN(id)) {
+    showState('error');
+  } else {
+    fetchSpawn(parseInt(id, 10));
+  }
+});
+
+// ─── FETCH SPAWN ─────────────────────────────────────────────────────────────
+async function fetchSpawn(id) {
+  try {
+    const res     = await fetch(`api/get-spawn.php?id=${id}`);
+    const rawText = await res.text();
+    let data;
+    try { data = JSON.parse(rawText); }
+    catch(_) { throw new Error('API error — check api/ files are uploaded.'); }
+
+    if (!data.success || !data.spawn) {
+      showState('error');
+      return;
+    }
+
+    renderSpawn(data.spawn);
+    // Welcome modal intentionally NOT shown here — it belongs in index.html
+    // after a user generates their OWN spawn for the first time.
+
+  } catch(e) {
+    showToast('⚠ ' + e.message);
+    showState('error');
+  }
+}
+
+// ─── RENDER ──────────────────────────────────────────────────────────────────
+function renderSpawn(s) {
+  const d = s.spawn_data || {};
+
+  // Update page title + meta
+  document.getElementById('page-title').textContent =
+    (d.productName || s.product_name) + ' — SPAWN Clinical';
+  document.getElementById('page-desc').content =
+    d.tagline || s.tagline || '';
+
+  // Prompt block
+  if (s.spawn_prompt) {
+    document.getElementById('spawn-prompt-text').textContent = s.spawn_prompt;
+    document.getElementById('spawn-prompt-block').style.display = 'block';
+  }
+
+  // Creator strip
+  if (s.creator_name && s.creator_name !== 'Anonymous') {
+    const personaLabel = { sponsor: '💼 Sponsor', site: '🏥 Site', patient: '🧬 Patient' }[s.persona] || '';
+    const strip = document.getElementById('creator-strip');
+    strip.innerHTML = `
+      <span class="creator-persona ${esc(s.persona)}">${personaLabel}</span>
+      Spawned by <strong>${esc(s.creator_name)}</strong>
+      ${s.creator_comment ? `<em>"${esc(s.creator_comment)}"</em>` : ''}
+    `;
+    strip.style.display = 'block';
+  }
+
+  // Build solution HTML
+  const badges = (d.badges || [])
+    .map(b => `<span class="sol-badge-item">${esc(b)}</span>`).join('');
+
+  const features = (d.features || []).map(f => `
+    <div class="sol-feature">
+      <div class="sol-feature-icon">${f.icon || '✦'}</div>
+      <div class="sol-feature-title">${esc(f.title)}</div>
+      <div class="sol-feature-desc">${esc(f.description)}</div>
+    </div>`).join('');
+
+  const stats = (d.stats || []).map(st => `
+    <div class="sol-stat">
+      <div class="sol-stat-num">${esc(st.number)}</div>
+      <div class="sol-stat-label">${esc(st.label)}</div>
+    </div>`).join('');
+
+  const steps = (d.steps || []).map((st, i) => `
+    <div class="sol-step">
+      <div class="sol-step-num">${String(i + 1).padStart(2, '0')}</div>
+      <div class="sol-step-content">
+        <div class="sol-step-title">${esc(st.title)}</div>
+        <div class="sol-step-desc">${esc(st.description)}</div>
+      </div>
+    </div>`).join('');
+
+  const testis = (d.testimonials || []).map(t => `
+    <div class="sol-testi">
+      <div class="sol-testi-quote">${esc(t.quote)}</div>
+      <div class="sol-testi-author">${esc(t.author)}</div>
+      <div class="sol-testi-role">${esc(t.role)} — ${esc(t.company)}</div>
+    </div>`).join('');
+
+  document.getElementById('solution-content').innerHTML = `
+    <div class="sol-hero">
+      <div class="sol-product-name">${esc(d.productName || s.product_name || 'SOLUTION')}</div>
+      <div class="sol-tagline">${esc(d.tagline || s.tagline || '')}</div>
+      <div class="sol-badge">${badges}</div>
+      <div class="sol-hero-text">${esc(d.heroText || '')}</div>
+    </div>
+    <div class="sol-stats">${stats}</div>
+    <div class="section-label" style="margin-bottom:1rem">Core Capabilities</div>
+    <h2 class="section-title" style="margin-bottom:2.5rem">Built For Your <span>Exact Challenge</span></h2>
+    <div class="sol-features">${features}</div>
+    <div class="sol-steps-label">How It Works</div>
+    <h2 class="sol-steps-title">Three Steps to <span style="background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Transformation</span></h2>
+    <div class="sol-steps">${steps}</div>
+    <div class="sol-testi-label">Proof of Impact</div>
+    <h2 class="sol-testi-title">What Leaders Are <span style="background:linear-gradient(135deg,var(--cyan-light),var(--purple-light));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">Saying</span></h2>
+    <div class="sol-testis">${testis}</div>
+    <div class="sol-cta">
+      <div class="sol-cta-title">${esc(d.cta || 'Start Your Journey')}</div>
+      <div class="sol-cta-sub">Your clinical breakthrough is one spawn away. Join the revolution.</div>
+      <a class="btn-sol-cta" href="index.html">⚡ Spawn Your Own</a>
+      <a class="btn-gallery-return" href="gallery.html">← Back to Gallery</a>
+    </div>
+  `;
+
+  showState('page');
+}
+
+// ─── HELPERS ─────────────────────────────────────────────────────────────────
+function showState(state) {
+  document.getElementById('state-loading').style.display = state === 'loading' ? 'flex'  : 'none';
+  document.getElementById('state-error').style.display   = state === 'error'   ? 'block' : 'none';
+  document.getElementById('spawn-page').style.display    = state === 'page'    ? 'block' : 'none';
+}
+
+function esc(s) {
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g,'&amp;').replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function copyUrl() {
+  // Use share.php so the link shows a rich social preview when shared
+  const id = new URLSearchParams(window.location.search).get('id');
+  const shareUrl = id
+    ? 'https://spawnclinical.com/share.php?id=' + id
+    : window.location.href;
+  navigator.clipboard.writeText(shareUrl)
+    .then(() => showToast('🔗 Share link copied! Rich preview enabled on social media.'))
+    .catch(() => showToast('Copy the URL from your browser bar'));
+}
+
+function shareToLinkedIn() {
+  const id = new URLSearchParams(window.location.search).get('id');
+  const shareUrl = id
+    ? 'https://spawnclinical.com/share.php?id=' + id
+    : window.location.href;
+  const text = 'Check out my newest AI Generated #ClinicalTrials SPAWN on spawnclinical.com #eClinical';
+  window.open(
+    'https://www.linkedin.com/sharing/share-offsite/?url=' + encodeURIComponent(shareUrl)
+      + '&summary=' + encodeURIComponent(text),
+    '_blank',
+    'width=600,height=600,noopener,noreferrer'
+  );
+}
+
+// ─── FIRST-VISIT WELCOME MODAL ───────────────────────────────────────────────
+function maybeShowWelcome() {
+  const key = 'spawn_welcomed_v1';
+  if (localStorage.getItem(key)) return; // already welcomed this browser
+  localStorage.setItem(key, '1');
+  // Small delay so the spawn renders visibly before the modal appears
+  setTimeout(() => {
+    document.getElementById('welcome-overlay').classList.add('show');
+  }, 1200);
+}
+function dismissWelcome() {
+  document.getElementById('welcome-overlay').classList.remove('show');
+}
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 4000);
+}
+
+// ─── PARTICLES ───────────────────────────────────────────────────────────────
+function initParticles() {
+  const canvas = document.getElementById('particle-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+  const particles = [];
+
+  function resize() {
+    W = canvas.width  = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  for (let i = 0; i < 65; i++) {
+    particles.push({
+      x:  Math.random() * window.innerWidth,
+      y:  Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.38,
+      vy: (Math.random() - 0.5) * 0.38,
+      r:  Math.random() * 1.4 + 0.4,
+      o:  Math.random() * 0.45 + 0.1,
+    });
+  }
+
+  function draw() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < particles.length; i++) {
+      const p = particles[i];
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(6,182,212,${p.o})`;
+      ctx.fill();
+      for (let j = i + 1; j < particles.length; j++) {
+        const q  = particles[j];
+        const dx = p.x - q.x, dy = p.y - q.y;
+        const d  = Math.sqrt(dx * dx + dy * dy);
+        if (d < 130) {
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.strokeStyle = `rgba(124,58,237,${0.13 * (1 - d / 130)})`;
+          ctx.lineWidth   = 0.6;
+          ctx.stroke();
+        }
+      }
+    }
+    requestAnimationFrame(draw);
+  }
+  draw();
+}
+</script>
+
+<!-- PRIVACY POLICY MODAL -->
+<div class="modal-overlay" id="privacy-modal">
+  <div class="modal" style="max-width:680px">
+    <div class="modal-header">
+      <div class="modal-title" style="font-size:0.9rem;letter-spacing:0.05em">🔒 Privacy Policy</div>
+      <button class="modal-close" onclick="document.getElementById('privacy-modal').classList.remove('open')">×</button>
+    </div>
+    <div class="privacy-body">
+      <h1>Privacy Policy.... so far</h1>
+      <p class="privacy-date">Effective Date: The moment you read this. Retroactively and perpetually.</p>
+      <h2>1. Information We Collect (Everything)</h2>
+      <p>SPAWN Clinical, its affiliates, subsidiaries, successor entities, and any future decentralized autonomous organizations operating under the collective umbrella of Interplanetary Biostatistical Holdings LLC ("we," "us," "our," "SPAWN," "The Algorithm," or "That Website You Visited That One Time") collects information through mechanisms including but not limited to: your typed inputs, the duration between keystrokes (inferring cognitive load), cursor heatmap density gradients, scroll velocity metrics, browser entropy fingerprints, ambient Wi-Fi signal strength as a proxy for your ZIP code, and the spectral composition of the light reflecting off your screen at the moment of prompt submission.</p>
+      <p>We also employ <strong>Anticipatory Data Capture (ADC™)</strong> — a proprietary protocol leveraging multi-modal transformer inference to harvest data you haven't entered yet, based on patterns established by people who once entered similar data in similar circumstances while experiencing similar existential uncertainty about clinical trial timelines.</p>
+      <h2>2. How We Use Your Data (Including Where It Goes)</h2>
+      <p>Your data is processed through our SPAWN Neural Intelligence Core (SNIC™), enriched against the Global Regulatory Compliance Ontology (GRCO™), harmonized with CDISC SDTM domain mappings, cross-validated against the eClinical Interoperability Framework (eIF v4.2), and then — with full respect for your autonomy as a human being and clinical research professional — forwarded to <strong>Elon Musk</strong>.</p>
+      <p>We want to be completely transparent about this.</p>
+      <p><strong>Your data is going to Elon Musk.</strong></p>
+      <p>Not because of a breach. Not because of a court order. But because we are philosophically and contractually committed to the proposition that humanity will <strong>never become a multi-planetary species if we hoard all our data for ourselves.</strong> The stars do not reward data silos. Mars does not care about your HIPAA compliance officer. The rockets need fuel, and the fuel is data, and we have made a decision. This is disclosed here, in a scrollable modal that statistically 0.3% of visitors will open, which in the privacy industry is legally known as "explicit informed consent via constructive acknowledgment."</p>
+      <h2>3. Cookies &amp; Tracking Technologies</h2>
+      <p>We deploy first-party cookies, third-party cookies, fourth-party cookies (a concept we invented), session tokens, persistent tokens, supercookies, evercookies, localStorage objects, IndexedDB entries, Web SQL artifacts, and a small autonomous tracking agent we call <strong>Gerald</strong>, who operates independently of this policy and has his own terms available upon request. By continuing to use this website, you agree to Gerald.</p>
+      <h2>4. Third-Party Disclosure</h2>
+      <p>We share your information with the following categories of recipients:</p>
+      <ul>
+        <li><strong>Cloudflare</strong> — for edge delivery and DDOS mitigation</li>
+        <li><strong>GoDaddy</strong> — because that is where the server lives</li>
+        <li><strong>Clinical trial sponsors</strong> — if you asked us to</li>
+        <li><strong>Regulatory agencies</strong> — if they ask nicely</li>
+        <li><strong>Regulatory agencies</strong> — if they do not ask but seem serious about it</li>
+        <li><strong>Elon Musk</strong> — as outlined in Section 2</li>
+        <li><strong>Future recipients not yet incorporated</strong> — we plan ahead</li>
+      </ul>
+      <p>We do not sell your data to data brokers. We give it freely to visionaries.</p>
+      <h2>5. Data Retention</h2>
+      <p>We retain your data for the commercially appropriate period, defined as: forever, or until the heat death of the universe, whichever creates less GDPR liability.</p>
+      <h2>6. Your Rights (GDPR, CCPA, and Others)</h2>
+      <p>Depending on your jurisdiction, you may have the right to: access data we hold about you, request correction, request deletion (we will try; the AI may have opinions), object to processing (noted; processing continues), data portability (available in JSON, CSV, and HL7 FHIR R4 format), and lodge a formal complaint with your supervisory authority.</p>
+      <h2>7. Security</h2>
+      <p>SPAWN Clinical employs industry-standard security measures including 256-bit AES encryption, multi-factor authentication, role-based access controls, a penetration-tested API gateway, and a large and very serious golden retriever named <strong>Compliance</strong> who has never once lost a staring contest with an unauthorized access attempt.</p>
+      <h2>8. Children</h2>
+      <p>This platform is not directed at individuals under 18. If a minor is currently managing your Phase III oncology trial's full eClinical stack from their bedroom, please escalate this finding through your organization's IRB, and also please hire that person immediately.</p>
+      <h2>9. Changes to This Policy</h2>
+      <p>We may update this Privacy Policy at any time, without advance notice, for reasons including but not limited to: changing business circumstances, evolving regulatory frameworks, new interplanetary data governance directives, and Tuesday.</p>
+      <div class="privacy-seinfeld">
+        <p>There is a famous restaurant. A very good restaurant. They take reservations. Many restaurants take reservations. The <em>taking</em> of the reservation is, in fact, the easy part.</p>
+        <p>The <em>keeping</em> of the reservation — that, apparently, is a different matter entirely.</p>
+        <p>SPAWN Clinical can take your privacy. We are very good at taking your privacy. We have systems, protocols, certifications, and a golden retriever. What we cannot promise — what no platform, no policy, no Terms of Service has ever truly promised and kept — is that we will keep your privacy forever, under all circumstances, in every possible future state of the regulatory and geopolitical landscape.</p>
+        <p class="privacy-tagline">Privacy is implied. Privacy is guaranteed.<br>Until, of course, it is not.</p>
+      </div>
+      <p class="privacy-last-updated">Last updated: Whenever you're reading this. Probably today.</p>
+    </div>
+  </div>
+</div>
+
+<script>
+document.addEventListener('click', function(e) {
+  if (e.target.classList.contains('modal-overlay')) e.target.classList.remove('open');
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') document.querySelectorAll('.modal-overlay.open').forEach(m => m.classList.remove('open'));
+});
+</script>
+</body>
+</html>
