@@ -8,6 +8,7 @@
     "node": ">=18"
   },
   "dependencies": {
-    "@neondatabase/serverless": "^0.10.4"
+    "@neondatabase/serverless": "^0.10.4",
+    "@vercel/analytics": "^2.0.1"
   }
 }
