@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   const spawn   = body.spawn;
-  const persona = ['sponsor', 'site', 'patient'].includes(body.persona) ? body.persona : 'sponsor';
+  const persona = ['sponsor', 'site', 'patient', 'massextinction'].includes(body.persona) ? body.persona : 'sponsor';
 
   const productName    = clip(spawn.productName, 255);
   const tagline        = clip(spawn.tagline, 500);
@@ -30,15 +30,28 @@ export default async function handler(req, res) {
   let displayName = `${firstName} ${lastName}`.trim();
   if (!displayName) displayName = clip(body.creatorName || 'Anonymous', 255) || 'Anonymous';
 
+  const insert = (p) => sql`
+    INSERT INTO spawns
+      (product_name, tagline, persona, creator_name, first_name, last_name,
+       creator_email, creator_comment, spawn_prompt, spawn_data)
+    VALUES
+      (${productName}, ${tagline}, ${p}, ${displayName}, ${firstName}, ${lastName},
+       ${creatorEmail}, ${creatorComment}, ${spawnPrompt}, ${JSON.stringify(spawn)}::jsonb)
+    RETURNING id`;
+
   try {
-    const rows = await sql`
-      INSERT INTO spawns
-        (product_name, tagline, persona, creator_name, first_name, last_name,
-         creator_email, creator_comment, spawn_prompt, spawn_data)
-      VALUES
-        (${productName}, ${tagline}, ${persona}, ${displayName}, ${firstName}, ${lastName},
-         ${creatorEmail}, ${creatorComment}, ${spawnPrompt}, ${JSON.stringify(spawn)}::jsonb)
-      RETURNING id`;
+    let rows;
+    try {
+      rows = await insert(persona);
+    } catch (e) {
+      // If the DB persona CHECK constraint hasn't been migrated to allow
+      // 'massextinction' yet, fall back to 'sponsor' so the save still succeeds.
+      if (persona === 'massextinction' && /persona/i.test(e?.message || '')) {
+        rows = await insert('sponsor');
+      } else {
+        throw e;
+      }
+    }
     return res.status(200).json({ success: true, id: rows[0].id });
   } catch (e) {
     return res.status(500).json({ error: 'Failed to save: ' + e.message });

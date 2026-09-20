@@ -9,7 +9,7 @@ export default async function handler(req, res) {
 
   const page    = Math.max(1, parseInt(req.query.page, 10) || 1);
   const limit   = Math.min(24, Math.max(1, parseInt(req.query.limit, 10) || 12));
-  const persona = ['sponsor', 'site', 'patient'].includes(req.query.persona) ? req.query.persona : null;
+  const persona = ['sponsor', 'site', 'patient', 'massextinction'].includes(req.query.persona) ? req.query.persona : null;
   const offset  = (page - 1) * limit;
 
   try {

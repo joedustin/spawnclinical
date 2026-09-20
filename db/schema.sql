@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS spawns (
   product_name    VARCHAR(255) NOT NULL,
   tagline         VARCHAR(500) NOT NULL DEFAULT '',
   persona         VARCHAR(20)  NOT NULL DEFAULT 'sponsor'
-                    CHECK (persona IN ('sponsor','site','patient')),
+                    CHECK (persona IN ('sponsor','site','patient','massextinction')),
   creator_name    VARCHAR(255) NOT NULL DEFAULT 'Anonymous',
   first_name      VARCHAR(255) NOT NULL DEFAULT '',
   last_name       VARCHAR(255) NOT NULL DEFAULT '',

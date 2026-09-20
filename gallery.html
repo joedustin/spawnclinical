@@ -90,6 +90,7 @@ main{position:relative;z-index:1;padding-top:5rem}
 .card-persona.sponsor{background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);color:var(--purple-light)}
 .card-persona.site{background:rgba(6,182,212,0.12);border:1px solid rgba(6,182,212,0.3);color:var(--cyan-light)}
 .card-persona.patient{background:rgba(34,197,94,0.12);border:1px solid rgba(34,197,94,0.3);color:#86EFAC}
+.card-persona.massextinction{background:rgba(245,158,11,0.14);border:1px solid rgba(245,158,11,0.38);color:#FBBF24}
 .card-date{font-size:0.72rem;color:var(--text-muted);flex-shrink:0}
 .card-product-name{font-family:'Orbitron',monospace;font-weight:900;font-size:1.3rem;letter-spacing:0.02em;line-height:1.2;background:linear-gradient(135deg,#fff 0%,var(--cyan-light) 60%,var(--purple-light) 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .card-tagline{font-size:0.87rem;color:var(--text-muted);line-height:1.55}
@@ -300,6 +301,7 @@ nav.nav-open .nav-toggle-bars span:nth-child(3){top:7px;transform:rotate(-45deg)
       <button class="filter-pill" data-filter="sponsor">💼 Sponsor</button>
       <button class="filter-pill" data-filter="site">🏥 Site</button>
       <button class="filter-pill" data-filter="patient">🧬 Patient</button>
+      <button class="filter-pill" data-filter="massextinction">☠️ Mass Extinction</button>
     </div>
   </div>
 
@@ -469,7 +471,7 @@ function loadMore() { loadSpawns(false); }
 // ─── BUILD CARD ───────────────────────────────────────────────────────────────
 function buildCard(s) {
   const d = s.spawn_data || {};
-  const personaLabel = { sponsor: '💼 Sponsor', site: '🏥 Site', patient: '🧬 Patient' }[s.persona] || s.persona;
+  const personaLabel = { sponsor: '💼 Sponsor', site: '🏥 Site', patient: '🧬 Patient', massextinction: '☠️ Mass Extinction' }[s.persona] || s.persona;
   const date = new Date(s.created_at).toLocaleDateString('en-US', { month:'short', day:'numeric', year:'numeric' });
 
   const badges = (d.badges || []).slice(0, 5)
