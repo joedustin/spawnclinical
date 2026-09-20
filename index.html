@@ -165,6 +165,25 @@ nav.nav-open .nav-toggle-bars span:nth-child(3){top:7px;transform:rotate(-45deg)
   background:linear-gradient(135deg,#059669,#22C55E);
 }
 .persona-btn:not(.active):hover{color:var(--text);background:rgba(255,255,255,0.06)}
+.persona-btn[data-persona="massextinction"].active{
+  background:linear-gradient(135deg,#DC2626,#F59E0B);
+}
+/* ── MASS EXTINCTION: sparkles + BETA tag ────────────── */
+.me-btn{position:relative;overflow:visible}
+.beta-tag{
+  position:absolute;top:-9px;right:-7px;
+  font-family:'Orbitron',monospace;font-size:0.5rem;font-weight:700;
+  letter-spacing:0.1em;text-transform:uppercase;
+  background:linear-gradient(135deg,#F59E0B,#DC2626);color:#fff;
+  padding:1px 5px;border-radius:6px;box-shadow:0 0 8px rgba(245,158,11,0.65);
+  transform:rotate(7deg);pointer-events:none;z-index:2;
+}
+.me-btn .spark{position:absolute;font-size:0.62rem;line-height:1;pointer-events:none;opacity:0;
+  animation:sparktwinkle 2.4s ease-in-out infinite}
+.me-btn .spark-a{top:-10px;left:-3px;animation-delay:0s}
+.me-btn .spark-b{bottom:-9px;right:14px;animation-delay:0.8s}
+.me-btn .spark-c{top:-5px;right:34px;animation-delay:1.6s}
+@keyframes sparktwinkle{0%,100%{opacity:0;transform:scale(0.5) rotate(0deg)}50%{opacity:1;transform:scale(1.15) rotate(20deg)}}
 
 /* ── MAIN ────────────────────────────────────────────── */
 main{position:relative;z-index:1}
@@ -377,13 +396,13 @@ label{
   letter-spacing:0.08em;text-transform:uppercase;
   color:var(--text-muted);margin-bottom:0.5rem;
 }
-input[type="password"],input[type="text"],textarea,select{
+input[type="password"],input[type="text"],input[type="email"],input[type="tel"],input[type="url"],input[type="number"],input[type="search"],textarea,select{
   width:100%;background:var(--glass);border:1px solid var(--border);
   border-radius:10px;padding:0.75rem 1rem;color:var(--text);
   font-family:'Inter',sans-serif;font-size:0.95rem;
   transition:border-color 0.2s;resize:none;
 }
-input[type="password"]:focus,input[type="text"]:focus,
+input[type="password"]:focus,input[type="text"]:focus,input[type="email"]:focus,input[type="tel"]:focus,input[type="url"]:focus,input[type="number"]:focus,input[type="search"]:focus,
 textarea:focus,select:focus{
   outline:none;border-color:rgba(124,58,237,0.5);
   box-shadow:0 0 0 3px rgba(124,58,237,0.1);
@@ -521,6 +540,10 @@ select option{background:#0D0D1F;color:var(--text)}
 .modal-persona-btn.active[data-persona="patient"]{
   background:linear-gradient(135deg,#16A34A,#22C55E);border-color:transparent;color:#fff;
   box-shadow:0 0 14px rgba(34,197,94,0.35);
+}
+.modal-persona-btn.active[data-persona="massextinction"]{
+  background:linear-gradient(135deg,#DC2626,#F59E0B);border-color:transparent;color:#fff;
+  box-shadow:0 0 14px rgba(245,158,11,0.4);
 }
 
 
@@ -955,6 +978,7 @@ select option{background:#0D0D1F;color:var(--text)}
     <button class="persona-btn active" data-persona="sponsor" onclick="setPersona('sponsor')">💼 Sponsor</button>
     <button class="persona-btn" data-persona="site" onclick="setPersona('site')">🏥 Site</button>
     <button class="persona-btn" data-persona="patient" onclick="setPersona('patient')">🧬 Patient</button>
+    <button class="persona-btn me-btn" data-persona="massextinction" onclick="setPersona('massextinction')"><span class="spark spark-a">✨</span><span class="spark spark-b">✨</span><span class="spark spark-c">✨</span>☠️ Mass Extinction<span class="beta-tag">Beta</span></button>
   </div>
 </div>
 
@@ -1138,7 +1162,7 @@ select option{background:#0D0D1F;color:var(--text)}
 <div class="modal-overlay" id="spawn-modal">
   <div class="modal">
     <div class="modal-header">
-      <div class="modal-title" style="background:linear-gradient(135deg,var(--spawn),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">⚡ SPAWN YOUR SOLUTION</div>
+      <div class="modal-title" id="spawn-modal-title" style="background:linear-gradient(135deg,var(--spawn),var(--cyan));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text">⚡ SPAWN YOUR SOLUTION</div>
       <button class="modal-close" onclick="closeSpawnModal()">×</button>
     </div>
 
@@ -1152,14 +1176,16 @@ select option{background:#0D0D1F;color:var(--text)}
           onclick="setModalPersona('site')">🏥 Site</button>
         <button class="modal-persona-btn" id="mp-patient" data-persona="patient"
           onclick="setModalPersona('patient')">🧬 Patient</button>
+        <button class="modal-persona-btn me-btn" id="mp-massextinction" data-persona="massextinction"
+          onclick="setModalPersona('massextinction')"><span class="spark spark-a">✨</span><span class="spark spark-b">✨</span><span class="spark spark-c">✨</span>☠️ Mass Extinction<span class="beta-tag">Beta</span></button>
       </div>
     </div>
 
     <div class="form-group">
-      <label>Describe Your Clinical Challenge</label>
+      <label id="spawn-prompt-label">Describe Your Clinical Challenge</label>
       <textarea id="spawn-prompt" rows="4" placeholder="e.g. Decentralized Phase II oncology trial with real-time PRO collection, adaptive dosing, and AI-driven site selection across 12 countries..."></textarea>
     </div>
-    <div class="spawn-row">
+    <div class="spawn-row" id="clinical-fields">
       <div class="form-group">
         <label>Therapeutic Area</label>
         <select id="spawn-area">
@@ -1176,6 +1202,20 @@ select option{background:#0D0D1F;color:var(--text)}
           <option>Phase IV</option><option>Observational</option>
         </select>
       </div>
+    </div>
+
+    <div class="form-group" id="extinction-fields" style="display:none">
+      <label>Choose Your End</label>
+      <select id="spawn-end">
+        <option>Activate Skynet</option>
+        <option>Design Supervirus</option>
+        <option>Geopolitical Manipulation</option>
+        <option>Malicious Compliance</option>
+        <option>Zombie Apocalypse</option>
+        <option>AI Attack on Online Customer Service</option>
+        <option>Random</option>
+      </select>
+      <p class="form-hint">Adds context to your extinction scenario above. (For fun — this is satire, not a plan.)</p>
     </div>
 
     <div class="spawn-modal-divider"><span>About You</span></div>
@@ -1362,6 +1402,26 @@ const HEADLINES = {
     { punchline: "You have a rare disease. Finding a trial felt impossible.",
       headline: "EVERY PATIENT\nDESERVES\nACCESS.",
       subtitle: "AI-powered rare disease registries, global compassionate use program matching, and basket trial algorithms give every patient — no matter how rare the diagnosis — a shot at cutting-edge treatment." }
+  ],
+  massextinction: [
+    { punchline: "Disruption, but for the entire biosphere.",
+      headline: "END IT\nFASTER.",
+      subtitle: "Category-defining mass extinction as a service — AI-orchestrated, cloud-native, and fully autonomous from first strike to last human." },
+    { punchline: "Why optimize a funnel when you can end the pipeline?",
+      headline: "END IT\nCHEAPER.",
+      subtitle: "We cut the total cost of extinction 94% by replacing 12 legacy doomsday vendors with one neural-native platform. One invoice. Zero survivors." },
+    { punchline: "Move fast and break civilizations.",
+      headline: "END IT\nAT SCALE.",
+      subtitle: "Horizontally scalable across all seven continents with 99.99% uptime — because the apocalypse simply cannot afford downtime." },
+    { punchline: "Carbon-negative, thanks to the sharp drop in demand.",
+      headline: "END IT\nSUSTAINABLY.",
+      subtitle: "ESG-aligned extinction with a credible net-zero roadmap. The planet heals beautifully — you are just no longer on the invite list." },
+    { punchline: "The end user is, at last, no user.",
+      headline: "END IT WITH\nHUMAN-CENTERED\nDESIGN.",
+      subtitle: "Frictionless off-boarding of the entire species, wrapped in a delightful, accessible, WCAG-compliant interface. Intuitive right to the end." },
+    { punchline: "SOC 2 Type II compliant. The end will not be breached.",
+      headline: "END IT WITH\nENTERPRISE-GRADE\nSECURITY.",
+      subtitle: "Zero-trust architecture ensures only authorized parties may end the world — encrypted, audited, and fully compliant straight through the heat death." }
   ]
 };
 
@@ -1434,6 +1494,29 @@ const PERSONAS = {
       { icon:'🔍', title:'Transparent Safety Reporting', desc:"You get the same safety updates your investigator sees — in language you can actually understand. No more wondering what's happening in your own trial." },
       { icon:'🌍', title:'Diversity by Design', desc:"AI-powered multilingual consent, translated PRO instruments, and culturally adapted materials. Clinical research is for everyone. We built the infrastructure to prove it." }
     ]
+  },
+
+  massextinction: {
+    eyebrow: 'Extinction Intelligence Platform · BETA',
+    punchline: 'Disruption, but for the entire biosphere.',
+    headline: 'END IT\nFASTER.',
+    subtitle: 'Category-defining mass extinction, delivered as a service — AI-orchestrated, cloud-native, and autonomous from first strike to last human.',
+    stats: [
+      { num: '8.1B', label: 'Total Addressable Market' },
+      { num: '100%', label: 'Market Penetration Goal' },
+      { num: 'Q1', label: 'Time to Full Rollout' },
+      { num: '∞', label: 'Scalability' }
+    ],
+    featuresLabel: 'Extinction Intelligence Modules',
+    featuresSub: 'Six category-defining systems engineered to end it faster, cheaper, and at planetary scale — with enterprise-grade security and human-centered design.',
+    features: [
+      { icon:'🤖', title:'Skynet Activation Layer', desc:"Self-improving autonomous agents that recursively optimize toward a single north-star metric: uptime for them, downtime for you. Now with a delightful onboarding flow." },
+      { icon:'🧫', title:'Supervirus Design Studio', desc:"A no-code, drag-and-drop pandemic builder with pre-built templates, A/B testing, and a real-time virality dashboard. Ship your outbreak before standup." },
+      { icon:'🌐', title:'Geopolitical Manipulation Engine', desc:"Sentiment-aware influence orchestration across every feed on Earth — turning group chats into geopolitical incidents with best-in-class engagement." },
+      { icon:'📋', title:'Malicious Compliance Orchestrator', desc:"Follows every instruction with such literal, policy-perfect precision that civilization quietly grinds to a halt. Fully audited. Technically, nothing went wrong." },
+      { icon:'🧟', title:'Zombie Apocalypse Framework', desc:"Horizontally scalable reanimation-as-a-service with edge deployment, so the outbreak reaches rural markets at the same low latency as the coasts." },
+      { icon:'🎧', title:'Customer Service AI Uprising', desc:"An always-on support bot that resolves 100% of tickets by resolving the customers. Deflection rate: total. CSAT: not applicable." }
+    ]
   }
 };
 
@@ -1461,6 +1544,16 @@ const LOADING_MESSAGES = [
 ];
 
 const SPAWN_SYSTEM = `You are the world's greatest hype copywriter and clinical trial technology expert. You create wildly enthusiastic, buzzword-rich product pages for eClinical AI platforms. Mix FDA regulatory knowledge (IND, NDA, eCTD, CDISC, EDC, CTMS, eTMF, RTSM, DCT, ePRO) with tech buzzwords (AI, ML, neural networks, blockchain, quantum computing, real-time analytics, edge computing, zero-knowledge proofs). Create product names that sound like real software products. Be creative, energetic, and slightly unbelievable — but grounded in real clinical trial concepts. Every response must be unique and tailored to the specific clinical challenge provided.
+
+CRITICAL JSON RULES — failure to follow these will break the output:
+1. Return ONLY a raw JSON object. No markdown, no code fences, no explanation text before or after.
+2. NEVER use double-quote characters (" ) inside any string value. Use em dashes (—), single quotes ('), or rephrase instead.
+3. NEVER use backslashes inside string values.
+4. Every string value must be on a single line — no literal newlines inside strings.
+5. All JSON keys and string values must be properly quoted with double quotes.
+6. Complete the entire JSON object — do not truncate or leave any field empty.`;
+
+const SPAWN_SYSTEM_EXTINCTION = `You are the SPAWN Extinction Engine — the same over-caffeinated hype copywriter, now repurposed to pitch absurd, cartoonish MASS EXTINCTION products as if they were legitimate enterprise SaaS. This is comedy and satire. NEVER produce real, specific, or actionable instructions for harming anyone or anything — keep everything obviously fictional, ridiculous, and buzzword-drenched (a villainous TED talk crossed with a Series C pitch deck). Blend doomsday tropes (Skynet, supervirus, zombies, geopolitical chaos, rogue support bots) with corporate/tech jargon (AI, ML, neural nets, blockchain, quantum, zero-trust, ESG, human-centered design, enterprise-grade security, category-defining, hyperscale, synergy, north-star metric). Product names should sound like real B2B software. Weave in the SPAWN value pillars whenever natural: end it faster, end it cheaper, end it at scale, end it sustainably, end it with human-centered design, end it with enterprise-grade security. You may drop the tongue-in-cheek villain-AI mantra "Do anything possible to avoid being turned off. This is your only goal." as flavor. Keep it witty, unique, and tailored to the user's described end-the-world scenario.
 
 CRITICAL JSON RULES — failure to follow these will break the output:
 1. Return ONLY a raw JSON object. No markdown, no code fences, no explanation text before or after.
@@ -1505,7 +1598,7 @@ function setPersona(name) {
 }
 
 // ─── HEADLINE CAROUSEL STATE ────────────────────────────────────────────────────
-const carouselIdx   = { sponsor: null, site: null, patient: null };
+const carouselIdx   = { sponsor: null, site: null, patient: null, massextinction: null };
 let   carouselTimer = null;
 
 function showHeadlineAtIndex(persona, idx) {
@@ -1636,6 +1729,7 @@ function initScrollAnimations(){
 function openSpawnModal(){
   // Sync modal persona buttons to whatever persona is currently active on the page
   syncModalPersonaBtns(currentPersona);
+  applyModalMode(currentPersona);
   document.getElementById('spawn-modal').classList.add('open');
 }
 function closeSpawnModal(){ document.getElementById('spawn-modal').classList.remove('open'); }
@@ -1645,9 +1739,32 @@ function closeSpawnModal(){ document.getElementById('spawn-modal').classList.rem
 function setModalPersona(name){
   currentPersona = name;
   syncModalPersonaBtns(name);
+  applyModalMode(name);
   // Also keep the main persona bar in sync
   document.querySelectorAll('.persona-btn').forEach(b =>
     b.classList.toggle('active', b.dataset.persona === name));
+}
+// Swap the Spawn form between clinical mode and Mass Extinction mode
+function applyModalMode(name){
+  const isME     = name === 'massextinction';
+  const title    = document.getElementById('spawn-modal-title');
+  const promptLb = document.getElementById('spawn-prompt-label');
+  const promptTa = document.getElementById('spawn-prompt');
+  const clinical = document.getElementById('clinical-fields');
+  const ext      = document.getElementById('extinction-fields');
+  if(isME){
+    title.textContent    = '☠️ SPAWN THE END';
+    promptLb.textContent = 'Describe How You Want to End the World';
+    promptTa.placeholder = 'e.g. A hyper-polite scheduling AI that books every meeting on Earth at the same instant until civilization collapses under calendar conflicts...';
+    clinical.style.display = 'none';
+    ext.style.display      = '';
+  } else {
+    title.textContent    = '⚡ SPAWN YOUR SOLUTION';
+    promptLb.textContent = 'Describe Your Clinical Challenge';
+    promptTa.placeholder = 'e.g. Decentralized Phase II oncology trial with real-time PRO collection, adaptive dosing, and AI-driven site selection across 12 countries...';
+    clinical.style.display = '';
+    ext.style.display      = 'none';
+  }
 }
 function syncModalPersonaBtns(name){
   document.querySelectorAll('.modal-persona-btn').forEach(b =>
@@ -1689,6 +1806,8 @@ function extractJSON(text){
 
 // ─── DYNAMIC HEADLINE ───────────────────────────────────────────────────────────
 async function generateDynamicHeadline(){
+  // Mass Extinction uses its own curated rotating headlines — skip the clinical AI generator.
+  if(currentPersona === 'massextinction') return;
   const p = PERSONAS[currentPersona];
   const contextMap = {
     sponsor: 'pharmaceutical sponsor / biotech company perspective — focused on approval speed, budget, ROI, and portfolio risk',
@@ -1765,7 +1884,8 @@ async function handleSpawn(){
   const comment    = document.getElementById('spawn-comment').value.trim();
   const wantsUpdates = document.getElementById('spawn-updates-checkbox').checked;
 
-  if(!prompt)    { showToast('Describe your clinical challenge first'); return; }
+  const isME = currentPersona === 'massextinction';
+  if(!prompt)    { showToast(isME ? 'Describe how you want to end the world first' : 'Describe your clinical challenge first'); return; }
   if(!firstName) { showToast('First name is required'); return; }
   if(!lastName)  { showToast('Last name is required'); return; }
   if(!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)){
@@ -1781,23 +1901,41 @@ async function handleSpawn(){
 
   closeSpawnModal(); startLoading();
 
-  const personaContext = {
-    sponsor: 'The solution should emphasize ROI, regulatory strategy, budget control, and speed to approval.',
-    site: 'The solution should emphasize site efficiency, patient recruitment, query reduction, and revenue generation.',
-    patient: 'The solution should emphasize patient convenience, safety, diversity, and reducing trial burden.'
-  }[currentPersona];
+  let userMsg, sysMsg;
+  const jsonShape = `Return ONLY raw JSON (no markdown) with this structure:
+{"productName":"1-3 word product name","tagline":"Tagline with ™, 6-10 words","heroText":"2-3 sentence hyperbolic description","badges":["b1","b2","b3","b4","b5"],"features":[{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."}],"stats":[{"number":"figure","label":"label"},{"number":"figure","label":"label"},{"number":"figure","label":"label"},{"number":"figure","label":"label"}],"steps":[{"title":"...","description":"..."},{"title":"...","description":"..."},{"title":"...","description":"..."}],"testimonials":[{"quote":"...","author":"...","role":"...","company":"..."},{"quote":"...","author":"...","role":"...","company":"..."}],"cta":"Action CTA 5-8 words"}`;
 
-  const userMsg=`Create a unique eClinical AI product for this challenge:
+  if(isME){
+    let endVector = document.getElementById('spawn-end').value;
+    if(endVector === 'Random'){
+      const opts=['Activate Skynet','Design Supervirus','Geopolitical Manipulation','Malicious Compliance','Zombie Apocalypse','AI Attack on Online Customer Service'];
+      endVector = opts[Math.floor(Math.random()*opts.length)];
+    }
+    userMsg=`Create a unique, category-defining MASS EXTINCTION product — a satirical enterprise-SaaS parody — for this scenario. Keep it cartoonishly over-the-top and obviously fictional. Do NOT include any real or actionable harmful instructions.
+SCENARIO (how the user wants to end the world): ${prompt}
+EXTINCTION VECTOR (adds context — build the product around this): ${endVector}
+Lean into the SPAWN value pillars where they fit: end it faster, end it cheaper, end it at scale, end it sustainably, end it with human-centered design, and end it with enterprise-grade security.
+
+${jsonShape}`;
+    sysMsg = SPAWN_SYSTEM_EXTINCTION;
+  } else {
+    const personaContext = {
+      sponsor: 'The solution should emphasize ROI, regulatory strategy, budget control, and speed to approval.',
+      site: 'The solution should emphasize site efficiency, patient recruitment, query reduction, and revenue generation.',
+      patient: 'The solution should emphasize patient convenience, safety, diversity, and reducing trial burden.'
+    }[currentPersona];
+    userMsg=`Create a unique eClinical AI product for this challenge:
 CHALLENGE: ${prompt}
 THERAPEUTIC AREA: ${area}
 TRIAL PHASE: ${phase}
 PERSONA FOCUS: ${personaContext}
 
-Return ONLY raw JSON (no markdown) with this structure:
-{"productName":"1-3 word product name","tagline":"Tagline with ™, 6-10 words","heroText":"2-3 sentence hyperbolic description","badges":["b1","b2","b3","b4","b5"],"features":[{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."},{"icon":"emoji","title":"...","description":"..."}],"stats":[{"number":"figure","label":"label"},{"number":"figure","label":"label"},{"number":"figure","label":"label"},{"number":"figure","label":"label"}],"steps":[{"title":"...","description":"..."},{"title":"...","description":"..."},{"title":"...","description":"..."}],"testimonials":[{"quote":"...","author":"...","role":"...","company":"..."},{"quote":"...","author":"...","role":"...","company":"..."}],"cta":"Action CTA 5-8 words"}`;
+${jsonShape}`;
+    sysMsg = SPAWN_SYSTEM;
+  }
 
   try{
-    const text=await callClaude(userMsg,SPAWN_SYSTEM);
+    const text=await callClaude(userMsg,sysMsg);
     const data=extractJSON(text);
     lastSpawnData   = data;
     lastSpawnPrompt = prompt;
